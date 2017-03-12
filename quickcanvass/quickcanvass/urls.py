@@ -17,10 +17,10 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^login/', include('login.urls')),
-    url(r'^search/', include('search.urls')),
-    url(r'^home/', include('org.urls')),
+    url(r'^login/', include('login.urls', namespace = "login")),
+    url(r'^search/', include('search.urls', namespace = "search")),
+    url(r'^home/', include('org.urls', namespace = "org")),
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include('search.urls'))
+    url(r'^', include('search.urls', namespace = "search"))
 
 ]
