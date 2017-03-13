@@ -1,0 +1,38 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}" />
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <title>Sign Up</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <h1 class="text-center login-title">QuickCanvass Signup</h1>
+        <div class="account-wall">
+          <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+              alt="">
+          <form class="form-signup">
+            <input type="text" class="form-control" placeholder="Email" required autofocus>
+            <input type="password" class="form-control" placeholder="Password" required><br>
+            <div class="form-signup-radio">
+              <input type="radio" name="director-or-volunteer" value="director" checked="checked"> <span>I'm setting up my campaign</span><br>
+              <input type="radio" name="director-or-volunteer" value="volunteer"> <span>I'm volunteering for a campaign</span><br>
+            </div>
+            <div>
+              <a href="http://google.com" class="button-submit">Get Started!</a>
+            </div>
+            <a href="http://google.com" class="text-left button-help signup">I've already got an account! </a>
+          <div>
+      
+          </form>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
