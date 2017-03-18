@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^search/', include('search.urls', namespace = "search")),
     url(r'^home/', include('org.urls', namespace = "org")),
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('search.urls', namespace = "search"))
-
+    url(r'^', include('search.urls', namespace = "search")),
+    url(r'^dashboard/', include('userdash.urls', namespace = "userdash")),
 ]

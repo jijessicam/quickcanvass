@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
       border-radius: 0;
     }
     .container {
-      padding: 50px 10px 50px 10px;
+      padding: 150px 10px 150px 10px;
     }
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 450px}
@@ -26,32 +27,14 @@
       background-color: #f1f1f1;
       height: 100%;
     }
-    .page-header {
-      color = gray;
-    }
-    a.button-submit {
-    border: none;
-    padding: 15px 85px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 17px;
-    border-radius: 25px;
-    color: white;
-    margin-top: 20px;
-    background-color: #5bc0de;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  }
+    #
     /* Set black background color, white text and some padding */
     footer {
       background-color: #555;
       color: white;
       padding: 15px;
     }
-    button {
-      padding : 0px 300px 0px 300px
 
-    }
     /* On small screens, set height to 'auto' for sidenav and grid */
     @media screen and (max-width: 767px) {
       .sidenav {
@@ -76,27 +59,17 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="{% url 'search:index' %}">Home</a></li>
+        <li class="active"><a href="#">Home</a></li>
         <li><a href="{% url 'org:about' %}">About</a></li>
-        <li class = "active"><a href="{% url 'org:research' %}">Research</a></li>
+        <li><a href="{% url 'org:research' %}">Research</a></li>
         <li><a href="{% url 'org:contact' %}">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'login:index' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="{% url 'search:index' %}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
-<div class="container">
-  <!-- Introduction Row -->
-  <div class="row">
-      <div class="col-lg-12">
-        <center>
-          <h1 class="page-header">Research:
-          </h1>
-          <p>Want to post a survey? Get results on data?</p>
-           <a href="#" class="button-submit tn-lg active" role="button">Sign up for an admin account!</a>
-        </center>
-      </div>
-  </div>
+
+</body>
 </html>

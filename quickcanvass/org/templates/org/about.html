@@ -66,11 +66,11 @@
       <ul class="nav navbar-nav">
         <li><a href="{% url 'search:index' %}">Home</a></li>
         <li class="active"><a href="{% url 'org:about' %}">About</a></li>
-        <li><a href="#">Research</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="{% url 'org:research' %}">Research</a></li>
+        <li><a href="{% url 'org:contact' %}">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="{% url 'login:index' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
     </div>
   </div>
@@ -129,7 +129,7 @@
             <div class="col-lg-4 col-sm-6 text-center">
               <center>
                 <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
-                <h3>Luisa Fer
+                <h3>Luisa Gotya
                     <small>Job Title</small>
                 </h3>
                 <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
