@@ -25,7 +25,7 @@ SECRET_KEY = '$&izh@k01zffgy$0g1zlcha!we%3&ik-7e41d*wu0&3616tx!y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'qcapp',
     'django_cas_ng',
-    'django.contrib.sites'
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +55,7 @@ MIDDLEWARE = [
 MIDDLEWARE_CLASSES = [
     'django_cas_ng.middleware.CASMiddleware'
 ]
+
 
 ROOT_URLCONF = 'quickcanvass.urls'
 
@@ -80,12 +81,28 @@ WSGI_APPLICATION = 'quickcanvass.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+# [START dbconfig]
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    'default' : {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'quickcanvass',
+        'USER': 'root',
+        'PASSWORD': 'cos333',
     }
 }
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    DATABASES['default']['HOST'] = '127.0.0.1'
+# [END dbconfig]
 
 
 # Password validation
