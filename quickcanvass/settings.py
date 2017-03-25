@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'qcapp'
+    'qcapp',
+    'django_cas_ng',
+    'django.contrib.sites'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +50,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+MIDDLEWARE_CLASSES = [
+    'django_cas_ng.middleware.CASMiddleware'
 ]
 
 ROOT_URLCONF = 'quickcanvass.urls'
@@ -100,6 +106,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django_cas_ng.backends.CASBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

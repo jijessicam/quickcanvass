@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+
 
 import hashlib
 import random
@@ -8,9 +10,11 @@ import random
 from utils import *
 # Create your views here.
 
+#@login_required(login_url='login')
 def login(request):
 	return render(request, 'login.html')
 
+#@login_required(login_url='login')
 def signup(request):
 	return render(request, 'signup.html')
 
