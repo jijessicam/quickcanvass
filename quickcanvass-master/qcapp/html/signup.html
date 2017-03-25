@@ -1,0 +1,63 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <title>Sign Up</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+
+<script>
+$(document).ready(function() {
+  $("#make-account").click(function(){
+  console.log("test");
+  $.ajax({
+      url: "/create-new-account",
+      context: document.body,
+      "data": {
+        "email": $("#email").val(),
+        "passw": $("#pass").val(),
+        "isdirector": $("#director").is(':checked'),
+      },
+      type: 'POST',
+      success: function(res){
+        //change to dashboard later
+        window.location = '/login';
+      },
+      error: function(){
+          console.log("error");
+      }
+  });
+})
+});
+</script>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <h1 class="text-center login-title">QuickCanvass Signup</h1>
+        <div class="account-wall">
+          <img class="profile-img" src="{% static 'images/user_im.jpg' %}"
+              alt="">
+          <form class="form-signup">
+            <input type="text" class="form-control" placeholder="Email" id="email" required autofocus>
+            <input type="password" class="form-control" placeholder="Password" id="pass" required><br>
+            <div class="form-signup-radio">
+              <input type="radio" name="director-or-volunteer" id="director" value="director" checked="checked"> <span>I'm setting up my campaign</span><br>
+              <input type="radio" name="director-or-volunteer" value="volunteer"> <span>I'm volunteering for a campaign</span><br>
+            </div>
+            <div>
+              <a class="button-submit" id="make-account">Get Started!</a>
+            </div>
+              <a href="/login" class="text-left button-help signup">I've already got an account! </a>
+            </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</body>
+</html>

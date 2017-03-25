@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>QuickCanvass</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  </style>
+</head>
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+body{font-family: 'Open Sans', sans-serif;}
+.header{position:relative;overflow:hidden;max-height:350px;display:flex;align-items:center;justify-content:center}
+.text{
+    /*-webkit-column-count: 2; 
+    -moz-column-count: 2; 
+    column-count: 2; */  
+    margin-top:15px;        
+}
+.statistics > p{margin-bottom:2px;}
+.statistics > p > span.label{background-color:white;color:gray;}
+.side{background:#fafafa;padding-top:15px}
+.side > img { margin-bottom:15px;}
+.semi-title{font-weight: bold;margin-top:30px;}
+.title{    
+    position: absolute;
+    bottom: 45px;
+    padding: 7px;
+    right: 25px;
+    padding-left: 25px;
+    padding-right: 30px;
+    color: white;
+    background: black;
+}
+.sub-title{    
+    position: absolute;
+    bottom: 94px;
+    padding: 7px;
+    right: 25px;
+    padding-left: 12px;
+    padding-right: 12px;
+    color: white;
+    background: black;
+}        
+.name-author{
+    position: absolute;
+    bottom: 35px;
+    left: 100px;
+    font-size: 11px;
+    color: white;
+    background: black;
+    padding: 2px;
+    padding-right: 10px;
+    padding-left: 22px;
+    margin-left: -21px;
+    z-index: 1;
+    font-weight: 500;            
+}
+.photo-author{
+    max-height: 70px;
+    padding: 2px;
+    position: absolute;
+    left: 25px;
+    bottom: 25px;
+    background: white;
+    z-index: 3;            
+}
+.triangulo{
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 60px 0 0 1200px;
+    border-color: transparent transparent transparent #ffffff;
+}
+.row-eq-height {
+display: -webkit-box;
+display: -webkit-flex;
+display: -ms-flexbox;
+display: flex;
+}   
+
+@media (max-width: 426px) {
+    .header{
+            margin-left: -15px;
+            margin-top: -15px;
+            margin-right: -15px;
+    }
+    .title{
+        font-size:15px;
+        bottom:-12px;
+        right:0px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+    .photo-author{
+        max-height:45px;
+        left:5px;
+        bottom:40px;
+    }
+    .name-author{
+        font-size:9px;
+        margin-left:-63px;
+        bottom:44px;
+    }
+    .sub-title{
+        right:0px;
+        bottom:18px;
+        padding:5px;
+        font-size:10px;
+    }
+}
+	</style>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">QC</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="schedule.html">Schedule</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+	<div class="row">
+		 <!-- HEADER -->
+        	<div class="header">
+            		<img style="width:100%" src="posts-march2027bkg.jpg" />
+            		<div class="triangulo"></div>
+            		<div class="profile">
+                		<img class="photo-author img-circle" src="GraceProfile.jpg" />
+                		<span class="name-author">by Grace Turner</span>
+            		</div>
+            		<h5 class="sub-title">Updates</h5>
+            		<h2 class="title">And the website is live...!!!</h2>
+        </div>
+
+        <!-- INFO -->
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 style="line-height: 25px;">With cunning and bootstrap snippets, our project website is go!</h4>
+            </div>
+        
+            <div class="row row-eq-height" style="padding-right:15px">
+            	<div class="col-xs-9 text">
+                	<p>I, Grace Turner, have built a simple website. Not bad for someone with basically 0 front-end experience a few weeks ago. </p>
+		    	<p>All hail Bootstrap!</p>
+            	</div>
+            </div>
+
+            <div class="col-xs-12">
+                <h4 style="line-height: 25px;">With guile and resourcefulness, we are now password protected!</h4>
+            </div>
+
+            <div class="row row-eq-height" style="padding-right:15px">
+            	<div class="col-xs-9 text">
+                	<p>Sam and Luisa, like the cunning masterminds they are, will have added password protection by the end of this week (or they should if they know what is good for them)!</p>
+         	 	<p>(namely, not Jessica)</p>
+		 	<p> All hail CAS login! </p>
+		</div>
+	    </div>
+
+
+            <div class="col-xs-12">
+                <h4 style="line-height: 25px;">With elegance and wisdom, both ends are talking to each other!</h4>
+            </div>
+
+            <div class="row row-eq-height" style="padding-right:15px">
+            	<div class="col-xs-9 text">
+               		 <p>Jessica, understanding in the ways of the Google Cloud SQL, now works to unite the two opposing forces: "front-end" and "back-end"!</p>
+			 <p> All hail communication! </p>
+		</div>
+            </div>
+	</div>
+	</div>
+	</div>
+	</body>
+	</html>
