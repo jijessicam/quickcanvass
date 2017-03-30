@@ -4,6 +4,7 @@ import django_cas_ng.views
 
 urlpatterns = [
     url(r'^login/$', views.login, name='login'),
+    url(r'^login_verification/$', views.login_verification, name='login_verification'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^create-new-account$', views.makeaccount, name='makeaccount'),
     url(r'^about/$', views.about, name = 'about'),

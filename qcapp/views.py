@@ -38,18 +38,21 @@ def signup(request):
 
 @csrf_exempt
 def makeaccount(request, methods=['POST']):
-	#wow here's where we acutally upload the stuff to the db
+	#Create a new account from signup page
 	data = request.POST
-	print("test", data.get('email'), data.get('passw'), data.get('isdirector'))
+	netid = data.get('email').replace('@princeton.edu', '')
+	passw = data.get('passw')
+	isd = 0
+	if data.get('isdirector') == 'true':
+		isd = 1
 	#create a random 16 character salt for passwords
 	salt = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
-	hashed_pass = hashit(data.get('passw') + salt)
+	hashed_pass = hashit(passw + salt)
 	cursor = db.cursor()
 	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT * FROM princeton')
-	for row in cursor:
-		print row
-	print(hashed_pass)
+	cursor.execute("INSERT INTO user (netid, p_salt, p_enc, is_director) VALUES (%s, %s, %s, %s)", (netid, salt, hashed_pass, isd))
+	cursor.close()
+	db.commit()
 	return redirect('/login')
 
 def about(request):
@@ -66,3 +69,11 @@ def search(request):
 
 def volunteerdash(request):
 	return render(request, 'volunteerdash.html')
+
+@csrf_exempt
+def login_verification(request):
+	data = request.POST
+	netid = (data.get('email') or "").replace('@princeton.edu', '')
+	passw = data.get('passw')
+	print("Trying to login with " + str(netid) + str(passw))
+	return redirect('/login')
