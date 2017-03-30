@@ -3,6 +3,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
+import os
+
+import MySQLdb
+
+# These environment variables are configured in app.yaml.
+# Not sure how app.yaml is actually supposed to hook up -
+# For now, load in values directly
+# CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
+# CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
+# CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
+CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
+CLOUDSQL_USER = 'root'
+CLOUDSQL_PASSWORD = 'cos333'
+cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
+
+db = MySQLdb.connect(unix_socket=cloudsql_unix_socket,
+	user=CLOUDSQL_USER,
+	passwd=CLOUDSQL_PASSWORD)
 
 import hashlib
 import random
@@ -26,6 +44,11 @@ def makeaccount(request, methods=['POST']):
 	#create a random 16 character salt for passwords
 	salt = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
 	hashed_pass = hashit(data.get('passw') + salt)
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute('SELECT * FROM princeton')
+	for row in cursor:
+		print row
 	print(hashed_pass)
 	return redirect('/login')
 

@@ -101,7 +101,7 @@ DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
 if os.getenv('GAE_INSTANCE'):
     pass
 else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
+    DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
 # [END dbconfig]
 
 
