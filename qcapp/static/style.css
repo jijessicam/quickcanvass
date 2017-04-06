@@ -162,3 +162,7 @@ button {
   }
   .row.content {height:auto;}
 }
+
+.left {
+  text-align: left;
+}

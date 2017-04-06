@@ -10,6 +10,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+  <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico"/>
 </head>
 
 <body>
@@ -22,15 +23,24 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Logo</a>
+      <a class="navbar-brand" href="#">QuickCanvass</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="/search/">Home</a></li>
+        <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
         <li class="active"><a href="/about/">About</a></li>
-        <li><a href="/research/">Research</a></li>
-        <li><a href="/contact/">Contact</a></li>
+
+        <!-- Case 2: Logged in Director-->
+        <!-- <li><a href="/directordash/">Dashboard</a></li>
+        <li class="active"><a href="/about/">About</a></li>
+        -->
+
+        <!-- Case 3: Logged in Volunteer-->
+         <!-- <li><a href="/volunteerdash/">Dashboard</a></li>
+        <li class="active"><a href="/about/">About</a></li>
+         -->
       </ul>
+      <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       </ul>
