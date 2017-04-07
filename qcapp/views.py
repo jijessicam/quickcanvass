@@ -28,11 +28,11 @@ import random
 from utils import *
 # Create your views here.
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def login(request):
 	return render(request, 'login.html')
 
-#@login_required(login_url='login')
+@login_required(login_url='login')
 def signup(request):
 	return render(request, 'signup.html')
 
