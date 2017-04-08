@@ -13,8 +13,7 @@ $(document).ready(function() {
       },
       type: 'POST',
       success: function(res){
-        //change to dashboard later
-        window.location = '/login';
+        window.location = res;
       },
       error: function(){
           console.log("error");
@@ -35,11 +34,11 @@ $(document).ready(function() {
                     <input type="text" class="form-control" id="email" placeholder="Email" required autofocus>
                     <input type="password" class="form-control" id="passw" placeholder="Password" required>
                     <div>
-                        <a class="button-submit" id="login-btn">Login</a>
+                        <a class="button-submit btn" id="login-btn">Login</a>
                     </div>
                     <div>
-                        <a href="http://google.com" class="text-left button-help signup">sign up! </a>
-                        <a href="http://google.com" class="text-right button-help">forgot your password?</a>
+                        <a href="/accounts/signup" class="text-left button-help btn">sign up! </a>
+                        <a href="http://google.com" class="text-right button-help btn">forgot your password?</a>
                     </div>
                 </form>
             </div>

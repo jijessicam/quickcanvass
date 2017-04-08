@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
 
 import os
 
@@ -28,11 +32,11 @@ import random
 from utils import *
 # Create your views here.
 
-@login_required(login_url='login')
+@login_required(login_url='/accounts/login/')
 def login(request):
 	return render(request, 'login.html')
 
-@login_required(login_url='login')
+@login_required(login_url='/accounts/signup/')
 def signup(request):
 	return render(request, 'signup.html')
 
@@ -45,15 +49,17 @@ def makeaccount(request, methods=['POST']):
 	isd = 0
 	if data.get('isdirector') == 'true':
 		isd = 1
-	#create a random 16 character salt for passwords
-	salt = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(16))
-	hashed_pass = hashit(passw + salt)
+
+	#create user's dats in user
 	cursor = db.cursor()
 	cursor.execute('USE quickcanvass')
-	cursor.execute("INSERT INTO user (netid, p_salt, p_enc, is_director) VALUES (%s, %s, %s, %s)", (netid, salt, hashed_pass, isd))
+	cursor.execute("INSERT INTO user (netid, is_director) VALUES (%s, %s)", (netid, isd))
 	cursor.close()
 	db.commit()
-	return redirect('/login')
+
+	#create the instrinsic user in auth_user
+	user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
+	return redirect('accounts/login')
 
 def about(request):
     return render(request, 'about.html')
@@ -67,7 +73,9 @@ def contact(request):
 def search(request):
 	return render(request, 'search.html')
 
-def volunteerdash(request):
+def volunteerdash(request, netid):
+	if not request.user.username == netid:
+		return redirect('/accounts/login')
 	return render(request, 'volunteerdash.html')
 
 @csrf_exempt
@@ -75,5 +83,12 @@ def login_verification(request):
 	data = request.POST
 	netid = (data.get('email') or "").replace('@princeton.edu', '')
 	passw = data.get('passw')
+
+	user = authenticate(username=netid, password=passw)
+	if user is not None:
+		auth_login(request, user)
+		print("authorized")
+	else:
+	    print("not authed")
 	print("Trying to login with " + str(netid) + str(passw))
-	return redirect('/login')
+	return HttpResponse('/volunteerdash/' + user.__dict__['username'])
