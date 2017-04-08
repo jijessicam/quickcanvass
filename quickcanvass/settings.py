@@ -51,8 +51,13 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_cas_ng.middleware.CASMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware'
+    # 'django.contrib.admindocs.middleware.XViewMiddleware',
 ]
+
+# MIDDLEWARE_CLASSES = [
+#     'django_cas_ng.middleware.CASMiddleware',
+#     'django.middleware.doc.XViewMiddleware',
+# ]
 
 ROOT_URLCONF = 'quickcanvass.urls'
 

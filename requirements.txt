@@ -1,0 +1,5 @@
+Django==1.11
+django_cas_ng==3.5.6
+gunicorn==19.3.0
+python-cas==1.2.0
+MySQL-python==1.2.5

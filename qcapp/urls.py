@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from . import views
 import django_cas_ng.views
+import django_cas_ng
 
 urlpatterns = [
     #url(r'^login/$', views.login, name='login'),
