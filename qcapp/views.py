@@ -73,6 +73,9 @@ def contact(request):
 def search(request):
 	return render(request, 'search.html')
 
+def volunteercampaigns(request):
+	return render(request, 'volunteercampaigns.html')
+
 def volunteerdash(request, netid):
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
