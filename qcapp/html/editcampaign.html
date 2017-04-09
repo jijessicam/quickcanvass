@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-lg-12 center">
+      <h5 class= "text-center login-title edit header-top">Edit Your Campaign: CAMPAIGN CODE HERE</h5>
+
+<div class = "row clean-box edit clean-submit">
+  <input type="text" class="form-control clean-look" id="campaign-name" placeholder="Set Campaign Name" required autofocus>
+  <input type="text" class="form-control clean-look" id="date" placeholder="Set Campaign Deadline (DD/MM/YYYY)" required autofocus>
+  <textarea type="text" rows = "5" class="form-control clean-look fat-box" id="campaign-details" placeholder="Set Campaign Details (Optional)" ></textarea>
+  <input type="text" class="form-control clean-look" id="contact-information" placeholder="Set Campaign Contact Information (Optional)" >
+  <div class = "row"><button class=" btn ss-button" >Cancel</button><button class=" btn ss-button " >Submit</button></div>
+</details>
+</div>
+</div>
+{% endblock %}
