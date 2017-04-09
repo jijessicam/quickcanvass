@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>QuickCanvass</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+  <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico"/>
+<style>
+@media screen and (max-width: 767px) {
+  .small-show {
+    display: block;
+  }
+  .small-hid {
+    display: none;
+  }
+  .top-button {
+
+  }
+  .top-header {
+
+  }
+.clean-look {
+  margin-bottom: 10px;
+  font-size: 10;
+  }
+  .ss-button {
+    background-color: #5bc0de;
+    width: 50%;
+    table-layout: fixed;
+    color: white;
+    font-weight: normal;
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .small-show {
+    display: none;
+  }
+  .clean-look {
+    margin-bottom: 10px;
+
+  }
+  .ss-button {
+    background-color: #5bc0de;
+    width: 80%;
+    table-layout: fixed;
+    color: white;
+    font-weight: normal;
+    font-size: large;
+    margin: 10px;
+  }
+  .top-header {
+    margin-top: 80px;
+  }
+  .top-button {
+    margin-top: 120px;
+  }
+}
+
+.clean-box {
+  border:1px;
+  border-style:solid;
+  border-color:#eee;
+  border-radius: 5px;
+  color: gray;
+  padding: 10%;
+  table-layout: fixed;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.clean-submit {
+  background-color: #f7f7f7;
+}
+.edit {
+  width: 90%;
+  margin-left: 5%;
+}
+.manager {
+  width: 50%;
+  margin-left: 25%;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">QuickCanvass</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
+        <!-- <li class="active"><a href="/about/">About</a></li> !-->
+
+        <!-- Case 2: Logged in Director-->
+        <!-- <li><a href="/directordash/">Dashboard</a></li>
+        <li class="active"><a href="/about/">About</a></li>-->
+
+        <!-- Case 3: Logged in Volunteer-->
+        <li><a href="/volunteerdash/">View My Campaigns</a></li>
+
+      </ul>
+      <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% block content %}{% endblock content %}
+</body>
+</html>
