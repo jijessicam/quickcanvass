@@ -18,5 +18,6 @@ urlpatterns = [
 	url(r'^logout/$', django_cas_ng.views.logout, name='cas_ng_logout'),
     url(r'^accounts/callback$', django_cas_ng.views.callback, name='cas_ng_proxy_callback'),
     url(r'^volunteercampaigns/$', views.volunteercampaigns, name = 'volunteercampaigns'),
-
+    url(r'^managerdash/$', views.managerdash, name = 'managerdash'),
+    url(r'^editcampaign/$', views.editcampaign, name = 'editcampaign'),
 ]
