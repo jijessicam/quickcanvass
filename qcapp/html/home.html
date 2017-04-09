@@ -1,0 +1,130 @@
+{% block content %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>QuickCanvass</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+  <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico"/>
+</head>
+
+<body style="background-color:#333333">
+   
+  <!--First part-->
+  <div class="container">
+    <div class="col-lg-12 center">
+      <img style="margin-top:40px" class="profile-img" src="{% static 'images/user_im.jpg' %}"
+            alt="">
+      <h1 style="color:white" class="page-header">QuickCanvass</h1>
+      <p style="color:white">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
+
+      <hr>
+      
+      <div>
+        <a href="accounts/login" class="button-submit btn" id="make-account">Login</a>
+      </div>
+      <br>
+      <div>
+        <a href="accounts/signup" class="button-submit btn" id="make-account">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 center">
+        <h1 style="color:white" class="page-header">What We Do</h1>
+      </div>
+      <div class="col-lg-12 left">
+        <p style="color:white">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
+        <p style="color:white">We can help you...</p>
+        <ul style="color:white">
+          <li>Learn which constituants are near your geographical location for canvassing on the go.</li>
+          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for freshman council.</li>
+          <li>Keep track of which students already support you, which don't, and which can be purswaded via the data your team collects</li>
+          <li>Preserve this data across multiple campaigns in multiple years</li>
+          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass</li>
+          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!--Second part-->
+  <div class="container">
+      <div class="col-lg-12 left"> 
+        <h2 style="color: white" class="page-header">Our Team</h2>
+      </div>
+
+      <!--Jessica-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
+        <h3 style="color: #e2dcdc">Jessica Ji
+            <small>Our President</small>
+        </h3>
+        <p style="color: #ada4a4">Jessica works mainly on back-end and keeping the rest of us on task.</p>
+        <p><a style="color: #75dccf" href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Grace-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
+        <h3 style="color: #e2dcdc">Grace Turner 
+          <small>Front-End Specialist</small>
+        </h3>
+        <p style="color: #ada4a4">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+        <p><a style="color: #75dccf" href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
+      </center>
+      </div>
+
+      <!--Sam-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
+        <h3 style="color: #e2dcdc">Samuel Russell
+            <small>Database Specialist</small>
+        </h3>
+        <p style="color: #ada4a4">Sam enjoys troubleshooting and making the database queryable.</p>
+        <p><a style="color: #75dccf" href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Luisa-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+          <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
+          <h3 style="color: #e2dcdc">Luisa Goytia
+              <small>Full-stack Programmer</small>
+          </h3>
+          <p style="color: #ada4a4">Luisa works both front-end and back-end, depending on the problems of the week.</p>
+          <p><a style="color: #75dccf" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
+
+        </center>
+      </div>
+  </div>
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="co-xs-12">
+        <p style="color:white" class="text-center">Contact us at jmj5@princeton.edu</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+
+
+{% endblock %}

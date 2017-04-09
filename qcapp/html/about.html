@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-
+{% load static %}
 
 
 <div>
@@ -25,9 +25,8 @@
         </div>
 
         <div class="container">
-
             <div class="col-lg-12 left">
-                <h2 class="page-header">Our Team</h2>
+              <h2 class="page-header">Our Team</h2>
             </div>
 
             <div class="col-lg-6 col-sm-6 text-center">
@@ -37,8 +36,10 @@
                     <small>Our President</small>
                 </h3>
                 <p>Jessica works mainly on back-end and keeping the rest of us on task.</p>
+                <p><a href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
               </center>
             </div>
+            
             <div class="col-lg-6 col-sm-6 text-center">
               <center>
                 <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
@@ -46,6 +47,8 @@
                     <small>Front-End Specialist</small>
                 </h3>
                 <p>Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+                <p><a href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
+
               </center>
             </div>
             <div class="col-lg-6 col-sm-6 text-center">
@@ -55,15 +58,18 @@
                     <small>Database Specialist</small>
                 </h3>
                 <p>Sam enjoys troubleshooting and making the database queryable.</p>
+                <p><a href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
               </center>
             </div>
             <div class="col-lg-6 col-sm-6 text-center">
               <center>
-                <img class="img-circle img-responsive img-center" src="http://placehold.it/200x200" alt="">
+                <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
                 <h3>Luisa Goytia
-                    <small>General Programmer</small>
+                    <small>Full-stack Programmer</small>
                 </h3>
                 <p>Luisa works both front-end and back-end, depending on the problems of the week.</p>
+                <p>lgoytia@princeton.edu</p>
+
               </center>
             </div>
         </div>
@@ -71,8 +77,8 @@
 </div>
 
 
-<footer class="container-fluid text-center">
+<!-- <footer class="container-fluid text-center">
   <p>Sign Up!</p>
-</footer>
+</footer> -->
 
 {% endblock %}
