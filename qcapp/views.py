@@ -11,32 +11,22 @@ import os
 
 import MySQLdb
 
-# These environment variables are configured in app.yaml.
-# Not sure how app.yaml is actually supposed to hook up -
-# For now, load in values directly
-# CLOUDSQL_CONNECTION_NAME = os.environ.get('CLOUDSQL_CONNECTION_NAME')
-# CLOUDSQL_USER = os.environ.get('CLOUDSQL_USER')
-# CLOUDSQL_PASSWORD = os.environ.get('CLOUDSQL_PASSWORD')
-CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
-CLOUDSQL_USER = 'root'
-CLOUDSQL_PASSWORD = 'cos333'
-cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
-db = MySQLdb.connect(unix_socket=cloudsql_unix_socket,
-	user=CLOUDSQL_USER,
-	passwd=CLOUDSQL_PASSWORD)
 
 import hashlib
 import random
 
 from utils import *
+
+db = get_db()
+
 # Create your views here.
 
-@login_required(login_url='/accounts/login/')
+@login_required(login_url='')
 def login(request):
 	return render(request, 'login.html')
 
-@login_required(login_url='/accounts/signup/')
+@login_required(login_url='')
 def signup(request):
 	return render(request, 'signup.html')
 
@@ -53,9 +43,11 @@ def makeaccount(request, methods=['POST']):
 	#create user's dats in user
 	cursor = db.cursor()
 	cursor.execute('USE quickcanvass')
-	cursor.execute("INSERT INTO user (netid, is_director) VALUES (%s, %s)", (netid, isd))
-	cursor.close()
-	db.commit()
+	cursor.execute("SELECT (netid) from user where netid=%s and is_director=%s", (netid, isd))
+	if cursor.rowcount == 0:
+		cursor.execute("INSERT INTO user (netid, is_director) VALUES (%s, %s)", (netid, isd))
+		cursor.close()
+		db.commit()
 
 	#create the instrinsic user in auth_user
 	user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
@@ -80,13 +72,22 @@ def volunteercampaigns(request):
 
 def editcampaign(request):
 	return render(request, 'editcampaign.html')
-def managerdash(request):
-	return render(request, 'managerdash.html')
+
+def managerdash(request, netid):
+	if not request.user.username == netid:
+		return redirect('/accounts/login')
+	if is_user_manager(netid):
+		return render(request, 'managerdash.html', {'netid': netid, "isd": 1})
+	else:
+		return redirect("/volunteerdash/" + netid)
 
 def volunteerdash(request, netid):
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
-	return render(request, 'volunteerdash.html')
+	if not is_user_manager(netid):
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0})
+	else:
+		return redirect("/managerdash/" + netid)
 
 @csrf_exempt
 def login_verification(request):

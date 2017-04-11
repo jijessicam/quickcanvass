@@ -1,11 +1,33 @@
 import hashlib
 import string
 import json
+import MySQLdb
+import os, sys
 
-def hashit(stri):
-    for i in range(0, 500000):
-        stri = hashlib.sha224(stri).hexdigest()
-    return stri
+CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
+CLOUDSQL_USER = 'root'
+CLOUDSQL_PASSWORD = 'cos333'
+cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
+
+def get_db():
+	db = MySQLdb.connect(unix_socket=cloudsql_unix_socket,
+	user=CLOUDSQL_USER,
+	passwd=CLOUDSQL_PASSWORD)
+	return db
+
+def is_user_manager(netid):
+	db = get_db()
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute('SELECT is_director from user where netid=%s', (netid, ))
+	for row in cursor:
+		if row[0] == 1:
+			return True
+		else:
+			return False
+
+
+
 
 #not sure what this will take as input yet
 #maybe also just upload the thing
