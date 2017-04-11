@@ -14,39 +14,85 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
   <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico"/>
+
+<style>
+  .grayPage{
+    background-color: #333333;
+    width: 100%;
+  }
+
+  .title{
+    font-size: 10vw;
+    margin-top: 2vw;
+    color:white;
+  }
+
+  .logo{
+    margin-top: 3vw;
+  }
+
+  .descr{
+    color:white;
+    border-left: 2.4vw;
+    border-right: 2.4vw;
+    font-size: 2vw;
+  }
+
+  .descr2{
+    border-left: 2.4vw;
+    border-right: 2.4vw;
+    font-size: 1.8vw;
+    padding-bottom: 2vw;
+  }
+
+  .button1{
+    margin-top: 2vw;
+    width: 30%;
+    font-size:21px;
+    height: 40%;
+  }
+
+  .button2{
+    width: 30%;
+    font-size:21px;
+    height: 40%;
+  }
+
+</style>
 </head>
 
-<body style="background-color:#333333">
+<body>
    
   <!--First part-->
-  <div class="container">
+  <div class="container grayPage">
     <div class="col-lg-12 center">
-      <img style="margin-top:40px" class="profile-img" src="{% static 'images/user_im.jpg' %}"
+      <img class="profile-img logo" src="{% static 'images/user_im.jpg' %}"
             alt="">
-      <h1 style="color:white" class="page-header">QuickCanvass</h1>
-      <p style="color:white">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
+      <h1 class="page-header title">QuickCanvass</h1>
+      <p class="descr">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
 
       <hr>
       
       <div>
-        <a href="accounts/login" class="button-submit btn" id="make-account">Login</a>
+        <a href="accounts/login" class="btn btn-info button1">Login</a>
       </div>
       <br>
       <div>
-        <a href="accounts/signup" class="button-submit btn" id="make-account">Sign Up</a>
+        <a href="accounts/signup" class="btn btn-info button2" >Sign Up</a>
       </div>
     </div>
   </div>
 
+  <!--Second page-->
   <div class="container">
     <div class="row">
       <div class="col-lg-12 center">
-        <h1 style="color:white" class="page-header">What We Do</h1>
+        <h1 class="page-header">What We Do</h1>
       </div>
       <div class="col-lg-12 left">
-        <p style="color:white">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
-        <p style="color:white">We can help you...</p>
-        <ul style="color:white">
+        <p class="descr2">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
+        <p class="descr2">We can help you...</p>
+        <ul class="descr2">
           <li>Learn which constituants are near your geographical location for canvassing on the go.</li>
           <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for freshman council.</li>
           <li>Keep track of which students already support you, which don't, and which can be purswaded via the data your team collects</li>
@@ -58,8 +104,8 @@
     </div>
   </div>
 
-  <!--Second part-->
-  <div class="container">
+  <!--Third part-->
+  <div class="container grayPage">
       <div class="col-lg-12 left"> 
         <h2 style="color: white" class="page-header">Our Team</h2>
       </div>
@@ -117,7 +163,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="co-xs-12">
-        <p style="color:white" class="text-center">Contact us at jmj5@princeton.edu</p>
+        <p class="text-center">Contact us at jmj5@princeton.edu</p>
       </div>
     </div>
   </div>
