@@ -17,7 +17,12 @@ $(document).ready(function() {
       type: 'POST',
       success: function(res){
         //change to dashboard later
-        window.location = '/login';
+        if(res['error'] == 'netid already exists'){
+          console.log('netid already exists');
+        }
+        else{
+          window.location = res['url'];
+        }
       },
       error: function(){
           console.log("error");
@@ -44,7 +49,7 @@ $(document).ready(function() {
           <div>
             <a class="button-submit btn getStarted" id="make-account">Get Started!</a>
           </div>
-            <a href="accounts/login" class="text-left button-help btn signup">I've already got an account! </a>
+            <a href="/login" class="text-left button-help btn signup">I've already got an account! </a>
           </div>
         </form>
       </div>

@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
+from django.http import JsonResponse
 
 import os
 
@@ -41,17 +42,24 @@ def makeaccount(request, methods=['POST']):
 		isd = 1
 
 	#create user's dats in user
+	#check if user already exists
 	cursor = db.cursor()
 	cursor.execute('USE quickcanvass')
 	cursor.execute("SELECT (netid) from user where netid=%s and is_director=%s", (netid, isd))
+	#user did not exist
 	if cursor.rowcount == 0:
 		cursor.execute("INSERT INTO user (netid, is_director) VALUES (%s, %s)", (netid, isd))
 		cursor.close()
 		db.commit()
 
-	#create the instrinsic user in auth_user
-	user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
-	return redirect('accounts/login')
+		#create the instrinsic user in auth_user
+		user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
+		user = authenticate(username=netid, password=passw)
+		auth_login(request, user)
+		return JsonResponse({'error': None ,'url' :'/volunteerdash/' + netid})
+	else:	#user did exist
+		return JsonResponse({'error': 'netid already exists' ,'url' :'/signup'})
+
 
 def about(request):
     return render(request, 'about.html')
@@ -99,7 +107,9 @@ def login_verification(request):
 	if user is not None:
 		auth_login(request, user)
 		print("authorized")
+		return JsonResponse({'url':'/volunteerdash/' + user.__dict__['username']})
 	else:
 	    print("not authed")
-	print("Trying to login with " + str(netid) + str(passw))
-	return HttpResponse('/volunteerdash/' + user.__dict__['username'])
+	    return JsonResponse({'url':'/login/', 'error': 'wrong password'})
+
+	

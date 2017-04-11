@@ -13,7 +13,14 @@ $(document).ready(function() {
       },
       type: 'POST',
       success: function(res){
-        window.location = res;
+        //change to dashboard later
+        if (res['url'] == /login/){
+          console.log(res['error'])  
+        }
+        else{
+          window.location = res['url'];
+        }
+        
       },
       error: function(){
           console.log("error");

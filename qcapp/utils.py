@@ -54,3 +54,50 @@ def get_pton_json_data(flist=None):
 	for dat in data:
 		new_data.append({key: dat[key] for key in flist})
 	return new_data
+
+def get_college(hallname):
+	hallname = hallname.lower()
+	if hallname in ['bogle', 'yoseloff', '1976', '1915', '1967', 'emma', 'bloomberg', 'wilf']:
+		return 'butler'
+	elif hallname in ['addition', 'main']:
+		return 'forbes'
+	elif hallname in ['blair', 'campbell', 'edwards', 'hamilton', 'joline', 'little']:
+		return 'mathey'
+	elif hallname in ['buyers', 'campbell', 'holder', 'witherspoon']:
+		return 'rocky'
+	elif hallname in ['1981', 'wendell', 'fisher', 'hargadon', 'lauritzen', 'baker', 'murley']:
+		return 'whitman'
+	elif hallname in ['1927', '1937', '1938', '1939', 'dodge', 'feinburg', 'gauss', 'walker', 'wilcox']:
+		return 'wilson'
+
+def show_search(json_data, count, values):
+	for dat in search(json_data, count, values):
+		print(dat)
+
+
+#Search for json_data for the top count entries that best match the list values
+#demand_canvass = n will limit answers to those canvassed no more than n times
+def search(json_data, count, values, demand_canvass):
+	#Goals: limit results to best count
+	if not any([x in values for x in 'butler', 'forbes', 'mathey', 'rocky', 'whitman', 'wilson']):
+		for val in values:
+			college = get_college(val)
+			if college != None:
+				values.append(college)
+				break
+	#Learn how much everything matches
+	to_ret =[]
+	for dat in json_data:
+		if (dat.get('canvassed', 0) <= demand_canvass):
+			dat_values = dat.values()
+			rating = 0
+			for dat_value in dat_values:
+				rating += sum([val.lower() in dat_value.lower() for val in values])
+			to_ret.append((dat, rating))
+	#Drop those that don't match
+	to_ret_pruned = []
+	for (dat, rating) in to_ret:
+		if rating != 0:
+			to_ret_pruned.append((dat, rating))
+	to_ret_pruned.sort(key=lambda x: -1 * x[1])
+	return to_ret_pruned[0:count]
