@@ -5,15 +5,18 @@ from django.utils import timezone
 
 # Create your models here.
 class Campaign(models.Model):
-    author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
-    text = models.TextField()
+    description = models.TextField()
     # members = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+    datetime_created = models.DateTimeField(default=timezone.now)
+    deadline = models.DateTimeField(null = True)
+    contact = models.CharField(max_length = 200, null = True)
+    volunteer_ids = models.CharField(max_length = 2500, null = True)
+    code = models.CharField(max_length = 8, null = True)
+    owner_id = models.IntegerField(null = True)
+    cvass_data = models.TextField(default="some json data")
 
     def publish(self):
-        self.published_date = timezone.now()
         self.save()
 
     def __str__(self):

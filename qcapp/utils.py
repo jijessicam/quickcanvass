@@ -9,6 +9,10 @@ CLOUDSQL_USER = 'root'
 CLOUDSQL_PASSWORD = 'cos333'
 cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
+def get_random_code(campaign_id):
+	have = len(str(campaign_id))
+	return ''.join(random.choice(string.digits) for _ in range(8 - have)) + str(campaign_id)
+
 def get_db():
 	db = MySQLdb.connect(unix_socket=cloudsql_unix_socket,
 	user=CLOUDSQL_USER,
@@ -26,7 +30,13 @@ def is_user_manager(netid):
 		else:
 			return False
 
-
+def get_my_id(netid):
+	db = get_db()
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute('SELECT id from user where netid=%s', (netid, ))
+	for row in cursor:
+		return row[0]
 
 
 #not sure what this will take as input yet

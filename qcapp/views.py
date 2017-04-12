@@ -92,7 +92,12 @@ def editcampaign(request):
 			deadline = d.strftime('%Y-%m-%d')
 			text = request.POST.get('text', '')
 			contact = request.POST.get('contact', '')
-			updcampaign = Campaign(title = title, text = text, deadline = deadline, contact = contact)
+			updcampaign = Campaign(title = title,
+				description = text,
+				deadline = deadline,
+				contact = contact,
+				volunteer_ids= str(get_my_id(request.user.username)) + ",",
+				owner_id = get_my_id(request.user.username))
 			updcampaign.save()
 			return redirect('/managerdash/' + request.user.username)
 	if request.method == 'GET':
