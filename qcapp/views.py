@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
-
+from .forms import CampaignForm
+from .models import Campaign
+import datetime
 import os
 
 import MySQLdb
@@ -79,7 +81,27 @@ def volunteercampaigns(request):
 	return render(request, 'volunteercampaigns.html')
 
 def editcampaign(request):
-	return render(request, 'editcampaign.html')
+	if request.method == 'POST':
+		form = CampaignForm(data=request.POST)
+		if form.is_valid():
+			#CampaignInfo.save()
+			#process data
+			title = request.POST.get('title', '')
+			deadline = request.POST.get('deadline', '')
+			d= datetime.datetime.strptime(deadline, '%d/%m/%Y')
+			deadline = d.strftime('%Y-%m-%d')
+			text = request.POST.get('text', '')
+			contact = request.POST.get('contact', '')
+			updcampaign = Campaign(title = title, text = text, deadline = deadline, contact = contact)
+			updcampaign.save()
+			return redirect('/managerdash/' + request.user.username)
+	if request.method == 'GET':
+		form = CampaignForm()
+		#args = {}
+        #args.update(csrf(request))
+        #args['form'] = form
+	return render(request, 'editcampaign.html', {'form': form})
+
 
 def managerdash(request, netid):
 	if not request.user.username == netid:
@@ -92,10 +114,12 @@ def managerdash(request, netid):
 def volunteerdash(request, netid):
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
+	my_campaigns = [{'url': 'volunteer/titlea/1/' + netid, 'title': 'titlea', 'id': '1'},
+					{'url': 'volunteer/titlea/1/' + netid, 'title': 'titlea', 'id': '2'}]
 	if is_user_manager(netid):
-		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1})
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1, "my_campaigns": my_campaigns})
 	else:
-		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0})
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0, "my_campaigns": my_campaigns})
 
 @csrf_exempt
 def login_verification(request):
@@ -112,4 +136,3 @@ def login_verification(request):
 	    print("not authed")
 	    return JsonResponse({'url':'/login/', 'error': 'wrong password'})
 
-	

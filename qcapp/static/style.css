@@ -166,3 +166,11 @@ button {
 .left {
   text-align: left;
 }
+
+.link-list {
+  margin-bottom: 2px;
+}
+
+.secret-alert{
+  display: none;
+}

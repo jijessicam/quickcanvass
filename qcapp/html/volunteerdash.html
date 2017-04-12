@@ -1,47 +1,74 @@
 {% extends "base.html" %}
 {% block content %}
+
+<script>
+$(document).ready(function() {
+    $(".drop-campaign").click(function(){
+    console.log(($(this).attr("class").split(' ')).slice(-2)[0]);
+  // $.ajax({
+  //     url: "/login_verification/",
+  //     context: document.body,
+  //     "data": {
+  //       "email": $("#email").val(),
+  //       "passw": $("#passw").val(),
+  //     },
+  //     type: 'POST',
+  //     success: function(res){
+  //       //change to dashboard later
+  //       if (res['url'] == /login/){
+  //         console.log(res['error'])  
+  //       }
+  //       else{
+  //         window.location = res['url'];
+  //       }
+        
+  //     },
+  //     error: function(){
+  //         console.log("error");
+  //     }
+  // });
+    })
+});
+</script>
+
 <div class="container">
-  <div class="col-lg-12 center">
+    <div class="col-lg-12 center">
         <h2 class="page-header">Your Current Campaigns:</h2>
-      </div>
-  <div class="[ col-xs-12 col-md-12]" >
-      <div class="[ form-group ]" style = "margin-bottom: 30px;">
-        <div class="[ btn btn-default active]"style = "padding-left: 80px; padding-right: 80px; color: gray; font-weight: normal">
-          <a href="/volunteercampaigns/"> Campaign One </a>
-        </div>
-        <label for="fancy-checkbox-default" class="[ btn btn-default  ]" >
-          <span class="[ glyphicon glyphicon-trash ]"></span>
-        </label>
-
-
     </div>
-</div>
+    <div class="[ col-xs-12 col-md-12]" >
+        <div class="[ form-group ]" style = "margin-bottom: 30px;">
+            {% for my_campaign in my_campaigns %}
+                <div class="[ btn btn-default active]" style = "padding-left: 80px; padding-right: 80px; color: gray; font-weight: normal">
+                    <a href= {{ my_campaign.url }} > {{ my_campaign.title }} </a>
+                </div>
+                <label for="fancy-checkbox-default" class="[ btn btn-default link-list drop-campaign id-{{ my_campaign.id }} ]">
+                    <span class="[ glyphicon glyphicon-trash ]"></span>
+                </label>
+                <br />
+            {% endfor %}
+        </div>
+    </div>
 </div>
 <div class="col-lg-12 center">
-      <h2 class="page-header">Join a New Campaign:</h2>
-    </div>
+    <h2 class="page-header">Join a New Campaign:</h2>
+</div>
 <div class="container-fluid text-center">
-  <div class="row content">
-    <div class="container">
-          <div class="col-sm-10 col-sm-offset-1">
-              <div id="custom-search-input">
-                  <div class="input-group col-md-12">
-                      <input type="text" class="form-control input-lg" placeholder="Type in the Campaign Key..." />
-                      <span class="input-group-btn">
-                          <button class="btn btn-info btn-lg" type="submit">
-                              <i class="glyphicon glyphicon-search"></i>
-                          </button>
-                      </span>
-                  </div>
-          </div>
+    <div class="row content">
+        <div class="container">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input type="text" class="form-control input-lg" placeholder="Type in the Campaign Key..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-info btn-lg" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </div>
-</div>
-</div>
-
-
-
 
 {% endblock %}
