@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qcapp',
+    'corsheaders',
     'django_cas_ng',
     'django.contrib.sites',
 ]
 
 MIDDLEWARE_CLASSES = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +55,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_cas_ng.middleware.CASMiddleware',
+
     # 'django.contrib.admindocs.middleware.XViewMiddleware',
 ]
 
@@ -59,6 +63,8 @@ MIDDLEWARE_CLASSES = [
 #     'django_cas_ng.middleware.CASMiddleware',
 #     'django.middleware.doc.XViewMiddleware',
 # ]
+
+CORS_ORIGIN_ALLOW_ALL = True  # for CORS requests 
 
 ROOT_URLCONF = 'quickcanvass.urls'
 
