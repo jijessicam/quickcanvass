@@ -105,18 +105,15 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
-        <!-- <li class="active"><a href="/about/">About</a></li> !-->
-
-        <!-- Case 2: Logged in Director-->
+        <!-- Case 1: Logged in Director-->
         {% if isd == 1 %}
-        <li><a href="/managerdash/{{netid}}">View My Campaign</a></li>
+        <li><a href="/managerdash/{{netid}}">Manage Campaign</a></li>
+        <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
         {% elif isd == 0 %}
-        <!-- Case 3: Logged in Volunteer-->
-        <li><a href="/volunteerdash/{{netid}}">View My Campaigns</a></li>
+        <!-- Case 2: Logged in Volunteer-->
+        <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
         {% endif %}
       </ul>
-      <!-- Case 1: Not logged in - determine by users once that's taken cae of-->
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/logout/"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
       </ul>

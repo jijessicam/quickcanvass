@@ -56,7 +56,7 @@ def makeaccount(request, methods=['POST']):
 		user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
 		user = authenticate(username=netid, password=passw)
 		auth_login(request, user)
-		return JsonResponse({'error': None ,'url' :'/volunteerdash/' + netid})
+		return JsonResponse({'error': None ,'url' :'/managerdash/' + netid})
 	else:	#user did exist
 		return JsonResponse({'error': 'netid already exists' ,'url' :'/signup'})
 
@@ -92,10 +92,10 @@ def managerdash(request, netid):
 def volunteerdash(request, netid):
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
-	if not is_user_manager(netid):
-		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0})
+	if is_user_manager(netid):
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1})
 	else:
-		return redirect("/managerdash/" + netid)
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0})
 
 @csrf_exempt
 def login_verification(request):
@@ -107,7 +107,7 @@ def login_verification(request):
 	if user is not None:
 		auth_login(request, user)
 		print("authorized")
-		return JsonResponse({'url':'/volunteerdash/' + user.__dict__['username']})
+		return JsonResponse({'url':'/managerdash/' + user.__dict__['username']})
 	else:
 	    print("not authed")
 	    return JsonResponse({'url':'/login/', 'error': 'wrong password'})
