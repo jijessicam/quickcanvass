@@ -174,3 +174,8 @@ button {
 .secret-alert{
   display: none;
 }
+
+.warningBox{
+    background-color: #df2c2c;
+    color: white;
+  }
