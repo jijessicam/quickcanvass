@@ -22,20 +22,24 @@
   }
 
   .title{
-    font-size: 10vw;
-    margin-top: 2vw;
+    font-size: 8vw;
+    margin-top: -2vw;
     color:white;
   }
 
   .logo{
-    margin-top: 3vw;
+    margin-top: 4vw;
+    width: 30vw;
+    height: 20vw;
+    display: block;
+    margin: auto;
   }
 
   .descr{
     color:white;
     border-left: 2.4vw;
     border-right: 2.4vw;
-    font-size: 2vw;
+    font-size: 1.4vw;
   }
 
   .descr2{
@@ -46,7 +50,7 @@
   }
 
   .button1{
-    margin-top: 2vw;
+    margin-top: 4vw;
     width: 30%;
     font-size:21px;
     height: 40%;
@@ -56,6 +60,7 @@
     width: 30%;
     font-size:21px;
     height: 40%;
+    margin-bottom: 7vw;
   }
 
   .names{
@@ -74,7 +79,7 @@
   <!--First part-->
   <div class="container grayPage">
     <div class="col-lg-12 center">
-      <img class="profile-img logo" src="{% static 'images/logo.png' %}"
+      <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}"
             alt="">
       <h1 class="page-header title">QuickCanvass</h1>
       <p class="descr">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
@@ -91,6 +96,7 @@
     </div>
   </div>
 
+
   <!--Second page-->
   <div class="container">
     <div class="row">
@@ -101,12 +107,13 @@
         <p class="descr2">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
         <p class="descr2">We can help you...</p>
         <ul class="descr2">
-          <li>Learn which constituants are near your geographical location for canvassing on the go.</li>
-          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for freshman council.</li>
-          <li>Keep track of which students already support you, which don't, and which can be purswaded via the data your team collects</li>
-          <li>Preserve this data across multiple campaigns in multiple years</li>
-          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass</li>
-          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to)</li>
+          <li>Learn which constituents are near your geographical location for canvassing on the go.</li>
+          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for Freshman council.</li>
+          <li>Keep track of which students already support you, which don't, and which can be persuaded via the data your team collects.</li>
+          <li>Preserve this data across multiple campaigns in multiple years.</li>
+          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass.</li>
+          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to).</li>
+          <br><br><br>
         </ul>
       </div>
     </div>
@@ -115,12 +122,13 @@
   <!--Third part-->
   <div class="container grayPage">
       <div class="col-lg-12 left"> 
-        <h2 style="color: white" class="page-header">Our Team</h2>
+        <h1 style="color: white" class="page-header">Our Team</h1>
       </div>
 
       <!--Jessica-->
       <div class="col-lg-6 col-sm-6 text-center">
         <center>
+        <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/JessicaProfile.jpg' %}" alt="">
         <h3 class="names">Jessica Ji
             <small>Our President</small>
@@ -133,6 +141,7 @@
       <!--Grace-->
       <div class="col-lg-6 col-sm-6 text-center">
         <center>
+        <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
         <h3 class="names">Grace Turner 
           <small>Front-End Specialist</small>
@@ -145,6 +154,7 @@
       <!--Sam-->
       <div class="col-lg-6 col-sm-6 text-center">
         <center>
+        <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
         <h3 class="names">Samuel Russell
             <small>Database Specialist</small>
@@ -157,6 +167,7 @@
       <!--Luisa-->
       <div class="col-lg-6 col-sm-6 text-center">
         <center>
+        <br><br><br>
           <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
           <h3 class="names">Luisa Goytia
               <small>Full-stack Programmer</small>
@@ -165,10 +176,12 @@
           <p><a class="email" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
 
         </center>
+        <br><br>
       </div>
   </div>
 
 <div class="container-fluid">
+  <br>
     <div class="row">
       <div class="co-xs-12">
         <p class="text-center">Contact us at jmj5@princeton.edu</p>
