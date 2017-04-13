@@ -20,11 +20,10 @@
 
   <div class="col-sm-4 col-sm-offset-2">
     <h3 class = "page-header">Volunteers</h3>
-    <div class = "row clean-box manager"> VOLUNTEER ONE
-VOLUNTEER TWO
-VOLUNTEER THREE
-VOLUNTEER FOUR
-VOLUNTEER FIVE
+    <div class = "row clean-box manager">
+      {%for name in volunteers%}
+      <div class="row page-header" style = "margin-top: 5%">{{ name }}</div>
+      {% endfor %}
 </div>
 
 
