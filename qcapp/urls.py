@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^volunteercampaigns/(?P<campaign_id>[0-9]+)/(?P<netid>[A-Za-z0-9]+)/$', views.volunteercampaigns, name = 'volunteercampaigns'),
     url(r'^managerdash/(?P<netid>[A-Za-z0-9]+)/$', views.managerdash, name = 'managerdash'),
     url(r'^editcampaign/$', views.editcampaign, name = 'editcampaign'),
+    url(r'^join-new-campaign/$', views.join_new_campaign, name='join_new_campaign')
 ]
