@@ -101,8 +101,8 @@ def volunteercampaigns(request, netid, campaign_id):
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
 	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title})
-
 def editcampaign(request):
+
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -115,9 +115,7 @@ def editcampaign(request):
 			#CampaignInfo.save()
 			#process data
 			title = request.POST.get('title', '')
-			deadline = request.POST.get('deadline', '')
-			d= datetime.datetime.strptime(deadline, '%d/%m/%Y')
-			deadline = d.strftime('%Y-%m-%d')
+			deadline = form.cleaned_data.get('deadline')
 			description = request.POST.get('description', '')
 			contact = request.POST.get('contact', '')
 			owner_id = get_my_id(request.user.username)
@@ -179,14 +177,22 @@ def managerdash(request, netid):
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
-		print "i get here"
 	# if no campaign associated with username,
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
 	if is_user_manager(netid):
 		if count == 0:
 			return editcampaign(request)
-		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title})
+		volunteers = Campaign.objects.filter(owner_id =owner_id)[0].volunteer_ids.split(",")
+		names = []
+		cursor = db.cursor()
+		cursor.execute("USE quickcanvass")
+		for each in volunteers:
+			cursor.execute("SELECT netid from user where id=%s", (each, ))
+			for row in cursor:
+				names.append(row[0])
+
+		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title, "volunteers":  names})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
