@@ -3,6 +3,7 @@ import string
 import json
 import MySQLdb
 import os, sys
+import random
 
 CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
 CLOUDSQL_USER = 'root'
@@ -36,7 +37,7 @@ def get_my_id(netid):
 	cursor.execute('USE quickcanvass')
 	cursor.execute('SELECT id from user where netid=%s', (netid, ))
 	for row in cursor:
-		return row[0]
+		return int(row[0])
 
 
 #not sure what this will take as input yet
@@ -87,7 +88,7 @@ def show_search(json_data, count, values):
 
 #Search for json_data for the top count entries that best match the list values
 #demand_canvass = n will limit answers to those canvassed no more than n times
-def search(json_data, count, values, demand_canvass):
+def search_rooms(json_data, count, values, demand_canvass):
 	#Goals: limit results to best count
 	if not any([x in values for x in 'butler', 'forbes', 'mathey', 'rocky', 'whitman', 'wilson']):
 		for val in values:
