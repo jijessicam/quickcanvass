@@ -81,6 +81,16 @@ def volunteercampaigns(request):
 	return render(request, 'volunteercampaigns.html')
 
 def editcampaign(request):
+	title = "No Campaign Yet"
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute("SELECT (manager_auth_campaign_id) from user where netid=%s", (request.user.username))
+	for row in cursor:
+		campaignid = row[0]
+	if campaignid != None:
+		cursor.execute("SELECT (title) from qcapp_campaign where id=%s", (campaignid))
+		for row in cursor:
+			title = row[0]
 	if request.method == 'POST':
 		form = CampaignForm(data=request.POST)
 		if form.is_valid():
@@ -88,16 +98,11 @@ def editcampaign(request):
 			#process data
 			title = request.POST.get('title', '')
 			deadline = request.POST.get('deadline', '')
-			d= datetime.datetime.strptime(deadline, '%d/%m/%Y')
+			d= datetime.datetime.strptime(deadline, '%m/%d/%Y')
 			deadline = d.strftime('%Y-%m-%d')
 			text = request.POST.get('text', '')
 			contact = request.POST.get('contact', '')
-			updcampaign = Campaign(title = title,
-				description = text,
-				deadline = deadline,
-				contact = contact,
-				volunteer_ids= str(get_my_id(request.user.username)) + ",",
-				owner_id = get_my_id(request.user.username))
+			updcampaign = Campaign(title = title, text = text, deadline = deadline, contact = contact)
 			updcampaign.save()
 			return redirect('/managerdash/' + request.user.username)
 	if request.method == 'GET':
@@ -105,14 +110,31 @@ def editcampaign(request):
 		#args = {}
         #args.update(csrf(request))
         #args['form'] = form
-	return render(request, 'editcampaign.html', {'form': form})
+	return render(request, 'editcampaign.html', {'form': form, 'title': title})
+
 
 
 def managerdash(request, netid):
+	campaignid = "No ID yet"
+	title = "No Campaign Yet"
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute("SELECT (manager_auth_campaign_id) from user where netid=%s", (request.user.username))
+	for row in cursor:
+		campaignid = row[0]
+	print (campaignid)
+	if campaignid != None:
+		#title = "the title is not none"
+		cursor.execute("SELECT (title) from qcapp_campaign where id=%s", (campaignid))
+		for row in cursor:
+			title = row[0]
+	# if no campaign associated with username,
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
 	if is_user_manager(netid):
-		return render(request, 'managerdash.html', {'netid': netid, "isd": 1})
+		if campaignid == None:
+			return editcampaign(request)
+		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaignid" : campaignid, "title" : title})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
