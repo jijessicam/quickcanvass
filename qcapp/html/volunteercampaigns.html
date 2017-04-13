@@ -19,13 +19,17 @@ $(document).ready(function() {
         }
         else{ // success! 
           console.log("i got something back!!!");
-          console.log("results were not null");
+          console.log(res['results']);
           for (var i in res['results']) {
-            console.log(res['results'][i])
+            console.log(res['results'][i]);
           }
-          console.log("I got to this point??? Help me")
-          // window.location = res['url'];
+          var trHTML = '';
+          $.each(res.results, function(i, item) {
+            trHTML += '<tr><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['first'] + '</button></td><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['last'] + '</button></td><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['class'] + '</button></td><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['dorm'] + '</button></td><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['college'] + '</button></td><td><button type="button" class="list-group-item list-group-item-action buttons">' + item[0]['major'] + '</button></td></tr>';
+          });
+          $('#search-results').append(trHTML);
         }
+          // window.location = res['url'];
       },
       error: function(){
           console.log("room search error");
@@ -59,6 +63,34 @@ $(document).ready(function() {
           <p style = "margin-top: 10px">Thank you for helping {{ title }}.</p>
     </div>
 </div>
+
+
+<!-- testing with HTML table for results -->
+<div class="col-sm-10 col-sm-offset-1">
+  <table id="search-results" border="1">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Class Year</th>
+      <th>Dorm</th>
+      <th>College</th>
+      <th>Major</th>
+    </tr>
   </div>
 </div>
+
+<!-- THIS SECTION: LUISA'S ORIGINAL BUTTON CODE -->
+<!-- <div class="col-sm-10 col-sm-offset-1">
+        <div class="search-results">
+            <button type="button" class="list-group-item list-group-item-action buttons">Love letter to Jessica</button>
+            <button type="button" class="list-group-item list-group-item-action buttons">Oh Queen of the Squids</button>
+            <button type="button" class="list-group-item list-group-item-action buttons">Kill em</button>
+            <button type="button" class="list-group-item list-group-item-action buttons">Kill em</button>
+            <button type="button" class="list-group-item list-group-item-action buttons">Kill em with kindness</button>
+        </div>
+</div> -->
+
+
+</div>
 {% endblock %}
+

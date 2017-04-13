@@ -37,30 +37,6 @@ def signup(request):
 	return render(request, 'signup.html')
 
 @csrf_exempt
-def join_new_campaign(request, methods=['POST']):
-	data = request.POST
-	code = data.get('code')
-	print(code)
-	cursor = db.cursor()
-	cursor.execute("USE quickcanvass")
-	cursor.execute("SELECT id, volunteer_ids from qcapp_campaign where code=%s", (code, ))
-	ids_and_vol_ids = []
-	for row in cursor:
-		print(row)
-		ids_and_vol_ids.append((row[0], row[1]))
-	my_id = str(get_my_id(request.user.username))
-	for (idd, vol_id) in ids_and_vol_ids:
-		vol_id = vol_id + my_id + ","
-		cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
-		db.commit()
-		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
-		for row in cursor:
-			cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
-			db.commit()
-	return JsonResponse({'error': None })
-
-
-@csrf_exempt
 def makeaccount(request, methods=['POST']):
 	#Create a new account from signup page
 	data = request.POST
@@ -124,7 +100,7 @@ def volunteercampaigns(request, netid, campaign_id):
 		vol_ids = row[1].split(",")
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
-	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid)})
+	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title})
 
 def editcampaign(request):
 	title = "No Campaign Yet"
@@ -139,7 +115,9 @@ def editcampaign(request):
 			#CampaignInfo.save()
 			#process data
 			title = request.POST.get('title', '')
-			deadline = form.cleaned_data.get('deadline')
+			deadline = request.POST.get('deadline', '')
+			d= datetime.datetime.strptime(deadline, '%d/%m/%Y')
+			deadline = d.strftime('%Y-%m-%d')
 			description = request.POST.get('description', '')
 			contact = request.POST.get('contact', '')
 			owner_id = get_my_id(request.user.username)
@@ -173,7 +151,7 @@ def editcampaign(request):
 				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s, manager_auth_campaign_id=%s WHERE id=%s", (update_id, update_id, owner_id))
 				db.commit()
 			code = get_random_code(update_ids[0])
-			cursor.execute("UPDATE qcapp_campaign SET code=%s where id=%s and code IS NULL", (code, update_ids[0]))
+			cursor.execute("UPDATE qcapp_campaign SET code=%s where id=%s", (code, update_ids[0]))
 			db.commit()
 			cursor.close()
 			return redirect('/managerdash/' + request.user.username)
@@ -201,22 +179,14 @@ def managerdash(request, netid):
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
+		print "i get here"
 	# if no campaign associated with username,
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
 	if is_user_manager(netid):
 		if count == 0:
 			return editcampaign(request)
-		volunteers = Campaign.objects.filter(owner_id =owner_id)[0].volunteer_ids.split(",")
-		names = []
-		cursor = db.cursor()
-		cursor.execute("USE quickcanvass")
-		for each in volunteers:
-			cursor.execute("SELECT netid from user where id=%s", (each, ))
-			for row in cursor:
-				names.append(row[0])
-
-		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title, "volunteers":  names})
+		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
