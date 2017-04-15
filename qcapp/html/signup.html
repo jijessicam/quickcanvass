@@ -18,7 +18,7 @@ $(document).ready(function() {
       success: function(res){
         //change to dashboard later
         if(res['error'] == 'netid already exists'){
-          console.log('netid already exists');
+          $("#doubleid").css("display", "block");
         }
         else{
           window.location = res['url'];
@@ -45,6 +45,10 @@ $(document).ready(function() {
           <div class="form-signup-radio">
             <input type="radio" class="btn" name="director-or-volunteer" id="director" value="director" checked="checked"> <span>I'm setting up my campaign</span><br>
             <input type="radio" class="btn" name="director-or-volunteer" value="volunteer"> <span>I'm volunteering for a campaign</span><br>
+          </div>
+          <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='doubleid'
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
+              <strong>An account with this netid already exists.</strong>
           </div>
           <div>
             <a class="button-submit btn getStarted" id="make-account">Get Started!</a>
