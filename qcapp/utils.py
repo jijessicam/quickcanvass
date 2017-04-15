@@ -66,20 +66,20 @@ def get_pton_json_data(flist=None):
 		new_data.append({key: dat[key] for key in flist})
 	return new_data
 
-def get_college(hallname):
-	hallname = hallname.lower()
-	if hallname in ['bogle', 'yoseloff', '1976', '1915', '1967', 'emma', 'bloomberg', 'wilf']:
-		return 'butler'
-	elif hallname in ['addition', 'main']:
-		return 'forbes'
-	elif hallname in ['blair', 'campbell', 'edwards', 'hamilton', 'joline', 'little']:
-		return 'mathey'
-	elif hallname in ['buyers', 'campbell', 'holder', 'witherspoon']:
-		return 'rocky'
-	elif hallname in ['1981', 'wendell', 'fisher', 'hargadon', 'lauritzen', 'baker', 'murley']:
-		return 'whitman'
-	elif hallname in ['1927', '1937', '1938', '1939', 'dodge', 'feinburg', 'gauss', 'walker', 'wilcox']:
-		return 'wilson'
+# def get_college(hallname):
+# 	hallname = hallname.lower()
+# 	if hallname in ['bogle', 'yoseloff', '1976', '1915', '1967', 'emma', 'bloomberg', 'wilf']:
+# 		return 'butler'
+# 	elif hallname in ['addition', 'main']:
+# 		return 'forbes'
+# 	elif hallname in ['blair', 'campbell', 'edwards', 'hamilton', 'joline', 'little']:
+# 		return 'mathey'
+# 	elif hallname in ['buyers', 'campbell', 'holder', 'witherspoon']:
+# 		return 'rocky'
+# 	elif hallname in ['1981', 'wendell', 'fisher', 'hargadon', 'lauritzen', 'baker', 'murley']:
+# 		return 'whitman'
+# 	elif hallname in ['1927', '1937', '1938', '1939', 'dodge', 'feinburg', 'gauss', 'walker', 'wilcox']:
+# 		return 'wilson'
 
 def show_search(json_data, count, values):
 	for dat in search(json_data, count, values):
@@ -88,27 +88,24 @@ def show_search(json_data, count, values):
 
 #Search for json_data for the top count entries that best match the list values
 #demand_canvass = n will limit answers to those canvassed no more than n times
-def search_rooms(json_data, count, values, demand_canvass):
-	#Goals: limit results to best count
-	if not any([x in values for x in 'butler', 'forbes', 'mathey', 'rocky', 'whitman', 'wilson']):
-		for val in values:
-			college = get_college(val)
-			if college != None:
-				values.append(college)
-				break
-	#Learn how much everything matches
-	to_ret =[]
+
+#results = search_rooms(princeton_data, canvass_req, count, res_college, floor, hallway, abbse, year)
+def search_rooms(json_data, demand_canvass, count, res_college, floor, hallway, abbse, year):
+	to_ret = []
 	for dat in json_data:
-		if (dat.get('canvassed', 0) <= demand_canvass):
-			dat_values = dat.values()
-			rating = 0
-			for dat_value in dat_values:
-				rating += sum([val.lower() in dat_value.lower() for val in values])
-			to_ret.append((dat, rating))
-	#Drop those that don't match
-	to_ret_pruned = []
-	for (dat, rating) in to_ret:
-		if rating != 0:
-			to_ret_pruned.append((dat, rating))
-	to_ret_pruned.sort(key=lambda x: -1 * x[1])
-	return to_ret_pruned[0:count]
+		if dat.get('canvassed', 0) <= int(demand_canvass):
+			was_good = True
+			stripped_dorm = [x for x in dat["dorm"] if x in "1234567890"]
+			if (dat["college"].lower() != res_college.lower()):
+				continue
+			if (floor != "any" and len(stripped_dorm) > 0 and stripped_dorm[0] != floor) or stripped_dorm == "":
+				continue
+			if hallway != "any" and hallway not in dat["dorm"].lower():
+				continue
+			if abbse != "AB/BSE" and abbse not in dat["major"]:
+				continue
+			if year != "any" and year not in dat["class"]:
+				continue
+			to_ret.append(dat)
+	to_ret.sort(key=lambda x: x["dorm"])
+	return to_ret[0:int(count)]

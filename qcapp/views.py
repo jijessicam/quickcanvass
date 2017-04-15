@@ -11,7 +11,7 @@ from .forms import CampaignForm
 from .models import Campaign
 import datetime
 import os
-
+import pprint as pp
 import MySQLdb
 
 
@@ -104,12 +104,16 @@ def home(request):
 @csrf_exempt
 def search(request):
 	data = request.POST
-	query = data.get('room-query').split()
-
+	res_college = data.get('res_college')
+	floor = data.get('floor')
+	hallway = data.get('hallway')
+	abbse = data.get('abbse')
+	year = data.get('year')
+	count = data.get('count')
+	canvass_req = data.get('canvass_req')
 	# list of room results
-	# TEMPORARY: hardcoded int values for 'count' (10) and 'demand_canvass' (3) 
-	results = search_rooms(princeton_data, 10, query, 3)
-
+	results = search_rooms(princeton_data, canvass_req, count, res_college, floor, hallway, abbse, year)
+	pp.pprint(results)
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': results}, safe=False)
 	else:	# error: room search returned no results 

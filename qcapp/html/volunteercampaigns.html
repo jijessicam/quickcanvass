@@ -4,13 +4,19 @@
 
 <script>
 $(document).ready(function() {
-  $("#search-rooms").click(function(){
+  $("#find-students").click(function(){
   console.log("test room search");
   $.ajax({
       url: "/search/",
       context: document.body,
       "data": {
-        "room-query": $("#room-query").val(),
+        "res_college": $("#res_college_picker").val(),
+        "floor": $("#floor_picker").val(),
+        "hallway": $("#hallway_picker").val(),
+        "abbse": $("#abbse_picker").val(),
+        "year": $("#year_picker").val(),
+        "canvass_req": $("#canvass_req_picker").val(),
+        "count": $("#count_picker").val(),
       },
       type: 'POST',
       success: function(res){
@@ -35,7 +41,23 @@ $(document).ready(function() {
           console.log("room search error");
       }
   });
-})
+});
+
+$("#res_college_picker").on('change', function() {
+  if ($(this).val() == 'Butler'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'bogle\'>bogle</option><option value=\'yoseloff\'>yoseloff</option><option value=\'1976\'>1976</option><option value=\'1915\'>1915</option><option value=\'1967\'>1967</option><option value=\'emma\'>emma</option><option value=\'bloomberg\'>bloomberg</option><option value=\'wilf\'>wilf</option></select>");
+  } else  if ($(this).val() == 'Mathey'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'blair\'>blair</option><option value=\'campbell\'>campbell</option><option value=\'edwards\'>edwards</option><option value=\'hamilton\'>hamilton</option><option value=\'joline\'>joline</option><option value=\'little\'>little</option></select>");
+  } else  if ($(this).val() == 'Whitman'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'1981\'>1981</option><option value=\'wendell\'>wendell</option><option value=\'fisher\'>fisher</option><option value=\'hargadon\'>hargadon</option><option value=\'lauritzen\'>lauritzen</option><option value=\'baker\'>baker</option><option value=\'murley\'>murley</option></select>");
+  } else  if ($(this).val() == 'Wilson'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'1927\'>1927</option><option value=\'1937\'>1937</option><option value=\'1938\'>1938</option><option value=\'1939\'>1939</option><option value=\'dodge\'>dodge</option><option value=\'feinburg\'>feinburg</option><option value=\'gauss\'>gauss</option><option value=\'walker\'>walker</option><option value=\'wilcox\'>wilcox</option></select>");
+  } else  if ($(this).val() == 'Rocky'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'buyers\'>buyers</option><option value=\'campbell\'>campbell</option><option value=\'holder\'>holder</option><option value=\'witherspoon\'>witherspoon</option></select>");
+  } else  if ($(this).val() == 'Forbes'){
+    $("#hallway_picker_div").html("<select class=\'dropdown form-control\' name=\'hallway_picker\' id=\'hallway_picker\' style=\'display: inline; width: 25%; padding: 4px 0px;\'><option value=\'any\'>any</option><option value=\'addition\'>addition</option><option value=\'main\'>main</option></select>");
+  }
+});
 });
 </script>
 
@@ -47,23 +69,65 @@ $(document).ready(function() {
   <div class="row content">
     <div class="container">
       <div class="row">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div id="custom-search-input">
-                    <div class="input-group col-md-12">
-                        <input type="text" class="form-control input-lg" id="room-query" placeholder="Find Closest Rooms..." />
-                        <span class="input-group-btn">
-                            <button class="btn btn-info btn-lg" id="search-rooms" type="submit">
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
+        <div class="col-sm-10 col-sm-offset-1">
+          <h3> Show me
+            <select class="dropdown form-control" name="count_picker" id="count_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="every">every</option>
+            </select>
+            students who live in 
+              <select class="dropdown form-control" name="res_college_picker" id="res_college_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+                <option value="Butler">Butler</option>
+                <option value="Mathey">Mathey</option>
+                <option value="Whitman">Whitman</option>
+                <option value="Wilson">Wilson</option>
+                <option value="Rocky">Rocky</option>
+                <option value="Forbes">Forbes</option>
+              </select>
+            on floor
+            <select class="dropdown form-control" name="floor_picker" id="floor_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+                <option value="any">any</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+              </select>
+              in hallway
+              <div id="hallway_picker_div" style="display: inline">
+                <select class='dropdown form-control' name='hallway_picker' id='hallway_picker' style='display: inline; width: 25%; padding: 4px 0px;'><option value="any">any</option><option value='bogle'>bogle</option><option value='yoseloff'>yoseloff</option><option value='1976'>1976</option><option value='1915'>1915</option><option value='1967'>1967</option><option value='emma'>emma</option><option value='bloomberg'>bloomberg</option><option value='wilf'>wilf</option></select>
+              </div>
+              and are
+              <select class="dropdown form-control" name="abbse_picker" id="abbse_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+                <option value="AB/BSE">AB / BSE</option>
+                <option value="AB">AB</option>
+                <option value="BSE">BSE</option>
+              </select>
+              students of the class
+              <select class="dropdown form-control" name="year_picker" id="year_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+                <option value="any">of any year</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+              </select>
+              and have been canvassed fewer than
+              <select class="dropdown form-control" name="canvass_req_picker" id="canvass_req_picker" style="display: inline; width: 25%; padding: 4px 0px;">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="999">999</option>
+              </select>
+              times
+            </h3>
+            <a class="button-submit btn" id="find-students">Let's go!</a>
+        </div>
       </div>
-          <p style = "margin-top: 10px">Thank you for helping {{ title }}.</p>
-    </div>
-</div>
-
 
 <!-- testing with HTML table for results -->
 <div class="col-sm-10 col-sm-offset-1">
