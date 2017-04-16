@@ -195,6 +195,8 @@ def editcampaign(request):
 
 	return render(request, 'editcampaign.html', {'form': form, 'title': title})
 
+def editsurvey(request):
+	return render(request, 'editsurvey.html')
 
 
 def managerdash(request, netid):
@@ -231,7 +233,7 @@ def volunteerdash(request, netid):
 	cursor.execute('USE quickcanvass')
 	cursor.execute('SELECT vol_auth_campaign_ids from user where netid=%s', (netid, ))
 	for row in cursor:
-		legal_ids = row[0].split(",")
+		legal_ids = (row[0] or "").split(",")
 	my_campaigns = []
 	for idd in legal_ids:
 		cursor.execute("SELECT title from qcapp_campaign where id=%s", (idd, ))

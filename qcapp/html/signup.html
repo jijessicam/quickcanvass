@@ -2,6 +2,14 @@
 {% block content %}
 {% load static %}
 
+<style>
+
+  .getStarted{
+    margin-top: 1vw;
+  }
+
+</style>
+
 <script>
 $(document).ready(function() {
   $("#make-account").click(function(){
@@ -37,8 +45,7 @@ $(document).ready(function() {
     <div class="col-lg-12">
       <h1 class="text-center login-title">QuickCanvass Signup</h1>
       <div class="account-wall">
-        <img class="profile-img" src="{% static 'images/user_im.jpg' %}"
-            alt="">
+        <img class="profile-img" src="{% static 'images/user_im.jpg' %}" alt="">
         <form class="form-signin">
           <input type="text" class="form-control" placeholder="Email" id="email" required autofocus>
           <input type="password" class="form-control" placeholder="Password" id="pass" required>
@@ -47,7 +54,6 @@ $(document).ready(function() {
             <input type="radio" class="btn" name="director-or-volunteer" value="volunteer"> <span>I'm volunteering for a campaign</span><br>
           </div>
           <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='doubleid'
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
               <strong>An account with this netid already exists.</strong>
           </div>
           <div>
@@ -55,6 +61,7 @@ $(document).ready(function() {
           </div>
             <a href="/login" class="text-left button-help btn signup">I've already got an account! </a>
           </div>
+
         </form>
       </div>
     </div>

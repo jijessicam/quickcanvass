@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+	.button1{
+    	width: 39%;
+	}
+
+	.button2{
+		width: 40%; 
+	}
+</style>
+
 <div class="col-lg-12 center">
       <h5 class= "text-center login-title edit header-top">Edit Your Campaign: {{title}}</h5>
 
 
 <div class = "row clean-box edit clean-submit">
-  <form role = "form" action = "" method = "post">
+  	<form role = "form" action = "" method = "post">
     {% csrf_token %}
     {{ form}}
-        <div class = "row"><a href = "/managerdash/" class=" btn ss-button small-width" >Cancel</a></div>
-  <input type = "submit" class=" btn ss-button small-width margin-left" value ="Submit"/>
-</form>
+        <div class = "row">
+        	<a href = "/managerdash/" class="btn ss-button small-width button1" >Cancel</a>
+        </div>
+  		<input type = "submit" class="btn ss-button small-width button2" value ="Submit"/>
+
+	</form>
 </div>
 
 </div>
