@@ -136,6 +136,14 @@ def volunteercampaigns(request, netid, campaign_id):
 		return redirect('/accounts/login')
 	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
 
+def fillsurvey(request, netid, campaign_id):
+	title = "No title yet"
+	count = Campaign.objects.filter(code=campaign_id).count()
+	if count != 0:
+		title = Campaign.objects.filter(code=campaign_id)[0].title
+	username = "/volunteerdash/" + str(request.user.username)
+	return render(request, 'fillsurvey.html', { 'title': title, 'username': username})
+
 def editcampaign(request):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
