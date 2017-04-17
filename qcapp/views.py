@@ -56,8 +56,12 @@ def join_new_campaign(request, methods=['POST']):
 		db.commit()
 		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
 		for row in cursor:
-			cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
-			db.commit()
+			if not row:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
+				db.commit()
+			else:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
+				db.commit()
 	return JsonResponse({'error': None })
 
 
@@ -132,6 +136,14 @@ def volunteercampaigns(request, netid, campaign_id):
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
 	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
+
+def fillsurvey(request, netid, campaign_id):
+	title = "No title yet"
+	count = Campaign.objects.filter(code=campaign_id).count()
+	if count != 0:
+		title = Campaign.objects.filter(code=campaign_id)[0].title
+	username = "/volunteerdash/" + str(request.user.username)
+	return render(request, 'fillsurvey.html', { 'title': title, 'username': username})
 
 def editcampaign(request):
 	title = "No Campaign Yet"
