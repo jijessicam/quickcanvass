@@ -197,8 +197,8 @@ def editcampaign(request):
 			title = update.title
 			data = {"title": title, "contact": contact, "description": description, "deadline": deadline}
 			form = CampaignForm(initial = data)
-
-	return render(request, 'editcampaign.html', {'form': form, 'title': title})
+	username = "/managerdash/" + str(request.user.username)
+	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
 def editsurvey(request):
 	return render(request, 'editsurvey.html')
