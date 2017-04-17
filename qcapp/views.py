@@ -110,25 +110,27 @@ def search(request):
 	abbse = data.get('abbse')
 	year = data.get('year')
 	count = data.get('count')
-	canvass_req = data.get('canvass_req')
 	# list of room results
-	results = search_rooms(princeton_data, canvass_req, count, res_college, floor, hallway, abbse, year)
-	pp.pprint(results)
+	results = search_rooms(princeton_data, count, res_college, floor, hallway, abbse, year)
+	listed_results = []
+	for res in results:
+		listed_results.append([res["dorm"], res["first"], res["last"], res["major"], res["class"]])
+	print(listed_results)
 	if results: 
-		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': results}, safe=False)
+		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
 		return JsonResponse({'error': 'room search failed' ,'url' :'/volunteercampaigns'})
 
 def volunteercampaigns(request, netid, campaign_id):
 	cursor = db.cursor()
 	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT title, volunteer_ids from qcapp_campaign where id=%s', (campaign_id, ))
+	cursor.execute('SELECT title, volunteer_ids, targetted_years from qcapp_campaign where id=%s', (campaign_id, ))
 	for row in cursor:
 		title = row[0]
 		vol_ids = row[1].split(",")
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
-	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid)})
+	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
 
 def editcampaign(request):
 	title = "No Campaign Yet"
@@ -142,6 +144,7 @@ def editcampaign(request):
 		if form.is_valid():
 			#CampaignInfo.save()
 			#process data
+			targetted_years = request.POST.get('targetted_years', '')
 			title = request.POST.get('title', '')
 			deadline = form.cleaned_data.get('deadline')
 			description = request.POST.get('description', '')
@@ -150,6 +153,7 @@ def editcampaign(request):
 			count = Campaign.objects.filter(owner_id=owner_id).count()
 			if count != 0:
 				update = Campaign.objects.filter(owner_id=owner_id)[0]
+				update.targetted_years = targetted_years
 				update.deadline = deadline
 				update.description = description
 				update.contact = contact
@@ -162,6 +166,7 @@ def editcampaign(request):
 					description = description,
 					deadline = deadline,
 					contact = contact,
+					targetted_years = targetted_years,
 					volunteer_ids= str(get_my_id(request.user.username)) + ",",
 					owner_id = owner_id)
 				updcampaign.save()
@@ -236,7 +241,7 @@ def volunteerdash(request, netid):
 		legal_ids = (row[0] or "").split(",")
 	my_campaigns = []
 	for idd in legal_ids:
-		cursor.execute("SELECT title from qcapp_campaign where id=%s", (idd, ))
+		cursor.execute("SELECT title, targetted_years from qcapp_campaign where id=%s", (idd, ))
 		for row in cursor:
 			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
 								 'title': row[0],

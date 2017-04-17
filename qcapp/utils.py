@@ -90,22 +90,23 @@ def show_search(json_data, count, values):
 #demand_canvass = n will limit answers to those canvassed no more than n times
 
 #results = search_rooms(princeton_data, canvass_req, count, res_college, floor, hallway, abbse, year)
-def search_rooms(json_data, demand_canvass, count, res_college, floor, hallway, abbse, year):
+def search_rooms(json_data, count, res_college, floor, hallway, abbse, year):
 	to_ret = []
 	for dat in json_data:
-		if dat.get('canvassed', 0) <= int(demand_canvass):
-			was_good = True
-			stripped_dorm = [x for x in dat["dorm"] if x in "1234567890"]
-			if (dat["college"].lower() != res_college.lower()):
-				continue
-			if (floor != "any" and len(stripped_dorm) > 0 and stripped_dorm[0] != floor) or stripped_dorm == "":
-				continue
-			if hallway != "any" and hallway not in dat["dorm"].lower():
-				continue
-			if abbse != "AB/BSE" and abbse not in dat["major"]:
-				continue
-			if year != "any" and year not in dat["class"]:
-				continue
-			to_ret.append(dat)
+		was_good = True
+		stripped_dorm = [x for x in dat["dorm"] if x in "1234567890"]
+		if (dat["college"].lower() != res_college.lower()):
+			continue
+		if (floor != "any" and len(stripped_dorm) > 0 and stripped_dorm[0] != floor) or stripped_dorm == "":
+			continue
+		if hallway != "any" and hallway not in dat["dorm"].lower():
+			continue
+		if abbse != "AB/BSE" and abbse not in dat["major"]:
+			continue
+		if year != "any" and year not in dat["class"]:
+			continue
+		to_ret.append(dat)
 	to_ret.sort(key=lambda x: x["dorm"])
+	if count == "every":
+		return to_ret
 	return to_ret[0:int(count)]

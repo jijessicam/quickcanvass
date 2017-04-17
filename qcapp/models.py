@@ -15,6 +15,7 @@ class Campaign(models.Model):
     code = models.CharField(max_length = 8, null = True)
     owner_id = models.IntegerField(null = True)
     cvass_data = models.TextField(default="some json data")
+    targetted_years = models.CharField(default="any", max_length=4)
 
     def publish(self):
         self.save()

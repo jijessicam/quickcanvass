@@ -179,3 +179,10 @@ button {
     background-color: #df2c2c;
     color: white;
   }
+display: inline; width: 25%; padding: 4px 0px;
+.picker{
+  display: inline;
+  width: 25%;
+  padding: 4px 0px;
+  margin-bottom: 4px;
+}
