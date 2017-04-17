@@ -55,8 +55,12 @@ def join_new_campaign(request, methods=['POST']):
 		db.commit()
 		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
 		for row in cursor:
-			cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
-			db.commit()
+			if not row:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
+				db.commit()
+			else:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
+				db.commit()
 	return JsonResponse({'error': None })
 
 
