@@ -9,4 +9,8 @@ class CampaignForm(forms.Form):
    contact = forms.CharField(label = 'Set Campaign Contact Information (Optional)', max_length=100, required = False,widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
 
 class SurveyForm(forms.Form):
-	question = forms.CharField(label='Question', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	surveyPurpose = forms.CharField(label='State the purpose of your survey', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	question1 = forms.CharField(label='Question 1', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	question2 = forms.CharField(label='Question 2', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	question3 = forms.CharField(label='Question 3', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	question4 = forms.CharField(label='Question 4', max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))

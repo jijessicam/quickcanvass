@@ -13,13 +13,12 @@
 	}
 
 	.button1{
-    	width: 38%;
-    	margin-bottom: -1vw;
+		margin-top: 4vw;
+    	width: 39%;
 	}
 
 	.button2{
 		width: 40%; 
-		margin-bottom: -5vw;
 	}
 
 </style>
@@ -29,18 +28,19 @@
 
 <div class = "row clean-box edit clean-submit">
   	<form role = "form" action = "" method = "post">
-       	<div class="form-group labels formBody">
+<!--        	<div class="form-group labels formBody">
   	  		<label for="inputdefault">First Question:</label>
-  	  		<input class="form-control" id="inputdefault" type="text" placeholder="Type your first question here"><br>
+  	  		<input class="form-control" id="firstQ" type="text" placeholder="Type your first question here"><br>
   	  		<label for="inputdefault">Second Question:</label>
-  	  		<input class="form-control" id="inputdefault" type="text" placeholder="Type your second question here"><br>
+  	  		<input class="form-control" id="secondQ" type="text" placeholder="Type your second question here"><br>
   	  		<label for="inputdefault">Third Question:</label>
-  	  		<input class="form-control" id="inputdefault" type="text" placeholder="Type your third question here"><br>
+  	  		<input class="form-control" id="thirdQ" type="text" placeholder="Type your third question here"><br>
   	  		<label for="inputdefault">Fourth Question:</label>
-  	  		<input class="form-control" id="inputdefault" type="text" placeholder="Type your fourth question here">
+  	  		<input class="form-control" id="fourthQ" type="text" placeholder="Type your fourth question here">
   	  		<br><br>
- 	 	</div>
-
+ 	 	</div> -->
+		{% csrf_token %}
+    	{{ form}}
         <div class = "row">
         	<a href = {{username}} class="btn ss-button small-width button1" >Cancel</a>
         </div>
