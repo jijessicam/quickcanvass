@@ -201,7 +201,14 @@ def editcampaign(request):
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
 def editsurvey(request):
-	return render(request, 'editsurvey.html')
+	title = "No Campaign Yet"
+	owner_id = get_my_id(request.user.username)
+	count = Campaign.objects.filter(owner_id=owner_id).count()
+	if count != 0:
+		title = Campaign.objects.filter(owner_id=owner_id)[0].title
+	username = "/managerdash/" + str(request.user.username)
+
+	return render(request, 'editsurvey.html', {'title': title, 'username': username})
 
 
 def managerdash(request, netid):

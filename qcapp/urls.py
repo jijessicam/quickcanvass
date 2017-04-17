@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^managerdash/(?P<netid>[A-Za-z0-9]+)/$', views.managerdash, name = 'managerdash'),
     url(r'^editcampaign/$', views.editcampaign, name = 'editcampaign'),
     url(r'^join-new-campaign/$', views.join_new_campaign, name='join_new_campaign'),
-    # url(r'^editsurvey/$', views.editsurvey, name = 'editsurvey')
+    url(r'^editsurvey/$', views.editsurvey, name = 'editsurvey')
 
 ]
