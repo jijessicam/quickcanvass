@@ -51,17 +51,18 @@ def join_new_campaign(request, methods=['POST']):
 		ids_and_vol_ids.append((row[0], row[1]))
 	my_id = str(get_my_id(request.user.username))
 	for (idd, vol_id) in ids_and_vol_ids:
-		vol_id = vol_id + my_id + ","
-		cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
-		db.commit()
-		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
-		for row in cursor:
-			if not row:
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
-				db.commit()
-			else:
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
-				db.commit()
+		if my_id not in vol_id.split(","):
+			vol_id = vol_id + my_id + ","
+			cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
+			db.commit()
+			cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
+			for row in cursor:
+				if not row:
+					cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
+					db.commit()
+				else:
+					cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
+					db.commit()
 	return JsonResponse({'error': None })
 
 
@@ -315,7 +316,7 @@ def managerdash(request, netid):
 	if is_user_manager(netid):
 		if count == 0:
 			return editcampaign(request)
-		volunteers = Campaign.objects.filter(owner_id =owner_id)[0].volunteer_ids.split(",")
+		volunteers = list(set(Campaign.objects.filter(owner_id =owner_id)[0].volunteer_ids.split(",")))
 		names = []
 		cursor = db.cursor()
 		cursor.execute("USE quickcanvass")
