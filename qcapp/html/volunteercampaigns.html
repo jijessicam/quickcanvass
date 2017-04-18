@@ -11,7 +11,7 @@
 
 <script>
 $(document).ready(function() {
-//   $("#year_picker").val("{{targetted_years}}");
+  $("#year_picker").val("{{targetted_years}}");
   console.log("test");
   $("#find-students").click(function(){
   console.log("test room search");
@@ -30,6 +30,7 @@ $(document).ready(function() {
       success: function(res){
         if(res['error'] == 'room search failed'){
           console.log('room search failed');
+          $('error-message').html("Room search failed");
         }
         else{ // success!
           if (typeof table !== 'undefined'){
@@ -47,8 +48,16 @@ $(document).ready(function() {
                 { title: "Last" },
                 { title: "Major." },
                 { title: "Class" },
+                { 
+                  "targets": -1,
+                  "data": null,
+                  "defaultContent": "<button type='button' class='list-group-item list-group-item-action buttons'>Canvass</button>"
+                }
             ]
           } );
+          $('#search-results tbody').on( 'click', 'button', function() {
+              console.log("You clicked the button");
+          });
           for (var i in res['results']) {
             console.log(res['results'][i]);
           }
@@ -142,12 +151,17 @@ $("#res_college_picker").on('change', function() {
 
 <!-- begin HTML search result table -->
 <div class="col-sm-10 col-sm-offset-1">
-  <table id="search-results" class='display responsive hover' width='100%' border="1">
+  <table id="search-results" class='display responsive hover' width='100%' border="1" text-align="center">
   </table>
+</div>
+<div id="error-message">
 </div>
 <div class="col-sm-10 col-sm-offset-1">
   <p style = "margin-top: 10px">Thank you for helping {{ title }}.</p>
 </div>
+
+
+
 
 <!-- end HTML search result table -->
 
