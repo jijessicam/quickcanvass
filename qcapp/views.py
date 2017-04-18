@@ -115,12 +115,18 @@ def search(request):
 	abbse = data.get('abbse')
 	year = data.get('year')
 	count = data.get('count')
-	# list of room results
-	results = search_rooms(princeton_data, count, res_college, floor, hallway, abbse, year)
+	campaign_id = data.get('campaign_id')
+	db = get_db()
+	cursor = db.cursor()
+	cursor.execute("use quickcanvass")
+	cursor.execute("SELECT cvass_data, id from qcapp_campaign where id=%s", (campaign_id, ))
+	cvass_data = []
+	for row in cursor:
+		cvass_data = row[0]
+	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
 	for res in results:
 		listed_results.append([res["dorm"], res["first"], res["last"], res["major"], res["class"]])
-	print(listed_results)
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 

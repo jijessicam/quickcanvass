@@ -4,6 +4,7 @@ import json
 import MySQLdb
 import os, sys
 import random
+import re
 
 CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
 CLOUDSQL_USER = 'root'
@@ -66,46 +67,30 @@ def get_pton_json_data(flist=None):
 		new_data.append({key: dat[key] for key in flist})
 	return new_data
 
-# def get_college(hallname):
-# 	hallname = hallname.lower()
-# 	if hallname in ['bogle', 'yoseloff', '1976', '1915', '1967', 'emma', 'bloomberg', 'wilf']:
-# 		return 'butler'
-# 	elif hallname in ['addition', 'main']:
-# 		return 'forbes'
-# 	elif hallname in ['blair', 'campbell', 'edwards', 'hamilton', 'joline', 'little']:
-# 		return 'mathey'
-# 	elif hallname in ['buyers', 'campbell', 'holder', 'witherspoon']:
-# 		return 'rocky'
-# 	elif hallname in ['1981', 'wendell', 'fisher', 'hargadon', 'lauritzen', 'baker', 'murley']:
-# 		return 'whitman'
-# 	elif hallname in ['1927', '1937', '1938', '1939', 'dodge', 'feinburg', 'gauss', 'walker', 'wilcox']:
-# 		return 'wilson'
-
 def show_search(json_data, count, values):
 	for dat in search(json_data, count, values):
 		print(dat)
 
-
-#Search for json_data for the top count entries that best match the list values
-#demand_canvass = n will limit answers to those canvassed no more than n times
-
-#results = search_rooms(princeton_data, canvass_req, count, res_college, floor, hallway, abbse, year)
-def search_rooms(json_data, count, res_college, floor, hallway, abbse, year):
+def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbse, year):
 	to_ret = []
-	for dat in json_data:
-		was_good = True
-		stripped_dorm = [x for x in dat["dorm"] if x in "1234567890"]
-		if (dat["college"].lower() != res_college.lower()):
-			continue
-		if (floor != "any" and len(stripped_dorm) > 0 and stripped_dorm[0] != floor) or stripped_dorm == "":
-			continue
-		if hallway != "any" and hallway not in dat["dorm"].lower():
-			continue
-		if abbse != "AB/BSE" and abbse not in dat["major"]:
-			continue
-		if year != "any" and year not in dat["class"]:
-			continue
-		to_ret.append(dat)
+	cvass_data = re.sub(r'u(\'[^\']*\')', r'\1', cvass_data)
+	cvass_data = cvass_data.replace("\'", "\"")
+	cvass_data = json.loads(cvass_data)
+	for i, dat in enumerate(json_data):
+		if not cvass_data[i]["a1"]:
+			was_good = True
+			stripped_dorm = [x for x in dat["dorm"] if x in "1234567890"]
+			if (dat["college"].lower() != res_college.lower()):
+				continue
+			if (floor != "any" and len(stripped_dorm) > 0 and stripped_dorm[0] != floor) or stripped_dorm == "":
+				continue
+			if hallway != "any" and hallway not in dat["dorm"].lower():
+				continue
+			if abbse != "AB/BSE" and abbse not in dat["major"]:
+				continue
+			if year != "any" and year not in dat["class"]:
+				continue
+			to_ret.append(dat)
 	to_ret.sort(key=lambda x: x["dorm"])
 	if count == "every":
 		return to_ret

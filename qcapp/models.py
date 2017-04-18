@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
+import os, json
+dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
+with open(dir_path) as data_file:    
+    cvass_data = json.load(data_file)
 # Create your models here.
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
@@ -14,7 +18,7 @@ class Campaign(models.Model):
     volunteer_ids = models.CharField(max_length = 2500, null = True)
     code = models.CharField(max_length = 8, null = True)
     owner_id = models.IntegerField(null = True)
-    cvass_data = models.TextField(default="some json data")
+    cvass_data = models.TextField(default=cvass_data)
     targetted_years = models.CharField(default="any", max_length=4)
 
     def publish(self):
