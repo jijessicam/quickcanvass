@@ -141,7 +141,8 @@ def volunteercampaigns(request, netid, campaign_id):
 		vol_ids = row[1].split(",")
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
-	return render(request, 'volunteercampaigns.html', {'netid': netid, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
+	fillsurveyurl = "/fillsurvey/" + str(campaign_id)+ "/" + str(netid)
+	return render(request, 'volunteercampaigns.html', {'netid': netid, 'fillsurvey': fillsurveyurl, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
 
 def fillsurvey(request, netid, campaign_id):
 	title = "No title yet"
@@ -219,7 +220,7 @@ def editcampaign(request):
 	username = "/managerdash/" + str(request.user.username)
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
-def editsurvey(request):
+def editsurvey(request, campaign_id, userid):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -289,7 +290,14 @@ def editsurvey(request):
 		# 	form = SurveyForm(initial = data)
 
 	username = "/managerdash/" + str(request.user.username)
-
+	# not fixed here...
+	if title == "No Campaign Yet":
+		form = CampaignForm()
+		## fix this so its more redirect-y/also that it updates database -- so you can't just type the URL in
+		## -- like, check if manager, if not manager, return to volunteer dash
+		## also fix this so its not "if title == "No Campaign Yet"
+	#	return redirect("/volunteerdash/" + netid)
+		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username})
 	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username})
 
 
