@@ -338,8 +338,9 @@ def managerdash(request, netid):
 			cursor.execute("SELECT netid from user where id=%s", (each, ))
 			for row in cursor:
 				names.append(row[0])
-
-		return render(request, 'managerdash.html', {'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title, "volunteers":  names})
+		campurl = "/editcampaign/" + str(netid)
+		survurl = "/editsurvey/" + str(netid)
+		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl, 'netid': n
 	else:
 		return redirect("/volunteerdash/" + netid)
 
