@@ -18,6 +18,7 @@ class Campaign(models.Model):
     volunteer_ids = models.CharField(max_length = 2500, null = True)
     code = models.CharField(max_length = 8, null = True)
     owner_id = models.IntegerField(null = True)
+    survey_id = models.IntegerField(null= True)
     cvass_data = models.TextField(default=cvass_data)
     targetted_years = models.CharField(default="any", max_length=4)
 
@@ -26,3 +27,17 @@ class Campaign(models.Model):
 
     def __str__(self):
         return self.title   # return campaign title 
+
+class Survey(models.Model):
+    q1 = models.CharField(max_length=200)
+    q2 = models.CharField(max_length=200)
+    q3 = models.CharField(max_length=200)
+    script = models.CharField(max_length=500)
+    owner_id = models.IntegerField(null = True)
+    campaign_id = models.IntegerField(null = True)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.script[0:50] + "..."   # return campaign title 

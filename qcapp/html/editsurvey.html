@@ -42,7 +42,7 @@
 		{% csrf_token %}
     	{{ form}}
         <div class = "row">
-        	<a href = {{username}} class="btn ss-button small-width button1" >Cancel</a>
+        	<a href = "/managerdash/{{username}}" class="btn ss-button small-width button1" >Cancel</a>
         </div>
   		<input type = "submit" class="btn ss-button small-width button2" value ="Submit"/>
 	</form>

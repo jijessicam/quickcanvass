@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from .forms import CampaignForm
 from .forms import SurveyForm
 from .models import Campaign
+from .models import Survey
 import datetime
 import os
 import pprint as pp
@@ -203,6 +204,16 @@ def editcampaign(request):
 					owner_id = owner_id)
 				updcampaign.save()
 				db.commit()
+				campaign_id = (Campaign.objects.filter(owner_id=owner_id)[0]).id
+				survey = Survey(
+					q1 = "[Sample question]  Are you supporting Michelle Obama in the upcoming USG election?",
+					q2 = "[Sample question]  What issues are most important to you?",
+					q3 = "",
+					script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because...",
+					owner_id = owner_id,
+					campaign_id = campaign_id)
+				survey.save()
+				db.commit()
 			cursor = db.cursor()
 			cursor.execute("USE quickcanvass")
 			cursor.execute("SELECT id from qcapp_campaign where owner_id=%s", (owner_id, ))
@@ -232,76 +243,59 @@ def editcampaign(request):
 	username = "/managerdash/" + str(request.user.username)
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
-def editsurvey(request, campaign_id, userid):
+def editsurvey(request):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
+		survey = Survey.objects.filter(owner_id=owner_id)[0]
+	print(title)
+	print(survey.q1)
 
-
-	# if request.method == 'POST':
-	# 	form = SurveyForm(data=request.POST)
-	# 	if form.is_valid():
-	# 		#CampaignInfo.save()
-	# 		#process data
-	# 		surveyPurpose = request.POST.get('surveyPurpose', '')
-	# 		question1 = request.POST.get('question1', '')
-	# 		question2 = form.POST.get('question2')
-	# 		question3 = request.POST.get('question3', '')
-	# 		question4 = request.POST.get('question4', '')
-	# 		owner_id = get_my_id(request.user.username)
-	# 		count = Campaign.objects.filter(owner_id=owner_id).count()
-	# 		if count != 0:
-	# 			update = Campaign.objects.filter(owner_id=owner_id)[0]
-	# 			update.surveyPurpose = surveyPurpose
-	# 			update.question1 = question1
-	# 			update.question2 = question2
-	# 			update.question3 = question3
-	# 			update.question4 = question4
-	# 			update.owner_id = owner_id
-	# 			update.save()
-	# 			db.commit()
-	# 		if count == 0:
-	# 			updcampaign = Campaign(surveyPurpose = surveyPurpose,
-	# 				question1 = question1,
-	# 				question2 = question2,
-	# 				question3 = question3,
-	# 				question4 = question4,
-	# 				# volunteer_ids= str(get_my_id(request.user.username)) + ",",
-	# 				owner_id = owner_id)
-	# 			updcampaign.save()
-	# 			db.commit()
-	# 		cursor = db.cursor()
-	# 		cursor.execute("USE quickcanvass")
-	# 		cursor.execute("SELECT id from qcapp_campaign where owner_id=%s", (owner_id, ))
-	# 		update_ids = []
-	# 		for row in cursor:
-	# 			update_ids.append(row[0])
-	# 		for update_id in update_ids:
-	# 			#eventuall make this additive instead of overriding
-	# 			cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s, manager_auth_campaign_id=%s WHERE id=%s", (update_id, update_id, owner_id))
-	# 			db.commit()
-	# 		code = get_random_code(update_ids[0])
-	# 		cursor.execute("UPDATE qcapp_campaign SET code=%s where id=%s and code IS NULL", (code, update_ids[0]))
-	# 		db.commit()
-	# 		cursor.close()
-	# 		return redirect('/managerdash/' + request.user.username)
+	if request.method == 'POST':
+		form = SurveyForm(data=request.POST)
+		if form.is_valid():
+			#CampaignInfo.save()
+			#process data
+			script = request.POST.get('script', '')
+			q1 = request.POST.get('q1', '')
+			q2 = request.POST.get('q2')
+			q3 = request.POST.get('q3', '')
+			owner_id = get_my_id(request.user.username)
+			count = Survey.objects.filter(owner_id=owner_id).count()
+			if count != 0:
+				update = Survey.objects.filter(owner_id=owner_id)[0]
+				update.script = script
+				update.q1 = q1
+				update.q2 = q2
+				update.q3 = q3
+				update.owner_id = owner_id
+				update.save()
+				db.commit()
+			if count == 0:
+				updcampaign = Survey(script = script,
+					q1 = q1,
+					q2 = q2,
+					q3 = q3,
+					owner_id = owner_id)
+				updcampaign.save()
+				db.commit()
+		return redirect("/volunteerdash/" + str(request.user.username))
 	if request.method == 'GET':
-		# count = Campaign.objects.filter(owner_id=owner_id).count()
+		count = Survey.objects.filter(owner_id=owner_id).count()
 		form = SurveyForm()
-		# if count != 0:
-		# 	update = Campaign.objects.filter(owner_id=owner_id)[0]
-		# 	surveyPurpose = update.surveyPurpose
-		# 	question1 = update.question1
-		# 	question2 = update.question2
-		# 	question3 = update.question3
-		# 	question4 = update.question4
+		if count != 0:
+			update = Survey.objects.filter(owner_id=owner_id)[0]
+			script = update.script
+			q1 = update.q1
+			q2 = update.q2
+			q3 = update.q3
 
-		# 	data = {"surveyPurpose": surveyPurpose, "question1": question2, "question3": question3, "question4": question4}
-		# 	form = SurveyForm(initial = data)
+			data = {"script": script, "q1": q1, "q2": q2, "q3": q3}
+			form = SurveyForm(initial = data)
 
-	username = "/managerdash/" + str(request.user.username)
+	username = "/managerdash/"
 	# not fixed here...
 	if title == "No Campaign Yet":
 		form = CampaignForm()
@@ -309,8 +303,8 @@ def editsurvey(request, campaign_id, userid):
 		## -- like, check if manager, if not manager, return to volunteer dash
 		## also fix this so its not "if title == "No Campaign Yet"
 	#	return redirect("/volunteerdash/" + netid)
-		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username})
-	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username})
+		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username})
+	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username})
 
 
 def managerdash(request, netid):
