@@ -163,9 +163,14 @@ def promote_to_manager(request, netid):
 	cursor.close()
 	db.commit()
 	# Redirect to edit-campaign so they can set up their campaign
-	return editcampaign(request)
+	string = "/editcampaign/" + str(netid)
+	return redirect(string)
 
-def editcampaign(request):
+def editcampaign(request, netid):
+	if not is_user_manager(netid):
+		return redirect('/accounts/login')
+	if not request.user.username == netid:
+		return redirect('/accounts/login')
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -243,7 +248,11 @@ def editcampaign(request):
 	username = "/managerdash/" + str(request.user.username)
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
-def editsurvey(request):
+def editsurvey(request, netid):
+	if not is_user_manager(netid):
+		return redirect('/accounts/login')
+	if not request.user.username == netid:
+		return redirect('/accounts/login')
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
