@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^volunteercampaigns/(?P<campaign_id>[0-9]+)/(?P<netid>[A-Za-z0-9]+)/$', views.volunteercampaigns, name = 'volunteercampaigns'),
     url(r'^managerdash/(?P<netid>[A-Za-z0-9]+)/$', views.managerdash, name = 'managerdash'),
     url(r'^editcampaign/$', views.editcampaign, name = 'editcampaign'),
+    url(r'^promote-to-manager/(?P<netid>[A-Za-z0-9]+)/$', views.promote_to_manager, name = 'promote_to_manager'),
     url(r'^join-new-campaign/$', views.join_new_campaign, name='join_new_campaign'),
     url(r'^editsurvey/(?P<campaign_id>[0-9]+)/(?P<netid>[A-Za-z0-9]+)/$', views.editsurvey, name = 'editsurvey'),
     url(r'^fillsurvey/(?P<campaign_id>[0-9]+)/(?P<netid>[A-Za-z0-9]+)/$', views.fillsurvey, name = 'fillsurvey'),

@@ -153,6 +153,17 @@ def fillsurvey(request, netid, campaign_id):
 	username = "/volunteerdash/" + str(request.user.username)
 	return render(request, 'fillsurvey.html', { 'title': title, 'username': username})
 
+def promote_to_manager(request, netid):
+	# Promote volunteer to manager in database 
+	isd_new = 1 
+	cursor = db.cursor()
+	cursor.execute('USE quickcanvass')
+	cursor.execute('UPDATE user SET is_director=%s where netid=%s', (isd_new, netid))
+	cursor.close()
+	db.commit()
+	# Redirect to edit-campaign so they can set up their campaign
+	return editcampaign(request)
+
 def editcampaign(request):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
