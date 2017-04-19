@@ -9,7 +9,7 @@ class CampaignForm(forms.Form):
    contact = forms.CharField(label = 'Set Campaign Contact Information (Optional)', max_length=100, required = False,widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
 
 class SurveyForm(forms.Form):
-	script = forms.CharField(label='Script for Canvassers', max_length=500, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
-	q1 = forms.CharField(label='Question 1', max_length=200, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
-	q2 = forms.CharField(label='Question 2', max_length=200, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
-	q3 = forms.CharField(label='Question 3', max_length=200, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	script = forms.CharField(label='Script for Canvassers', max_length=500, widget=forms.Textarea(attrs={'class' : 'form-control clean-look'}))
+	q1 = forms.CharField(label='Question 1', max_length=200, required = False, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	q2 = forms.CharField(label='Question 2', max_length=200, required = False, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
+	q3 = forms.CharField(label='Question 3', max_length=200, required = False, widget=forms.TextInput(attrs={'class' : 'form-control clean-look'}))
