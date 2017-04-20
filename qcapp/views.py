@@ -61,7 +61,7 @@ def join_new_campaign(request, methods=['POST']):
 				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
 				db.commit()
 			else:
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(idd) + "," + str(int(idd)), my_id))
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(row[0]) + "," + str(int(idd)), my_id))
 				db.commit()
 	return JsonResponse({'error': None })
 
@@ -383,12 +383,15 @@ def volunteerdash(request, netid):
 	for row in cursor:
 		legal_ids = (row[0] or "").split(",")
 	my_campaigns = []
-	for idd in set(legal_ids):
-		cursor.execute("SELECT title, targetted_years from qcapp_campaign where id=%s", (idd, ))
-		for row in cursor:
-			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
-								 'title': row[0],
-								 'id': idd})
+	seen_ids = []
+	for idd in legal_ids:
+		if idd not in seen_ids:
+			cursor.execute("SELECT title, targetted_years from qcapp_campaign where id=%s", (idd, ))
+			for row in cursor:
+				my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
+									 'title': row[0],
+									 'id': idd})
+			seen_ids.append(idd)
 	if is_user_manager(netid):
 		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1, "my_campaigns": my_campaigns})
 	else:
