@@ -15,60 +15,133 @@
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
   <link rel="shortcut icon" type="image/png" href="/static/images/favicon.ico"/>
 
+
 <style>
-  .grayPage{
-    background-color: #333333;
-    width: 100%;
+
+  @media screen and (max-width: 767px) {
+
+    .grayPage{
+      background-color: #333333;
+      width: 100%;
+    }
+
+    .title{
+      font-size: 7vw;
+      margin-top: -2vw;
+      color:white;
+    }
+
+    .logo{
+      margin-top: 4vw;
+      width: 32vw;
+      height: 22vw;
+      display: block;
+      margin: auto;
+    }
+
+    .descr{
+      color:white;
+      border-left: 2.4vw;
+      border-right: 2.4vw;
+      font-size: 2.6vw;
+    }
+
+    .descr2{
+      margin-left: 2.2vw;
+      margin-right: 2.2vw;
+      font-size: 2.5vw;
+      padding-bottom: 2vw;
+    }
+
+    .button1{
+      margin-top: 3vw;
+      background-color: #5bc0de;
+      width: 50%;
+      table-layout: fixed;
+      color: white;
+      font-weight: normal;
+      margin-bottom: 2px;
+    }
+
+    .button2{
+      background-color: #5bc0de;
+      width: 50%;
+      table-layout: fixed;
+      color: white;
+      font-weight: normal;
+      margin-bottom: 15px;
+    }
+
+    .names{
+      color: #e2dcdc;
+    }
+
+    .email{
+      color: #75dccf;
+    }
   }
 
-  .title{
-    font-size: 6.5vw;
-    margin-top: -2vw;
-    color:white;
-  }
+  @media screen and (min-width: 767px) {
 
-  .logo{
-    margin-top: 4vw;
-    width: 26vw;
-    height: 18vw;
-    display: block;
-    margin: auto;
-  }
+    .grayPage{
+      background-color: #333333;
+      width: 100%;
+    }
 
-  .descr{
-    color:white;
-    border-left: 2.4vw;
-    border-right: 2.4vw;
-    font-size: 1.2vw;
-  }
+    .title{
+      font-size: 7vw;
+      margin-top: -2vw;
+      color:white;
+    }
 
-  .descr2{
-    border-left: 2.4vw;
-    border-right: 2.4vw;
-    font-size: 1.8vw;
-    padding-bottom: 2vw;
-  }
+    .logo{
+      margin-top: 4vw;
+      width: 32vw;
+      height: 22vw;
+      display: block;
+      margin: auto;
+    }
 
-  .button1{
-    margin-top: 2vw;
-    width: 30%;
-    font-size:21px;
-    height: 40%;
-  }
+    .descr{
+      color:white;
+      border-left: 2.4vw;
+      border-right: 2.4vw;
+      font-size: 1.7vw;
+    }
 
-  .button2{
-    width: 30%;
-    font-size:21px;
-    height: 40%;
-    margin-bottom: 7vw;
-  }
+    .descr2{
+      border-left: 2.4vw;
+      border-right: 2.4vw;
+      font-size: 1.8vw;
+      padding-bottom: 2vw;
+    }
 
-  .names{
-    color: #e2dcdc;
-  }
+    .button1{
+      margin-top: 3vw;
+      background-color: #5bc0de;
+      width: 50%;
+      table-layout: fixed;
+      color: white;
+      font-size: 2vw;
+      margin-bottom: 2px;
+    }
 
-  .email{
-    color: #75dccf;
+    .button2{
+      background-color: #5bc0de;
+      width: 50%;
+      table-layout: fixed;
+      color: white;
+      font-size: 2vw;
+      margin-bottom: 15px;
+    }
+
+    .names{
+      color: #e2dcdc;
+    }
+
+    .email{
+      color: #75dccf;
+    }
   }
 
 </style>
@@ -91,7 +164,7 @@
       </div>
       <br>
       <div>
-        <a href="signup" class="btn btn-info button2" >Sign Up</a>
+        <a href="signup" class="btn btn-info button2">Sign Up</a>
       </div>
     </div>
   </div>
@@ -187,6 +260,7 @@
         <p class="text-center">Contact us at jmj5@princeton.edu</p>
       </div>
     </div>
+  <br>
   </div>
 </body>
 
