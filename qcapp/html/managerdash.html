@@ -1,6 +1,90 @@
 {% extends "base.html" %}
 {% block content %}
 
+<script>
+$(document).ready(function() {
+      function exportToCsv(filename, rows) {
+        var processRow = function (row) {
+            var finalVal = '';
+            for (var j = 0; j < row.length; j++) {
+                var innerValue = row[j] === null ? '' : row[j].toString();
+                if (row[j] instanceof Date) {
+                    innerValue = row[j].toLocaleString();
+                };
+                var result = innerValue.replace(/"/g, '""');
+                if (result.search(/("|,|\n)/g) >= 0)
+                    result = '"' + result + '"';
+                if (j > 0)
+                    finalVal += ',';
+                finalVal += result;
+            }
+            return finalVal + '\n';
+        };
+
+        var csvFile = '';
+        for (var i = 0; i < rows.length; i++) {
+            csvFile += processRow(rows[i]);
+        }
+
+        var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, filename);
+        } else {
+            var link = document.createElement("a");
+            if (link.download !== undefined) { // feature detection
+                // Browsers that support HTML5 download attribute
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", filename);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    }
+
+    $("#download_survey_data_btn").click(function(){
+    $.ajax({
+        url: "/download_survey_data/",
+        context: document.body,
+        type: 'POST',
+        success: function(res){
+            //change to dashboard later
+           exportToCsv("survey_data.csv", res)
+        },
+        error: function(){
+            console.log("error");
+        }
+    });
+
+    $("#start_new_survey_btn").click(function(){
+      $.ajax({
+          url: "/download_survey_data/",
+          context: document.body,
+          type: 'POST',
+          success: function(res){
+              //change to dashboard later
+             exportToCsv("survey_data.csv", res)
+          }
+      });
+
+      $.ajax({
+          url: "/clear_survey_data/",
+          context: document.body,
+          type: 'POST',
+          success: function(res){
+              //change to dashboard later
+             window.location = '/editsurvey/'
+          }
+      });
+    });
+})
+
+
+
+});
+</script>
 
 <div class="col-lg-12 center">
       <h2 class="page-header top-header">Your Current Campaign: {{title}}</h2>
@@ -11,12 +95,14 @@
   <div class="col-sm-4 col-sm-offset-1">
     <h3 class = "page-header small-show"> Options </h3>
     <div class = "row">
-      <a href = {{campurl}} class = 'button btn ss-button top-button'>Edit Campaign</a>
+      <a href = "/editcampaign/{{netid}}" class = 'button btn ss-button top-button'>Edit Campaign</a>
       <br><br>
-      <a href = {{survurl}} class = 'button btn ss-button'>Manage Survey</a>
+      <a href = "/editsurvey/" class = 'button btn ss-button'>Edit Current Survey</a>
+      <br><br>
+      <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
+      <br><br>
+      <a class = 'button btn ss-button' id="start_new_survey_btn">Start a New Survey</a>
     </div>
-   <!--
-    <div class = "row"><button class=" btn ss-button" >Download Results</button></div> -->
   </div>
 
 

@@ -52,18 +52,17 @@ def join_new_campaign(request, methods=['POST']):
 		ids_and_vol_ids.append((row[0], row[1]))
 	my_id = str(get_my_id(request.user.username))
 	for (idd, vol_id) in ids_and_vol_ids:
-		if my_id not in vol_id.split(","):
-			vol_id = vol_id + my_id + ","
-			cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
-			db.commit()
-			cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
-			for row in cursor:
-				if not row:
-					cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
-					db.commit()
-				else:
-					cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (row[0] + "," + str(int(idd)), my_id))
-					db.commit()
+		vol_id = vol_id + my_id + ","
+		cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
+		db.commit()
+		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
+		for row in cursor:
+			if not row:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
+				db.commit()
+			else:
+				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(idd) + "," + str(int(idd)), my_id))
+				db.commit()
 	return JsonResponse({'error': None })
 
 
@@ -248,11 +247,42 @@ def editcampaign(request, netid):
 	username = "/managerdash/" + str(request.user.username)
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
 
-def editsurvey(request, netid):
-	if not is_user_manager(netid):
-		return redirect('/accounts/login')
-	if not request.user.username == netid:
-		return redirect('/accounts/login')
+
+@csrf_exempt
+def clear_survey_data(request):
+	owner_id = get_my_id(request.user.username)
+	surv = Survey.objects.filter(owner_id=owner_id)[0]
+	surv.q1 = "[Sample question]  Are you supporting Michelle Obama in the upcoming USG election?"
+	surv.q2 = "[Sample question]  What issues are most important to you?"
+	surv.q3 = ""
+	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
+	surv.save()
+	db.commit()
+	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
+
+	cvass_data = ""
+	with open(dir_path) as data_file:    
+	    cvass_data = json.load(data_file)
+	camp = Campaign.objects.filter(owner_id=owner_id)[0]
+	camp.cvass_data = cvass_data
+	camp.save()
+	db.commit()
+	return JsonResponse({"error": None})
+
+@csrf_exempt
+def download_survey_data(request):
+	owner_id = get_my_id(request.user.username)
+	json_data = json.load(open('qcapp/static/princeton_json_data.txt'))
+	print(owner_id)
+	surv = Survey.objects.filter(owner_id=owner_id)[0]
+	camp = Campaign.objects.filter(owner_id=owner_id)[0]
+	cvass_data = load_cvass_data(camp.cvass_data)
+	to_ret = [["Script", surv.script, ], ["id", "Name", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
+	for i, dat in enumerate(cvass_data):
+		to_ret.append([dat["id"], json_data[i]["first"] + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
+	return JsonResponse(to_ret, safe=False)
+
+def editsurvey(request):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -340,7 +370,7 @@ def managerdash(request, netid):
 				names.append(row[0])
 		campurl = "/editcampaign/" + str(netid)
 		survurl = "/editsurvey/" + str(netid)
-		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl, 'netid': n
+		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl, 'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title, "volunteers":  names})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
@@ -353,7 +383,7 @@ def volunteerdash(request, netid):
 	for row in cursor:
 		legal_ids = (row[0] or "").split(",")
 	my_campaigns = []
-	for idd in legal_ids:
+	for idd in set(legal_ids):
 		cursor.execute("SELECT title, targetted_years from qcapp_campaign where id=%s", (idd, ))
 		for row in cursor:
 			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,

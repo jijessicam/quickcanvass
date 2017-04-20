@@ -71,11 +71,15 @@ def show_search(json_data, count, values):
 	for dat in search(json_data, count, values):
 		print(dat)
 
+def load_cvass_data(cvass_data_as_str):
+	cvass_data_as_str = re.sub(r'u(\'[^\']*\')', r'\1', cvass_data_as_str)
+	cvass_data_as_str = cvass_data_as_str.replace("\'", "\"")
+	cvass_data_as_json = json.loads(cvass_data_as_str)
+	return cvass_data_as_json
+
 def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbse, year):
 	to_ret = []
-	cvass_data = re.sub(r'u(\'[^\']*\')', r'\1', cvass_data)
-	cvass_data = cvass_data.replace("\'", "\"")
-	cvass_data = json.loads(cvass_data)
+	cvass_data = load_cvass_data(cvass_data)
 	for i, dat in enumerate(json_data):
 		if not cvass_data[i]["a1"]:
 			was_good = True
