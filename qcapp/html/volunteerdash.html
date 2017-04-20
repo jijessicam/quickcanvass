@@ -35,10 +35,10 @@ $(document).ready(function() {
     <div class="[ col-xs-12 col-md-12]" >
         <div class="[ form-group ]" style = "margin-bottom: 30px;">
             {% for my_campaign in my_campaigns %}
-                <div class="[ btn btn-default active]" style = "padding-left: 20px; padding-right: 20px; color: gray; font-weight: normal; width: 40%">
+                <div class="btn btn-default active campaign">
                     <a href= {{ my_campaign.url }} > {{ my_campaign.title }} </a>
                 </div>
-                <label for="fancy-checkbox-default" class="[ btn btn-default link-list drop-campaign id-{{ my_campaign.id }} ]">
+                <label for="fancy-checkbox-default" class="btn btn-default link-list drop-campaign id-{{ my_campaign.id }}">
                     <span class="[ glyphicon glyphicon-trash ]"></span>
                 </label>
                 <br />
