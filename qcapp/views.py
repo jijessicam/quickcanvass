@@ -47,12 +47,15 @@ def join_new_campaign(request, methods=['POST']):
 	my_id = str(get_my_id(request.user.username))
 	for (idd, vol_id) in ids_and_vol_ids:
 		vol_id = vol_id + my_id + ","
-		camp = Campaign.objects.filter(id=idd)[0]
+		camp = Campaign.objects.filter(id=idd)
+		if camp.count() == 0:
+			return JsonResponse({"error": "code does not match any campagn"})
+		camp = camp[0]
 		camp.volunteer_ids = vol_id
 		camp.save()
 		userdat = Userdata.objects.filter(id=my_id)[0]
 		if userdat.vol_auth_campaign_ids:
-			userdat.vol_auth_campaign_ids = (userdat.vol_auth_campaign_id + "," + str(int(idd)))
+			userdat.vol_auth_campaign_ids = (userdat.vol_auth_campaign_ids + "," + str(int(idd)))
 		else:
 			userdat.vol_auth_campaign_ids = str(int(idd))
 		userdat.save()
@@ -351,7 +354,7 @@ def volunteerdash(request, netid):
 	my_campaigns = []
 	seen_ids = []
 	for idd in legal_ids:
-		if idd not in seen_ids:
+		if idd and idd not in seen_ids:
 			camp = Campaign.objects.filter(id=idd)[0]
 			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
 									 'title': camp.title,
