@@ -92,25 +92,25 @@ WSGI_APPLICATION = 'quickcanvass.wsgi.application'
 
 # [START dbconfig]
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-    'default' : {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'quickcanvass',
-        'USER': 'root',
-        'PASSWORD': 'cos333',
-    }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
+    #'default' : {
+    #    'ENGINE': 'django.db.backends.mysql',
+    ##    'NAME': 'quickcanvass',
+    #    'USER': 'root',
+    #    'PASSWORD': 'cos333',
+    #}
 }
 # In the flexible environment, you connect to CloudSQL using a unix socket.
 # Locally, you can use the CloudSQL proxy to proxy a localhost connection
 # to the instance
-DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
+#DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
+#if os.getenv('GAE_INSTANCE'):
+#    pass
+#else:
+#    DATABASES['default']['HOST'] = '/cloudsql/quickcanvass:us-central1:quickcanvass'
 # [END dbconfig]
 
 
@@ -159,8 +159,9 @@ import sys
 RUNNING_DEVSERVER = (len(sys.argv) > 1 and sys.argv[1] == 'runserver')
 
 # STATIC_URL = 
-if not RUNNING_DEVSERVER:
-    STATIC_URL = 'https://storage.googleapis.com/quickcanvass/static/'
-else:
-    STATIC_URL = '/static/'
+#if not RUNNING_DEVSERVER:
+#    STATIC_URL = 'https://storage.googleapis.com/quickcanvass/static/'
+#else:
+#    STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

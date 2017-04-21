@@ -5,6 +5,7 @@ import MySQLdb
 import os, sys
 import random
 import re
+from .models import Userdata
 
 CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
 CLOUDSQL_USER = 'root'
@@ -15,51 +16,21 @@ def get_random_code(campaign_id):
 	have = len(str(campaign_id))
 	return ''.join(random.choice(string.digits) for _ in range(8 - have)) + str(campaign_id)
 
-def get_db():
-	db = MySQLdb.connect(unix_socket=cloudsql_unix_socket,
-	user=CLOUDSQL_USER,
-	passwd=CLOUDSQL_PASSWORD)
-	return db
-
 def is_user_manager(netid):
-	db = get_db()
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT is_director from user where netid=%s', (netid, ))
-	for row in cursor:
-		if row[0] == 1:
-			return True
-		else:
-			return False
+	userdat = Userdata.objects.filter(netid=netid)[0]
+	if userdat.is_director:
+		return True
+	return False
 
 def get_my_id(netid):
-	db = get_db()
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT id from user where netid=%s', (netid, ))
-	for row in cursor:
-		return int(row[0])
-
-
-#not sure what this will take as input yet
-#maybe also just upload the thing
-def get_create_campaign_sql():
-	title = ''
-	description = ''
-	volnteer_ids = ''
-	code = ''
-	owner_id = ''
-	#no need to store in-common data across each user
-	#just netid and the data collected by campaign
-	cvass_data = str(get_pton_json_data(['email']))
-	return "INSERT INTO campaign (title, description, volunteer_ids, code, owner_id, cvass_data) VALUES (%s, %s, %s, %s)", (title, description, volunteer_ids, code, owner_id, cvass_data)
-
+	userdat = Userdata.objects.filter(netid=netid)[0]
+	return userdat.id
 
 #Return a list of dicts with the list flist as keys
 #example: first_last = get_pton_json_data(['first', 'last'])
 #first_last[0] will be {'first': 'Seraina', 'last': 'Steiger'}
 def get_pton_json_data(flist=None):
-	data = json.load(open('qcapp/static/princeton_json_data.txt'))
+	data = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/static/princeton_json_data.txt'))
 	if not flist:
 		return data
 	new_data = []

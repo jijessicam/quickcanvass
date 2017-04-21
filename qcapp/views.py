@@ -11,6 +11,7 @@ from .forms import CampaignForm
 from .forms import SurveyForm
 from .models import Campaign
 from .models import Survey
+from .models import Userdata
 import datetime
 import os
 import pprint as pp
@@ -23,18 +24,16 @@ import random
 
 from utils import *
 
-db = get_db()
-
 keys = ['first', 'last', 'dorm', 'college', 'major', 'class']
 princeton_data = get_pton_json_data(keys)
 
 # Create your views here.
 
-@login_required(login_url='')
+#@login_required(login_url='')
 def login(request):
 	return render(request, 'login.html')
 
-@login_required(login_url='')
+#@login_required(login_url='')
 def signup(request):
 	return render(request, 'signup.html')
 
@@ -43,26 +42,20 @@ def join_new_campaign(request, methods=['POST']):
 	data = request.POST
 	code = data.get('code')
 	print(code)
-	cursor = db.cursor()
-	cursor.execute("USE quickcanvass")
-	cursor.execute("SELECT id, volunteer_ids from qcapp_campaign where code=%s", (code, ))
-	ids_and_vol_ids = []
-	for row in cursor:
-		print(row)
-		ids_and_vol_ids.append((row[0], row[1]))
+	camp = Campaign.objects.filter(code=code)[0]
+	ids_and_vol_ids = [(camp.id, camp.volunteer_ids), ]
 	my_id = str(get_my_id(request.user.username))
 	for (idd, vol_id) in ids_and_vol_ids:
 		vol_id = vol_id + my_id + ","
-		cursor.execute("UPDATE qcapp_campaign SET volunteer_ids=%s where id=%s", (vol_id, idd))
-		db.commit()
-		cursor.execute("SELECT vol_auth_campaign_ids from user where id=%s", (my_id, ))
-		for row in cursor:
-			if not row:
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(int(idd)), my_id))
-				db.commit()
-			else:
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s where id=%s", (str(row[0]) + "," + str(int(idd)), my_id))
-				db.commit()
+		camp = Campaign.objects.filter(id=idd)[0]
+		camp.volunteer_ids = vol_id
+		camp.save()
+		userdat = Userdata.objects.filter(id=my_id)[0]
+		if userdat.vol_auth_campaign_ids:
+			userdat.vol_auth_campaign_ids = (userdat.vol_auth_campaign_id + "," + str(int(idd)))
+		else:
+			userdat.vol_auth_campaign_ids = str(int(idd))
+		userdat.save()
 	return JsonResponse({'error': None })
 
 
@@ -78,15 +71,10 @@ def makeaccount(request, methods=['POST']):
 
 	#create user's dats in user
 	#check if user already exists
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute("SELECT (netid) from user where netid=%s and is_director=%s", (netid, isd))
-	#user did not exist
-	if cursor.rowcount == 0:
-		cursor.execute("INSERT INTO user (netid, is_director) VALUES (%s, %s)", (netid, isd))
-		cursor.close()
-		db.commit()
-
+	userdat = Userdata.objects.filter(netid=netid)
+	if not userdat:
+		userdat = Userdata(netid=netid, is_director=isd)
+		userdat.save()
 		#create the instrinsic user in auth_user
 		user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
 		user = authenticate(username=netid, password=passw)
@@ -102,8 +90,6 @@ def about(request):
 def research(request):
     return render(request, 'research.html')
 
-#def contact(request):
- #   return render(request, 'contact.html')
 def home(request):
 	return render(request, 'home.html')
 
@@ -117,13 +103,7 @@ def search(request):
 	year = data.get('year')
 	count = data.get('count')
 	campaign_id = data.get('campaign_id')
-	db = get_db()
-	cursor = db.cursor()
-	cursor.execute("use quickcanvass")
-	cursor.execute("SELECT cvass_data, id from qcapp_campaign where id=%s", (campaign_id, ))
-	cvass_data = []
-	for row in cursor:
-		cvass_data = row[0]
+	cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
 	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
 	for res in results:
@@ -134,16 +114,14 @@ def search(request):
 		return JsonResponse({'error': 'room search failed' ,'url' :'/volunteercampaigns'})
 
 def volunteercampaigns(request, netid, campaign_id):
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT title, volunteer_ids, targetted_years from qcapp_campaign where id=%s', (campaign_id, ))
-	for row in cursor:
-		title = row[0]
-		vol_ids = row[1].split(",")
+	camp = Campaign.objects.filter(id=campaign_id)[0]
+	title = camp.title
+	vol_ids = camp.volunteer_ids.split(",")
+	target_years = camp.targetted_years
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
 	fillsurveyurl = "/fillsurvey/" + str(campaign_id)+ "/" + str(netid)
-	return render(request, 'volunteercampaigns.html', {'netid': netid, 'fillsurvey': fillsurveyurl, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': row[2]})
+	return render(request, 'volunteercampaigns.html', {'netid': netid, 'fillsurvey': fillsurveyurl, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': target_years})
 
 def fillsurvey(request, netid, campaign_id):
 	title = "No title yet"
@@ -156,11 +134,9 @@ def fillsurvey(request, netid, campaign_id):
 def promote_to_manager(request, netid):
 	# Promote volunteer to manager in database 
 	isd_new = 1 
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute('UPDATE user SET is_director=%s where netid=%s', (isd_new, netid))
-	cursor.close()
-	db.commit()
+	userdat = Userdata.objects.filter(netid=netid)[0]
+	userdat.is_director = isd_new
+	userdat.save()
 	# Redirect to edit-campaign so they can set up their campaign
 	string = "/editcampaign/" + str(netid)
 	return redirect(string)
@@ -197,7 +173,6 @@ def editcampaign(request, netid):
 				update.title = title
 				update.owner_id = owner_id
 				update.save()
-				db.commit()
 			if count == 0:
 				updcampaign = Campaign(title = title,
 					description = description,
@@ -207,7 +182,6 @@ def editcampaign(request, netid):
 					volunteer_ids= str(get_my_id(request.user.username)) + ",",
 					owner_id = owner_id)
 				updcampaign.save()
-				db.commit()
 				campaign_id = (Campaign.objects.filter(owner_id=owner_id)[0]).id
 				survey = Survey(
 					q1 = "[Sample question]  Are you supporting Michelle Obama in the upcoming USG election?",
@@ -217,21 +191,21 @@ def editcampaign(request, netid):
 					owner_id = owner_id,
 					campaign_id = campaign_id)
 				survey.save()
-				db.commit()
-			cursor = db.cursor()
-			cursor.execute("USE quickcanvass")
-			cursor.execute("SELECT id from qcapp_campaign where owner_id=%s", (owner_id, ))
-			update_ids = []
-			for row in cursor:
-				update_ids.append(row[0])
-			for update_id in update_ids:
-				#eventuall make this additive instead of overriding
-				cursor.execute("UPDATE user SET vol_auth_campaign_ids=%s, manager_auth_campaign_id=%s WHERE id=%s", (update_id, update_id, owner_id))
-				db.commit()
-			code = get_random_code(update_ids[0])
-			cursor.execute("UPDATE qcapp_campaign SET code=%s where id=%s and code IS NULL", (code, update_ids[0]))
-			db.commit()
-			cursor.close()
+			update_id = Campaign.objects.filter(owner_id=owner_id)[0].id
+			#eventuall make this additive instead of overriding
+			userdat = Userdata.objects.filter(id=owner_id)[0]
+			userdat.vol_auth_campaign_ids = update_id
+			userdat.manager_auth_campaign_id = update_id
+			userdat.save()
+			code = get_random_code(update_id)
+			camps = Campaign.objects.filter(code__isnull=True, id=update_id)
+			if camps.count() > 0:
+				print("inner")
+				camp = camps[0]
+				camp.code = code
+				camp.save()
+			print("saved")
+			print(code, update_id, camps.count())	
 			return redirect('/managerdash/' + request.user.username)
 	if request.method == 'GET':
 		count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -257,7 +231,6 @@ def clear_survey_data(request):
 	surv.q3 = ""
 	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
 	surv.save()
-	db.commit()
 	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
 
 	cvass_data = ""
@@ -266,14 +239,12 @@ def clear_survey_data(request):
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	camp.cvass_data = cvass_data
 	camp.save()
-	db.commit()
 	return JsonResponse({"error": None})
 
 @csrf_exempt
 def download_survey_data(request):
 	owner_id = get_my_id(request.user.username)
-	json_data = json.load(open('qcapp/static/princeton_json_data.txt'))
-	print(owner_id)
+	json_data = load_cvass_data()
 	surv = Survey.objects.filter(owner_id=owner_id)[0]
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	cvass_data = load_cvass_data(camp.cvass_data)
@@ -311,7 +282,6 @@ def editsurvey(request):
 				update.q3 = q3
 				update.owner_id = owner_id
 				update.save()
-				db.commit()
 			if count == 0:
 				updcampaign = Survey(script = script,
 					q1 = q1,
@@ -319,7 +289,6 @@ def editsurvey(request):
 					q3 = q3,
 					owner_id = owner_id)
 				updcampaign.save()
-				db.commit()
 		return redirect("/volunteerdash/" + str(request.user.username))
 	if request.method == 'GET':
 		count = Survey.objects.filter(owner_id=owner_id).count()
@@ -351,45 +320,41 @@ def managerdash(request, netid):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
+	print("managerdash count was ", count)
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
+	#print("managerdash code was ", campaign_code)
 	# if no campaign associated with username,
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
 	if is_user_manager(netid):
 		if count == 0:
-			return editcampaign(request)
+			return editcampaign(request, netid)
 		volunteers = list(set(Campaign.objects.filter(owner_id =owner_id)[0].volunteer_ids.split(",")))
 		names = []
-		cursor = db.cursor()
-		cursor.execute("USE quickcanvass")
 		for each in volunteers:
-			cursor.execute("SELECT netid from user where id=%s", (each, ))
-			for row in cursor:
-				names.append(row[0])
+			if each:
+				names.append(Userdata.objects.filter(id=each)[0].netid)
 		campurl = "/editcampaign/" + str(netid)
 		survurl = "/editsurvey/" + str(netid)
-		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl, 'netid': netid, "isd": 1, "campaign_code" : campaign_code, "title" : title, "volunteers":  names})
+		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl,
+				'netid': netid, "isd": 1, "campaign_code" : campaign_code,
+				"title" : title, "volunteers":  names})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
 def volunteerdash(request, netid):
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
-	cursor = db.cursor()
-	cursor.execute('USE quickcanvass')
-	cursor.execute('SELECT vol_auth_campaign_ids from user where netid=%s', (netid, ))
-	for row in cursor:
-		legal_ids = (row[0] or "").split(",")
+	legal_ids = (Userdata.objects.filter(netid=netid)[0].vol_auth_campaign_ids or "").split(",")
 	my_campaigns = []
 	seen_ids = []
 	for idd in legal_ids:
 		if idd not in seen_ids:
-			cursor.execute("SELECT title, targetted_years from qcapp_campaign where id=%s", (idd, ))
-			for row in cursor:
-				my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
-									 'title': row[0],
+			camp = Campaign.objects.filter(id=idd)[0]
+			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
+									 'title': camp.title,
 									 'id': idd})
 			seen_ids.append(idd)
 	if is_user_manager(netid):
