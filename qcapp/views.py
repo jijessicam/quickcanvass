@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
+from django import forms
 from .forms import CampaignForm
 from .forms import SurveyForm
 from .models import Campaign
@@ -16,6 +17,7 @@ import datetime
 import os
 import pprint as pp
 import MySQLdb
+from .forms import FillSurveyForm
 
 
 
@@ -128,11 +130,37 @@ def volunteercampaigns(request, netid, campaign_id):
 
 def fillsurvey(request, netid, campaign_id):
 	title = "No title yet"
-	count = Campaign.objects.filter(code=campaign_id).count()
-	if count != 0:
-		title = Campaign.objects.filter(code=campaign_id)[0].title
-	username = "/volunteerdash/" + str(request.user.username)
-	return render(request, 'fillsurvey.html', { 'title': title, 'username': username})
+	count = Campaign.objects.filter(id=campaign_id).count()
+	if request.method == "GET":
+		if count != 0:
+			title = Campaign.objects.filter(id=campaign_id)[0].title
+			survey_ID = Campaign.objects.filter(id=campaign_id)[0].survey_id
+			script = Survey.objects.filter(campaign_id=campaign_id)[0].script
+			q1 = Survey.objects.filter(campaign_id=campaign_id)[0].q1
+			q2 = Survey.objects.filter(campaign_id=campaign_id)[0].q2
+			q3 = Survey.objects.filter(campaign_id=campaign_id)[0].q3
+			data = {"script": script, "q1": q1, "q2": q2, "q3": q3, "name": "DEFAULT_NAME", "dorm_number": "DEFAULT DORM"}
+			form = FillSurveyForm()
+			form.fields['script'].widget = forms.HiddenInput()
+			if q1 == "":
+				form.fields['q1'].widget = forms.HiddenInput()
+			if q2 == "":
+				form.fields['q2'].widget = forms.HiddenInput()
+			if q3 == "":
+				form.fields['q3'].widget = forms.HiddenInput()
+			username = "/volunteerdash/" + str(request.user.username)
+			return render(request, 'fillsurvey.html', { 'title': title, 'username': username, 'data': data, 'form': form})
+	if request.method == "POST":
+		form = FillSurveyForm(data=request.POST)
+		if form.is_valid():
+			if q1 != "":
+				q1 = request.POST.get('q1', '')
+			if q2 != "":
+				q2 = request.POST.get('q2', '')
+			if q3 != "":
+				q3 = request.POST.get('q3', '')
+
+
 
 def promote_to_manager(request, netid):
 	# Promote volunteer to manager in database 
