@@ -12,7 +12,10 @@
   <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
   <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}"/>
 <style>
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 500px) {
+  .font-size-tho {
+    font-size: 13px;
+  }
   .manager {
     width: 50%;
     margin-left: 25%;
@@ -31,10 +34,10 @@
   }
 
   .campaign{
-    padding-left: 20px; 
-    padding-right: 20px; 
-    color: gray; 
-    font-weight: normal; 
+    padding-left: 20px;
+    padding-right: 20px;
+    color: gray;
+    font-weight: normal;
     width: 30xp;
   }
 .clean-look {
@@ -44,15 +47,26 @@
   }
   .ss-button {
     background-color: #5bc0de;
-    width: 50%;
+    width: 75%;
+    font-size: 9px;
     table-layout: fixed;
     color: white;
     font-weight: normal;
     margin-bottom: 15px;
   }
+  .enlarge {
+    
+  }
+  .larg-btn{
+    font-size: 14px;
+  }
 }
 
-@media screen and (min-width: 767px) {
+@media screen and (min-width: 500px) {
+
+  .center-table{
+    text-align: center;
+  }
   .manager {
     width: 75%;
     margin-left: 12%;
@@ -81,16 +95,18 @@
   }
 
   .campaign{
-    padding-left: 24px; 
-    padding-right: 24px; 
-    color: gray; 
-    font-weight: normal; 
+    padding-left: 24px;
+    padding-right: 24px;
+    color: gray;
+    font-weight: normal;
     width: 100xp;
   }
-
-  .canvassBtn{
-    width:100xp;
+  .margins{
+    margin-left: 12%;
   }
+/*  .canvassBtn{
+    width:100xp;
+  }*/
 }
 
 .clean-box {
