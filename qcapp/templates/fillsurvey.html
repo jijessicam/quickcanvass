@@ -1,8 +1,62 @@
-{% extends "base.html" %}
+% extends "base.html" %}
 {% block content %}
-
+<script>
+$(document).ready(function () {
+    if ($('#q1').text == "" ) {
+        $('#form1').remove();
+    }
+});</script>
 <style>
-  
+	.button1{
+    	width: 38%;
+	}
+
+	.button2{
+		width: 40%;
+	}
+  .padded {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+	.form-style {
+		font-size: 14px;
+		color: gray;
+		font-weight: bold;
+	}
+</style>
+
+<div class="col-lg-12 center">
+      <h5 class= "text-center login-title-2 edit header-top">Fill Survey: {{title}}</h5>
+
+<div class = "row clean-box edit clean-submit form-style">
+  	<form role = "form" action = "" method = "post">
+    <div class = "row">
+    <div class = "padded">{{data.name}} | {{data.dorm_number}}</div>
+  </div>
+<br></br>
+  	{{data.script}} <br></br>
+		<div class = "form1">
+    		{% csrf_token %}
+				{{data.q1}}
+    		{{form.q1}}
+				{{data.q2}}
+				{{form.q2}}
+				{{data.q3}}
+				{{form.q3}}
+				<br></br>
+     <div class = "row">
+        	<a href = {{username}} class="btn ss-button small-width button1" >Cancel</a>
+        </div>
+  		<input type = "submit" class="btn ss-button small-width button2" value ="Submit"/>
+
+	</form>
+</div>
+
+</div>
+{% endblock %}
+<!--
+<style>
+
   @media screen and (max-width: 767px) {
     .button1{
       width: 110px;
@@ -63,7 +117,7 @@
 
   <div class = "row clean-box edit clean-submit">
     <form role = "form" action = "" method = "post">
-      
+
       <div class="row info">
         <div class="col-sm-2 col-sm-offset-1 ">
           <div class = "row vertical">
@@ -119,7 +173,7 @@
           </div>
         </form>
       </div>
-      
+
       <br>
       <div class="row">
         <div class="col-sm-2 col-sm-offset-1 ">
@@ -151,4 +205,4 @@
 
 
 
-{% endblock %}
+-->
