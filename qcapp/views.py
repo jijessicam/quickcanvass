@@ -26,7 +26,7 @@ import random
 
 from utils import *
 
-keys = ['first', 'last', 'dorm', 'college', 'major', 'class']
+keys = ['first', 'last', 'dorm', 'college', 'major', 'class', 'id']
 princeton_data = get_pton_json_data(keys)
 
 # Create your views here.
@@ -100,6 +100,7 @@ def home(request):
 
 @csrf_exempt
 def search(request):
+	netid = request.user.username
 	data = request.POST
 	res_college = data.get('res_college')
 	floor = data.get('floor')
@@ -112,7 +113,7 @@ def search(request):
 	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
 	for res in results:
-		listed_results.append([res["dorm"], res["first"], res["last"], res["major"], res["class"]])
+		listed_results.append([res["dorm"], res["first"], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
@@ -126,9 +127,14 @@ def volunteercampaigns(request, netid, campaign_id):
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
 	fillsurveyurl = "/fillsurvey/" + str(campaign_id)+ "/" + str(netid)
-	return render(request, 'volunteercampaigns.html', {'netid': netid, 'fillsurvey': fillsurveyurl, 'title': title, 'isd': is_user_manager(netid), 'targetted_years': target_years})
+	return render(request, 'volunteercampaigns.html',
+		{'netid': netid,
+		'fillsurvey': fillsurveyurl,
+		'title': title,
+		'isd': is_user_manager(netid),
+		'targetted_years': target_years})
 
-def fillsurvey(request, netid, campaign_id):
+def fillsurvey(request, netid, campaign_id, voter_id):
 	title = "No title yet"
 	count = Campaign.objects.filter(id=campaign_id).count()
 	if request.method == "GET":
@@ -152,15 +158,22 @@ def fillsurvey(request, netid, campaign_id):
 			return render(request, 'fillsurvey.html', { 'title': title, 'username': username, 'data': data, 'form': form})
 	if request.method == "POST":
 		form = FillSurveyForm(data=request.POST)
-		if form.is_valid():
-			if q1 != "":
-				q1 = request.POST.get('q1', '')
-			if q2 != "":
-				q2 = request.POST.get('q2', '')
-			if q3 != "":
-				q3 = request.POST.get('q3', '')
-
-
+		q1, q2, q3 = "", "", ""
+		q1 = request.POST.get('q1', '')
+		q2 = request.POST.get('q2', '')
+		q3 = request.POST.get('q3', '')
+		camp = Campaign.objects.filter(id=campaign_id)[0]
+		cvass_data = load_cvass_data(Campaign.objects.filter(id=campaign_id)[0].cvass_data)
+		print(voter_id)
+		for i, dat in enumerate(cvass_data):
+			if str(dat["id"]) == voter_id:
+				cvass_data[i]['a1'] = q1
+				cvass_data[i]['a2'] = q2
+				cvass_data[i]['a3'] = q3
+				camp.cvass_data = str(cvass_data)
+				camp.save()
+				break
+		return redirect('/volunteercampaigns/' + campaign_id + '/' + netid)
 
 def promote_to_manager(request, netid):
 	# Promote volunteer to manager in database 
@@ -275,7 +288,7 @@ def clear_survey_data(request):
 @csrf_exempt
 def download_survey_data(request):
 	owner_id = get_my_id(request.user.username)
-	json_data = load_cvass_data()
+	json_data = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/static/princeton_json_data.txt'))
 	surv = Survey.objects.filter(owner_id=owner_id)[0]
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	cvass_data = load_cvass_data(camp.cvass_data)

@@ -1,4 +1,4 @@
-% extends "base.html" %}
+{% extends "base.html" %}
 {% block content %}
 {% load static %}
 
@@ -11,6 +11,8 @@
 
 <script>
 $(document).ready(function() {
+  var campaign_id = (window.location.pathname).split("/")[2];
+  var netid = (window.location.pathname).split("/")[3];
   $("#year_picker").val("{{targetted_years}}");
   $("#find-students").click(function(){
   console.log("test room search");
@@ -45,14 +47,7 @@ $(document).ready(function() {
             columns: [
                 { title: "Dorm" },
                 { title: "First Name" },
-                //{ title: "Last" },
-                //{ title: "Major." },
-                //{ title: "Class" },
-                {
-                  "targets": -1,
-                  "data": null,
-                  "defaultContent": "<a href = {{fillsurvey}} class='btn ss-button button canvassBtn' >Canvass</a>"
-                }
+                { title: "Canvass"}
             ]
           } );
           $('#search-results tbody').on( 'click', 'button', function() {
