@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+% extends "base.html" %}
 {% block content %}
 {% load static %}
 
@@ -44,11 +44,11 @@ $(document).ready(function() {
             data: res['results'],
             columns: [
                 { title: "Dorm" },
-                { title: "First" },
-                { title: "Last" },
-                { title: "Major." },
-                { title: "Class" },
-                { 
+                { title: "First Name" },
+                //{ title: "Last" },
+                //{ title: "Major." },
+                //{ title: "Class" },
+                {
                   "targets": -1,
                   "data": null,
                   "defaultContent": "<a href = {{fillsurvey}} class='btn ss-button button canvassBtn' >Canvass</a>"
@@ -96,16 +96,16 @@ $("#res_college_picker").on('change', function() {
   <div class="content">
       <div class="row">
         <div class="col-sm-10 col-sm-offset-1">
-          <h3> Show me
-            <select class="dropdown form-control picker" name="count_picker" id="count_picker">
-              <option value="3">3</option>
+          <h3 class = "font-size-tho"> Show me
+            <select class="dropdown form-control picker font-size-tho" name="count_picker" id="count_picker">
+              <option class = "font-size-tho" value="3">3</option>
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="every">every</option>
             </select>
-            students who live in 
-              <select class="dropdown form-control picker" name="res_college_picker" id="res_college_picker">
-                <option value="Butler">Butler</option>
+            students who live in
+              <select class="dropdown form-control picker font-size-tho enlarge" name="res_college_picker" id="res_college_picker">
+                <option class = "font-size-tho" value="Butler">Butler</option>
                 <option value="Mathey">Mathey</option>
                 <option value="Whitman">Whitman</option>
                 <option value="Wilson">Wilson</option>
@@ -113,7 +113,7 @@ $("#res_college_picker").on('change', function() {
                 <option value="Forbes">Forbes</option>
               </select>
             on floor
-            <select class="dropdown form-control picker" name="floor_picker" id="floor_picker">
+            <select class="dropdown form-control picker font-size-tho" name="floor_picker" id="floor_picker">
                 <option value="any">any</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
@@ -126,16 +126,16 @@ $("#res_college_picker").on('change', function() {
               </select>
               in hallway
               <div id="hallway_picker_div" style="display: inline">
-                <select class='dropdown form-control picker' name='hallway_picker' id='hallway_picker'><option value="any">any</option><option value='bogle'>bogle</option><option value='yoseloff'>yoseloff</option><option value='1976'>1976</option><option value='1915'>1915</option><option value='1967'>1967</option><option value='emma'>emma</option><option value='bloomberg'>bloomberg</option><option value='wilf'>wilf</option></select>
+                <select class='dropdown form-control picker font-size-tho' name='hallway_picker' id='hallway_picker'><option value="any">any</option><option value='bogle'>bogle</option><option value='yoseloff'>yoseloff</option><option value='1976'>1976</option><option value='1915'>1915</option><option value='1967'>1967</option><option value='emma'>emma</option><option value='bloomberg'>bloomberg</option><option value='wilf'>wilf</option></select>
               </div>
               and are
-              <select class="dropdown form-control picker" name="abbse_picker" id="abbse_picker">
+              <select class="dropdown form-control picker font-size-tho" name="abbse_picker" id="abbse_picker">
                 <option value="AB/BSE">AB / BSE</option>
                 <option value="AB">AB</option>
                 <option value="BSE">BSE</option>
               </select>
               students of the class
-              <select class="dropdown form-control picker" name="year_picker" id="year_picker">
+              <select class="dropdown form-control picker font-size-tho" name="year_picker" id="year_picker">
                 <option value="any">of any year</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
@@ -143,16 +143,16 @@ $("#res_college_picker").on('change', function() {
                 <option value="2017">2017</option>
               </select>
             </h3>
-            <a class="button btn ss-button bottom-button" id="find-students" style="margin-bottom: 40px">Let's go!</a>
+            <a class="button btn ss-button bottom-button larg-btn" id="find-students" style="margin-bottom: 40px">Let's go!</a>
         </div>
       </div>
     </div>
-</div>
+
 
 <!-- begin HTML search result table -->
-<div class="col-sm-9 col-sm-offset-1">
+<div class="col-sm-9 col-sm-offset-1 margins" >
   <!-- Got rid of class = responsive because it was chopping off half the table in mobile mode -->
-  <table id="search-results" class='hover' width='100%' border="1" text-align="center">
+  <table id="search-results" class='hover center-table' width='100%' border="1" text-align="center">
   </table>
 </div>
 <div id="error-message">
@@ -166,4 +166,3 @@ $("#res_college_picker").on('change', function() {
 
 </div>
 {% endblock %}
-
