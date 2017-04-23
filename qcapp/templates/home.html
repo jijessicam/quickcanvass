@@ -20,23 +20,32 @@
 
   @media screen and (max-width: 767px) {
 
+    .firstpage{
+      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
+      width:100%;
+      overflow: hidden;
+
+    }
+
     .grayPage{
-      background-color: #333333;
+      background-color: rgba(0, 0, 0, 0.5);
       width: 100%;
     }
 
     .title{
       font-size: 7vw;
-      margin-top: -2vw;
+      margin-top: 8vw;
       color:white;
+      text-shadow: #000 5px 2px 6px;
+
     }
 
     .logo{
-      margin-top: 4vw;
       width: 32vw;
       height: 22vw;
       display: block;
-      margin: auto;
+      margin-left: 36vw;
+      margin-top: -2vw;
     }
 
     .descr{
@@ -44,7 +53,10 @@
       border-left: 2.4vw;
       border-right: 2.4vw;
       font-size: 2.6vw;
+      text-shadow: #000 -2px 2px 2px;
     }
+
+
 
     .descr2{
       margin-left: 2.2vw;
@@ -54,22 +66,22 @@
     }
 
     .button1{
-      margin-top: 3vw;
+      margin-top: 8vw;
+      margin-bottom: -1vw;
       background-color: #5bc0de;
-      width: 50%;
+      width: 45%;
       table-layout: fixed;
       color: white;
       font-weight: normal;
-      margin-bottom: 2px;
     }
 
     .button2{
       background-color: #5bc0de;
-      width: 50%;
+      width: 45%;
       table-layout: fixed;
       color: white;
       font-weight: normal;
-      margin-bottom: 15px;
+      margin-bottom: 12vw;
     }
 
     .names{
@@ -83,31 +95,54 @@
 
   @media screen and (min-width: 767px) {
 
+    .firstpage{
+      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+
+     /* background-color:black;
+      z-index:10;
+      opacity: 0.7;*/
+    }
+
     .grayPage{
-      background-color: #333333;
+      background-color:rgba(1,1,1,0.93);
       width: 100%;
     }
 
     .title{
       font-size: 7vw;
-      margin-top: -2vw;
+      margin-top: 3vw;
       color:white;
+
+      text-shadow: #000 8px 2px 9px;
     }
 
     .logo{
-      margin-top: 4vw;
-      width: 32vw;
-      height: 22vw;
+      width: 26vw;
+      height: 16vw;
       display: block;
-      margin: auto;
+      margin-left: 37vw;
+      margin-top: -1vw;
     }
 
     .descr{
       color:white;
-      border-left: 2.4vw;
-      border-right: 2.4vw;
-      font-size: 1.7vw;
+      border-left: 8vw;
+      border-right: 8vw;
+      font-size: 1.5vw;
+
+      text-shadow: #000 -2px 1px 2px;
+
     }
+
+   /* .dark{
+      background-color:black;
+      z-index:0;
+      opacity:0.6;
+      width:100%;
+    }*/
 
     .descr2{
       border-left: 2.4vw;
@@ -117,22 +152,22 @@
     }
 
     .button1{
-      margin-top: 3vw;
+      margin-top: 5vw;
       background-color: #5bc0de;
-      width: 50%;
+      width: 40%;
       table-layout: fixed;
       color: white;
-      font-size: 2vw;
+      font-size: 1.8vw;
       margin-bottom: 2px;
     }
 
     .button2{
       background-color: #5bc0de;
-      width: 50%;
+      width: 40%;
       table-layout: fixed;
       color: white;
-      font-size: 2vw;
-      margin-bottom: 15px;
+      font-size: 1.8vw;
+      margin-bottom: 4vw;
     }
 
     .names{
@@ -150,23 +185,22 @@
 <body>
    
   <!--First part-->
-  <div class="container grayPage">
-    <div class="col-lg-12 center">
-      <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}"
+  <div class="container firstpage">
+     <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}"
             alt="">
-      <h1 class="page-header title">QuickCanvass</h1>
-      <p class="descr">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
+    <div class="col-lg-12 center dark">  
+      <h1 class="page-header title dark">QuickCanvass</h1>
+      <p class="descr dark">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
 
-      <hr>
-      
-      <div>
+      <hr class="dark">
+    </div>
+    <div>
         <a href="login" class="btn btn-info button1">Login</a>
       </div>
       <br>
       <div>
         <a href="signup" class="btn btn-info button2">Sign Up</a>
       </div>
-    </div>
   </div>
 
 
