@@ -2,83 +2,279 @@
 {% block content %}
 {% load static %}
 
+<style>
 
-<div>
-  <!-- Page Content -->
-      <div class="container">
-        <div class="row">
-            <div class="col-lg-12 center">
-                <h1 class="page-header">What We Do
-                </h1> </div>
-            <div class="col-lg-12 left">
-                <p>QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
-                <p>We can help you...</p>
-                <ul>
-                  <li>Learn which constituents are near your geographical location for canvassing on the go.</li>
-                  <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for Freshman council.</li>
-                  <li>Keep track of which students already support you, which don't, and which can be persuaded via the data your team collects.</li>
-                  <li>Preserve this data across multiple campaigns in multiple years.</li>
-                  <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass.</li>
-                  <li>Ensure that you and your volunteers don't knock the same area twice (unless you want to).</li>
-                </ul>
-            </div>
-        </div>
+  @media screen and (max-width: 767px) {
 
-        <div class="container">
-            <div class="col-lg-12 left">
-              <h2 class="page-header">Our Team</h2>
-            </div>
+    .firstpage{
+      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
+      width:100%;
+      overflow: hidden;
 
-            <div class="col-lg-6 col-sm-6 text-center">
-                <center>
-                <img class="img-circle img-responsive img-center" src="images/JessicaProfile.jpg" alt="">
-                <h3>Jessica Ji
-                    <small>Our President</small>
-                </h3>
-                <p>Jessica works mainly on back-end and keeping the rest of us on task.</p>
-                <p><a href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
-              </center>
-            </div>
-            
-            <div class="col-lg-6 col-sm-6 text-center">
-              <center>
-                <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
-                <h3>Grace Turner
-                    <small>Front-End Specialist</small>
-                </h3>
-                <p>Grace works on making the UI experience as smooth and as beautiful as possible.</p>
-                <p><a href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
+    }
 
-              </center>
-            </div>
-            <div class="col-lg-6 col-sm-6 text-center">
-              <center>
-                <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
-                <h3>Samuel Russell
-                    <small>Database Specialist</small>
-                </h3>
-                <p>Sam enjoys troubleshooting and making the database queryable.</p>
-                <p><a href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
-              </center>
-            </div>
-            <div class="col-lg-6 col-sm-6 text-center">
-              <center>
-                <img class="img-circle img-responsive img-center profile-img" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
-                <h3>Luisa Goytia
-                    <small>Full-stack Programmer</small>
-                </h3>
-                <p>Luisa works both front-end and back-end, depending on the problems of the week.</p>
-                <p>lgoytia@princeton.edu</p>
+    .grayPage{
+      background-color: rgba(0, 0, 0, 0.5);
+      width: 100%;
+    }
 
-              </center>
-            </div>
-        </div>
+    .title{
+      font-size: 7vw;
+      margin-top: 8vw;
+      color:white;
+      text-shadow: #000 5px 2px 6px;
 
-</div>
+    }
+
+    .logo{
+      width: 32vw;
+      height: 22vw;
+      display: block;
+      margin-left: 36vw;
+      margin-top: -2vw;
+    }
+
+    .descr{
+      color:white;
+      border-left: 2.4vw;
+      border-right: 2.4vw;
+      font-size: 2.6vw;
+      text-shadow: #000 -2px 2px 2px;
+    }
 
 
-<!-- <footer class="container-fluid text-center">
-  <p>Sign Up!</p>
-</footer> -->
+
+    .descr2{
+      margin-left: 2.2vw;
+      margin-right: 2.2vw;
+      font-size: 2.5vw;
+      padding-bottom: 2vw;
+    }
+
+    .button1{
+      margin-top: 8vw;
+      margin-bottom: -1vw;
+      background-color: #5bc0de;
+      width: 45%;
+      table-layout: fixed;
+      color: white;
+      font-weight: normal;
+    }
+
+    .button2{
+      background-color: #5bc0de;
+      width: 45%;
+      table-layout: fixed;
+      color: white;
+      font-weight: normal;
+      margin-bottom: 12vw;
+    }
+
+    .names{
+      color: #e2dcdc;
+    }
+
+    .email{
+      color: #75dccf;
+    }
+  }
+
+  @media screen and (min-width: 767px) {
+
+    .firstpage{
+      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+
+     /* background-color:black;
+      z-index:10;
+      opacity: 0.7;*/
+    }
+
+    .grayPage{
+      background-color:rgba(1,1,1,0.93);
+      width: 100%;
+    }
+
+    .title{
+      font-size: 7vw;
+      margin-top: 3vw;
+      color:white;
+
+      text-shadow: #000 8px 2px 9px;
+    }
+
+    .logo{
+      width: 26vw;
+      height: 16vw;
+      display: block;
+      margin-left: 37vw;
+      margin-top: -1vw;
+    }
+
+    .descr{
+      color:white;
+      border-left: 8vw;
+      border-right: 8vw;
+      font-size: 1.5vw;
+
+      text-shadow: #000 -2px 1px 2px;
+
+    }
+
+   /* .dark{
+      background-color:black;
+      z-index:0;
+      opacity:0.6;
+      width:100%;
+    }*/
+
+    .descr2{
+      border-left: 2.4vw;
+      border-right: 2.4vw;
+      font-size: 1.8vw;
+      padding-bottom: 2vw;
+    }
+
+    .button1{
+      margin-top: 5vw;
+      background-color: #5bc0de;
+      width: 40%;
+      table-layout: fixed;
+      color: white;
+      font-size: 1.8vw;
+      margin-bottom: 2px;
+    }
+
+    .button2{
+      background-color: #5bc0de;
+      width: 40%;
+      table-layout: fixed;
+      color: white;
+      font-size: 1.8vw;
+      margin-bottom: 4vw;
+    }
+
+    .names{
+      color: #e2dcdc;
+    }
+
+    .email{
+      color: #75dccf;
+    }
+  }
+
+</style>
+</head>
+
+<body>
+  <!--First part-->
+  <div class="container grayPage">
+      <div class="col-lg-12 center"> 
+        <h1 style="color: white" class="page-header">Our Team</h1>
+      </div>
+
+      <!--Jessica-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <br><br><br>
+        <img class="img-circle img-responsive img-center" src="{% static 'images/JessicaProfile.jpg' %}" alt="">
+        <h3 class="names">Jessica Ji
+            <small>Our President</small>
+        </h3>
+        <p style="color: #ada4a4">Jessica works mainly on back-end and keeping the rest of us on task.</p>
+        <p><a class="email" href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Grace-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <br><br><br>
+        <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
+        <h3 class="names">Grace Turner 
+          <small>Front-End Specialist</small>
+        </h3>
+        <p style="color: #ada4a4">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+        <p><a class="email" href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
+      </center>
+      </div>
+
+      <!--Sam-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <br><br><br>
+        <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
+        <h3 class="names">Samuel Russell
+            <small>Database Specialist</small>
+        </h3>
+        <p style="color: #ada4a4">Sam enjoys troubleshooting and making the database queryable.</p>
+        <p><a class="email" href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Luisa-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <br><br><br>
+          <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
+          <h3 class="names">Luisa Goytia
+              <small>Full-stack Programmer</small>
+          </h3>
+          <p style="color: #ada4a4">Luisa works both front-end and back-end, depending on the problems of the week.</p>
+          <p><a class="email" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
+
+        </center>
+        <br><br>
+      </div>
+  </div>
+
+  <!-- Second page -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 left">
+        <h1 class="page-header">What We Do</h1>
+      </div>
+      <div class="col-lg-12 left">
+        <p class="descr2">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
+        <p class="descr2">We can help you...</p>
+        <ul class="descr2">
+          <li>Learn which constituents are near your geographical location for canvassing on the go.</li>
+          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for Freshman council.</li>
+          <li>Keep track of which students already support you, which don't, and which can be persuaded via the data your team collects.</li>
+          <li>Preserve this data across multiple campaigns in multiple years.</li>
+          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass.</li>
+          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to).</li>
+          <br><br><br>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!--Third part-->
+  <div class="container grayPage">
+      <div class="col-lg-12 center"> 
+        <h1 style="color: white" class="page-header">Frequently Asked Questions</h1>
+      </div>
+      <ul class="descr2">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <br><br><br>
+        </ul>
+    
+  </div>
+
+
+
+</body>
+
+</html>
+
+
 
 {% endblock %}
