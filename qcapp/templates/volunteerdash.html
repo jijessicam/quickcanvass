@@ -28,21 +28,22 @@ $(document).ready(function() {
 });
 </script>
 
+
 <div class="container">
     <div class="col-lg-12 center">
         <h2 class="page-header">Your Current Campaigns:</h2>
     </div>
     <div class="[ col-xs-12 col-md-12]" >
         <div class="[ form-group ]" style = "margin-bottom: 30px;">
+            <center><table>
             {% for my_campaign in my_campaigns %}
-                <div class="btn btn-default active campaign">
-                    <a href= {{ my_campaign.url }} > {{ my_campaign.title }} </a>
-                </div>
-               <!--  <label for="fancy-checkbox-default" class="btn btn-default link-list drop-campaign id-{{ my_campaign.id }}">
-                    <span class="[ glyphicon glyphicon-trash ]"></span>
-                </label> -->
-                <br />
+                <tr>
+                    <td> {{ my_campaign.title }} </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td> <a  style='margin-bottom: 4px' class="btn btn-default campaign " href= {{ my_campaign.url }} > Go </a> </td>
+                </tr>
             {% endfor %}
+            </table></center>
         </div>
     </div>
 </div>
@@ -52,16 +53,14 @@ $(document).ready(function() {
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="container">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div id="custom-search-input">
-                    <div class="input-group col-md-12">
-                        <input type="text" id='code-input' class="form-control input-lg" placeholder="Type in the Campaign Key..." />
-                        <span class="input-group-btn">
-                            <button class="btn btn-info btn-lg" type="submit" id='join-new-campaign-btn'>
-                                <i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </span>
-                    </div>
+            <div class="col-sm-12">
+                <div id="custom-search-input" class="input-group col-md-6 col-sm-offset-3">
+                    <input type="text" id='code-input' class="form-control input-lg" placeholder="Type in the Campaign Key..." style='float: none'/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="submit" id='join-new-campaign-btn'>
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
                 </div>
             </div>
         </div>
