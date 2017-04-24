@@ -19,7 +19,9 @@
     {% csrf_token %}
     {{ form}}
         <div class = "row">
-        	<a href = {{username}}  class="btn ss-button small-width button1" >Cancel</a>
+          {% if eliminate_cancel == None %}
+        	 <a href = {{username}}  class="btn ss-button small-width button1" >Cancel</a>
+          {% endif %}
         </div>
   		<input type = "submit" class="btn ss-button small-width button2" value ="Submit"/>
 

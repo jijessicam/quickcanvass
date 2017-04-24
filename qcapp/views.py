@@ -113,7 +113,7 @@ def search(request):
 	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
 	for res in results:
-		listed_results.append([res["dorm"], res["first"], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
+		listed_results.append([res["dorm"], res["first"], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
@@ -254,6 +254,7 @@ def editcampaign(request, netid):
 	if request.method == 'GET':
 		count = Campaign.objects.filter(owner_id=owner_id).count()
 		form = CampaignForm()
+		username = "/managerdash/" + str(request.user.username)
 		if count != 0:
 			update = Campaign.objects.filter(owner_id=owner_id)[0]
 			deadline = update.deadline
@@ -262,9 +263,9 @@ def editcampaign(request, netid):
 			title = update.title
 			data = {"title": title, "contact": contact, "description": description, "deadline": deadline}
 			form = CampaignForm(initial = data)
-	username = "/managerdash/" + str(request.user.username)
+		else:
+			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True})
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
-
 
 @csrf_exempt
 def clear_survey_data(request):
