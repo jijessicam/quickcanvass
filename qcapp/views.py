@@ -100,6 +100,8 @@ def home(request):
 
 @csrf_exempt
 def search(request):
+	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
+		return JsonResponse({'error': "Not Authorized"})
 	netid = request.user.username
 	data = request.POST
 	res_college = data.get('res_college')
@@ -120,6 +122,8 @@ def search(request):
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
 def volunteercampaigns(request, netid, campaign_id):
+	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
+		return JsonResponse({'error': "Not Authorized"})
 	camp = Campaign.objects.filter(id=campaign_id)[0]
 	title = camp.title
 	vol_ids = camp.volunteer_ids.split(",")
@@ -135,6 +139,8 @@ def volunteercampaigns(request, netid, campaign_id):
 		'targetted_years': target_years})
 
 def fillsurvey(request, netid, campaign_id, voter_id):
+	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
+		return JsonResponse({'error': "Not Authorized"})
 	title = "No title yet"
 	count = Campaign.objects.filter(id=campaign_id).count()
 	if request.method == "GET":
@@ -176,6 +182,8 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 		return redirect('/volunteercampaigns/' + campaign_id + '/' + netid)
 
 def promote_to_manager(request, netid):
+	if not am_i_authorized(request, netid=netid):
+		return JsonResponse({'error': "Not Authorized"})
 	# Promote volunteer to manager in database 
 	isd_new = 1 
 	userdat = Userdata.objects.filter(netid=netid)[0]
@@ -361,6 +369,9 @@ def editsurvey(request):
 
 
 def managerdash(request, netid):
+	print(request.user.username, netid)
+	if not am_i_authorized(request, netid=netid):
+		return JsonResponse({'error': "Not Authorized"})
 	campaignid = "No ID yet"
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
@@ -390,8 +401,8 @@ def managerdash(request, netid):
 		return redirect("/volunteerdash/" + netid)
 
 def volunteerdash(request, netid):
-	if not request.user.username == netid:
-		return redirect('/accounts/login')
+	if not am_i_authorized(request, netid=netid):
+		return JsonResponse({'error': "Not Authorized"})
 	legal_ids = (Userdata.objects.filter(netid=netid)[0].vol_auth_campaign_ids or "").split(",")
 	my_campaigns = []
 	seen_ids = []

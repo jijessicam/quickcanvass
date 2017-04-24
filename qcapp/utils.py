@@ -6,11 +6,43 @@ import os, sys
 import random
 import re
 from .models import Userdata
+from .models import Campaign
+from .models import Survey
 
 CLOUDSQL_CONNECTION_NAME = 'quickcanvass:us-central1:quickcanvass'
 CLOUDSQL_USER = 'root'
 CLOUDSQL_PASSWORD = 'cos333'
 cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
+
+def am_i_authorized(request, netid=None, camp_id=None, surv_id=None, manager_req=False):
+	ans = am_i_authorized_inner(request, netid, camp_id, surv_id, manager_req)
+	print("(Netid Check, Campaign Check, Survey Check", ans)
+	return all(ans)
+
+def am_i_authorized_inner(request, netid_goal=None, camp_id=None, surv_id=None, manager_req=False):
+	if netid_goal and not request.user.username == netid_goal:
+		return (False, False, False)
+	my_id = str(get_my_id(request.user.username))
+	if manager_req:
+		camp_good = True
+		if camp_id:
+			camp_good = (my_id == Campaign.objects.filter(id=camp_id).owner_id)
+		surv_good = True
+		if surv_id:
+			surv_good = (my_id == Survey.objects.filter(id=surv_id).owner_id)
+		return (True, camp_good, surv_good)
+	else:
+		camp_good = True
+		if camp_id:
+			camp_good = (my_id in (Campaign.objects.filter(id=camp_id)[0].volunteer_ids).split(","))
+		surv_good = True
+		if surv_id:
+			camp_id_of_surv == Survey.objects.filter(id=surv_id).campaign_id
+			surv_good = (my_id in (Campaign.objects.filter(id=camp_id_of_surv)[0].volunteer_ids).split(","))
+		return (True, camp_good, surv_good)
+
+	
+	legal_manager = Campaign
 
 def get_random_code(campaign_id):
 	have = len(str(campaign_id))
