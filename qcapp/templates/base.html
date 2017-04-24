@@ -163,10 +163,14 @@
         {% if isd == 1 %}
         <li><a href="/managerdash/{{netid}}">Manage Campaign</a></li>
         <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
+        <li><a href="/about">About Us</a></li>
+
         {% elif isd == 0 %}
         <!-- Case 2: Logged in Volunteer-->
         <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
         <li><a href="/promote-to-manager/{{netid}}">Manage Campaign</a></li>
+        <li><a href="/about">About Us</a></li>
+
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">

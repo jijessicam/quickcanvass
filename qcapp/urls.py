@@ -27,5 +27,7 @@ urlpatterns = [
     url(r'^fillsurvey/(?P<campaign_id>[0-9]+)/(?P<netid>[A-Za-z0-9_]+)/(?P<voter_id>[0-9]+)$', views.fillsurvey, name = 'fillsurvey'),
     url(r'^download_survey_data/$', views.download_survey_data, name = 'download_survey_data'),
     url(r'^clear_survey_data/$', views.clear_survey_data, name='clear_survey_data'),
+    url(r'^about/$', views.about, name='about'),
+    
     ## fillsurvey url not complete
 ]
