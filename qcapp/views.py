@@ -117,7 +117,7 @@ def search(request):
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
-		return JsonResponse({'error': 'room search failed' ,'url' :'/volunteercampaigns'})
+		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
 def volunteercampaigns(request, netid, campaign_id):
 	camp = Campaign.objects.filter(id=campaign_id)[0]
@@ -276,14 +276,14 @@ def clear_survey_data(request):
 	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
 	surv.save()
 	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
-
+	print("test")
 	cvass_data = ""
 	with open(dir_path) as data_file:    
 	    cvass_data = json.load(data_file)
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	camp.cvass_data = cvass_data
 	camp.save()
-	return JsonResponse({"error": None})
+	return redirect('editsurvey')
 
 @csrf_exempt
 def download_survey_data(request):

@@ -41,6 +41,9 @@ $(document).ready(function() {
           table = $('#search-results').DataTable( {
             "paging":   false,
             "ordering": false,
+            "language": {
+              "emptyTable": "No students match this description!"
+            },
             "info":     false,
             "searching": false,
             data: res['results'],

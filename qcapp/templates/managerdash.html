@@ -56,32 +56,25 @@ $(document).ready(function() {
         error: function(){
             console.log("error");
         }
+      });
     });
 
     $("#start_new_survey_btn").click(function(){
+      console.log('test2');
       $.ajax({
           url: "/download_survey_data/",
           context: document.body,
           type: 'POST',
           success: function(res){
               //change to dashboard later
-             exportToCsv("survey_data.csv", res)
-          }
-      });
-
-      $.ajax({
-          url: "/clear_survey_data/",
-          context: document.body,
-          type: 'POST',
-          success: function(res){
-              //change to dashboard later
-             window.location = '/editsurvey/'
+            console.log("success");
+            exportToCsv("survey_data.csv", res);
+          },
+          error: function(){
+            console.log("error");
           }
       });
     });
-})
-
-
 
 });
 </script>
@@ -101,7 +94,8 @@ $(document).ready(function() {
       <br><br>
       <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
       <br><br>
-      <a class = 'button btn ss-button' id="start_new_survey_btn">Start a New Survey</a>
+      <a href = "/clear_survey_data/" class = 'button btn ss-button' id = 'start_new_survey_btn'>Start a New Survey</a>
+      <!-- id="start_new_survey_btn" -->
     </div>
   </div>
 
