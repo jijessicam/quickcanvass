@@ -185,3 +185,9 @@ button {
   padding: 4px 0px;
   margin-bottom: 4px;
 }
+
+.volunteer-name-list{
+  border-bottom: 1px solid #eee;
+  padding-bottom: 30px;
+  padding-top: 30px;
+}

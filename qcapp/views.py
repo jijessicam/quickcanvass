@@ -113,7 +113,7 @@ def search(request):
 	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
 	for res in results:
-		listed_results.append([res["dorm"], res["first"], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
+		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
 	if results: 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
