@@ -37,8 +37,8 @@ $(document).ready(function() {
         <div class="[ form-group ]" >
             <center><table>
             {% for my_campaign in my_campaigns %}
-                <tr class = "btn  clean-volunteer" >
-                    <td > <center>{{ my_campaign.title }}</center> </td>
+                <tr>
+                    <td > <a href ="/volunteercampaigns/{{my_campaign.id}}/{{netid}}" class = "btn clean-volunteer"> <center>{{ my_campaign.title }}</center> </a></td>
                     <td>&nbsp;&nbsp;</td>
                 </tr>
             {% endfor %}
