@@ -7,7 +7,7 @@
 	}
 
 	.button2{
-		width: 40%; 
+		width: 40%;
 	}
 </style>
 
@@ -17,7 +17,27 @@
 <div class = "row clean-box edit clean-submit">
   	<form role = "form" action = "" method = "post">
     {% csrf_token %}
-    {{ form}}
+		<div class = "row form-style padding">
+			{{form.title.label}}:</div>
+		<div class = "row">
+		{{form.title}}</div>
+		<div class = "row form-style padding">
+			{{form.deadline.label}}:</div>
+		<div class = "row">
+		{{form.deadline}}</div>
+		<div class = "row form-style padding">
+			{{form.targetted_years.label}}:</div>
+		<div class = "row">
+		{{form.targetted_years}}</div>
+		<div class = "row form-style padding">
+			{{form.description.label}}:</div>
+		<div class = "row">
+		{{form.description}}</div>
+		<div class = "row form-style padding">
+			{{form.contact.label}}:</div>
+		<div class = "row">
+		{{form.contact}}</div>
+
         <div class = "row">
           {% if eliminate_cancel == None %}
         	 <a href = {{username}}  class="btn ss-button small-width button1" >Cancel</a>
