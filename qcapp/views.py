@@ -20,6 +20,7 @@ import os
 import pprint as pp
 import MySQLdb
 from .forms import FillSurveyForm
+import django_cas_ng
 
 
 
@@ -43,11 +44,15 @@ def handler500(request):
 	response.status_code = 500
 	return response 
 
-#@login_required(login_url='')
+def logout(request):
+	req = django_cas_ng.views.logout(request)
+	return redirect('/')
+
+@login_required(login_url='')
 def login(request):
 	return render(request, 'login.html')
 
-#@login_required(login_url='')
+@login_required(login_url='')
 def signup(request):
 	return render(request, 'signup.html')
 
