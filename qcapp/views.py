@@ -107,7 +107,7 @@ def makeaccount(request, methods=['POST']):
 
 
 def about(request):
-    return render(request, 'about.html')
+    return render(request, 'about.html', {"isd": is_user_manager(request.user.username), 'netid': request.user.username})
 
 def research(request):
     return render(request, 'research.html')
@@ -126,13 +126,8 @@ def search_by_ids(request):
 	cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
 	results = search_rooms_by_id(princeton_data, cvass_data, ids)
 	listed_results = []
-	id_string = ""
 	for res in results:
 		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
-		id_string = id_string + str(res["id"]) + ","
-	udata = Userdata.objects.filter(netid=request.user.username)[0]
-	udata.checkout = id_string
-	udata.save()
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
