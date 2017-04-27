@@ -100,10 +100,6 @@
       width: 100%;
       position: relative;
       overflow: hidden;
-
-     /* background-color:black;
-      z-index:10;
-      opacity: 0.7;*/
     }
 
     .grayPage{
@@ -185,24 +181,25 @@
 <body>
    
   <!--First part-->
-  <div class="container firstpage">
-     <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}"
-            alt="">
-    <div class="col-lg-12 center dark">  
-      <h1 class="page-header title dark">QuickCanvass</h1>
-      <p class="descr dark">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
+  <div style='background-color: black'>
+    <div class="container firstpage" >
+       <!-- <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}" -->
+              <!-- alt=""> -->
+      <div class="col-lg-12 center dark" >  
+        <h1 class="page-header title dark">QuickCanvass</h1>
+        <p class="descr dark">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
 
-      <hr class="dark">
-    </div>
-    <div>
-        <a href="login" class="btn btn-info button1">Login</a>
+        <hr class="dark">
       </div>
-      <br>
       <div>
-        <a href="signup" class="btn btn-info button2">Sign Up</a>
-      </div>
+          <a href="login" class="btn btn-info button1">Login</a>
+        </div>
+        <br>
+        <div>
+          <a href="signup" class="btn btn-info button2">Sign Up</a>
+        </div>
+    </div>
   </div>
-
 
   <!--Second page-->
   <div class="container">
