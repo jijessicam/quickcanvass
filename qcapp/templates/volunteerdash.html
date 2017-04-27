@@ -38,7 +38,7 @@ $(document).ready(function() {
             <center><table>
             {% for my_campaign in my_campaigns %}
                 <tr>
-                    <td > <a href ="/volunteercampaigns/{{my_campaign.id}}/{{netid}}" class = "btn clean-volunteer"> <center>{{ my_campaign.title }}</center> </a></td>
+                    <td > <a href ="/volunteercampaigns/{{my_campaign.id}}/{{netid}}" class = "btn clean-volunteer" style='margin-bottom: 5px'> <center>{{ my_campaign.title }}</center> </a></td>
                     <td>&nbsp;&nbsp;</td>
                 </tr>
             {% endfor %}
