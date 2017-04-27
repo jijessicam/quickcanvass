@@ -91,13 +91,12 @@ def makeaccount(request, methods=['POST']):
 	if data.get('isdirector') == 'true':
 		isd = 1
 
-	#create user's dats in user
 	#check if user already exists
 	userdat = Userdata.objects.filter(netid=netid)
 	if not userdat:
 		userdat = Userdata(netid=netid, is_director=isd)
 		userdat.save()
-		#create the instrinsic user in auth_user
+		#create the userdata
 		user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
 		user = authenticate(username=netid, password=passw)
 		auth_login(request, user)
@@ -230,9 +229,8 @@ def promote_to_manager(request, netid):
 	userdat = Userdata.objects.filter(netid=netid)[0]
 	userdat.is_director = isd_new
 	userdat.save()
-	# Redirect to edit-campaign so they can set up their campaign
-	string = "/editcampaign/" + str(netid)
-	return redirect(string)
+	url = "/editcampaign/" + str(netid)
+	return redirect(url)
 
 def editcampaign(request, netid):
 	if not is_user_manager(netid):
@@ -244,7 +242,6 @@ def editcampaign(request, netid):
 	count = Campaign.objects.filter(owner_id=owner_id).count()
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
-
 	if request.method == 'POST':
 		form = CampaignForm(data=request.POST)
 		if form.is_valid():
@@ -285,20 +282,16 @@ def editcampaign(request, netid):
 					campaign_id = campaign_id)
 				survey.save()
 			update_id = Campaign.objects.filter(owner_id=owner_id)[0].id
-			#eventuall make this additive instead of overriding
 			userdat = Userdata.objects.filter(id=owner_id)[0]
-			userdat.vol_auth_campaign_ids = update_id
+			userdat.vol_auth_campaign_ids = userdat.vol_auth_campaign_ids + "," + str(update_id)
 			userdat.manager_auth_campaign_id = update_id
 			userdat.save()
 			code = get_random_code(update_id)
 			camps = Campaign.objects.filter(code__isnull=True, id=update_id)
 			if camps.count() > 0:
-				print("inner")
 				camp = camps[0]
 				camp.code = code
 				camp.save()
-			print("saved")
-			print(code, update_id, camps.count())	
 			return redirect('/managerdash/' + request.user.username)
 	if request.method == 'GET':
 		count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -360,8 +353,6 @@ def editsurvey(request):
 	if request.method == 'POST':
 		form = SurveyForm(data=request.POST)
 		if form.is_valid():
-			#CampaignInfo.save()
-			#process data
 			script = request.POST.get('script', '')
 			q1 = request.POST.get('q1', '')
 			q2 = request.POST.get('q2')
@@ -421,8 +412,6 @@ def managerdash(request, netid):
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
-	#print("managerdash code was ", campaign_code)
-	# if no campaign associated with username,
 	if not request.user.username == netid:
 		return redirect('/accounts/login')
 	if is_user_manager(netid):

@@ -100,6 +100,7 @@
       width: 100%;
       position: relative;
       overflow: hidden;
+
     }
 
     .grayPage{
@@ -109,9 +110,9 @@
 
     .title{
       font-size: 7vw;
-      margin-top: 3vw;
+      margin-top: 8vw;
       color:white;
-
+      margin-bottom: 3vw;
       text-shadow: #000 8px 2px 9px;
     }
 
@@ -125,9 +126,9 @@
 
     .descr{
       color:white;
-      border-left: 8vw;
-      border-right: 8vw;
-      font-size: 1.5vw;
+      margin-left: 15vw;
+      margin-right: 15vw;
+      font-size: 1.7vw;
 
       text-shadow: #000 -2px 1px 2px;
 
@@ -181,15 +182,14 @@
 <body>
    
   <!--First part-->
-  <div style='background-color: black'>
+  <div style='background-color: black; height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover;'>
     <div class="container firstpage" >
        <!-- <img class="img-responsive img-center logo" src="{% static 'images/logo.png' %}" -->
               <!-- alt=""> -->
       <div class="col-lg-12 center dark" >  
-        <h1 class="page-header title dark">QuickCanvass</h1>
+        <h1 class="title dark">QuickCanvass</h1>
         <p class="descr dark">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
 
-        <hr class="dark">
       </div>
       <div>
           <a href="login" class="btn btn-info button1">Login</a>
