@@ -48,11 +48,11 @@ def logout(request):
 	req = django_cas_ng.views.logout(request)
 	return redirect('/')
 
-@login_required(login_url='')
+#@login_required(login_url='')
 def login(request):
 	return render(request, 'login.html')
 
-@login_required(login_url='')
+#@login_required(login_url='')
 def signup(request):
 	return render(request, 'signup.html')
 
@@ -116,6 +116,29 @@ def home(request):
 	return render(request, 'home.html')
 
 @csrf_exempt
+def search_by_ids(request):
+	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
+		return JsonResponse({'error': "Not Authorized"})
+	netid = request.user.username
+	data = request.POST
+	ids = data.get('ids')
+	campaign_id = data.get('campaign_id')
+	cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
+	results = search_rooms_by_id(princeton_data, cvass_data, ids)
+	listed_results = []
+	id_string = ""
+	for res in results:
+		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
+		id_string = id_string + str(res["id"]) + ","
+	udata = Userdata.objects.filter(netid=request.user.username)[0]
+	udata.checkout = id_string
+	udata.save()
+	if results:
+		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
+	else:	# error: room search returned no results 
+		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
+
+@csrf_exempt
 def search(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
 		return JsonResponse({'error': "Not Authorized"})
@@ -131,9 +154,14 @@ def search(request):
 	cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
 	results = search_rooms(princeton_data, cvass_data, count, res_college, floor, hallway, abbse, year)
 	listed_results = []
+	id_string = ""
 	for res in results:
 		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
-	if results: 
+		id_string = id_string + str(res["id"]) + ","
+	udata = Userdata.objects.filter(netid=request.user.username)[0]
+	udata.checkout = id_string
+	udata.save()
+	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
@@ -153,7 +181,8 @@ def volunteercampaigns(request, netid, campaign_id):
 		'fillsurvey': fillsurveyurl,
 		'title': title,
 		'isd': is_user_manager(netid),
-		'targetted_years': target_years})
+		'targetted_years': target_years,
+		'checkout': Userdata.objects.filter(netid=request.user.username)[0].checkout})
 
 def fillsurvey(request, netid, campaign_id, voter_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
@@ -177,8 +206,8 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 				form.fields['q2'].widget = forms.HiddenInput()
 			if q3 == "":
 				form.fields['q3'].widget = forms.HiddenInput()
-			username = "/volunteerdash/" + str(request.user.username)
-			return render(request, 'fillsurvey.html', { 'title': title, 'username': username, 'data': data, 'form': form})
+			url_on_cancel = "/volunteercampaigns/" + campaign_id + "/" + str(request.user.username)
+			return render(request, 'fillsurvey.html', { 'title': title, 'url_on_cancel': url_on_cancel, 'data': data, 'form': form})
 	if request.method == "POST":
 		form = FillSurveyForm(data=request.POST)
 		q1, q2, q3 = "", "", ""
@@ -320,7 +349,7 @@ def download_survey_data(request):
 	cvass_data = load_cvass_data(camp.cvass_data)
 	to_ret = [["Script", surv.script, ], ["id", "Name", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
 	for i, dat in enumerate(cvass_data):
-		to_ret.append([dat["id"], json_data[i]["first"] + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
+		to_ret.append([dat["id"], json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
 	return JsonResponse(to_ret, safe=False)
 
 def editsurvey(request):

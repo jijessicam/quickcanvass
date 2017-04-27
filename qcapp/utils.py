@@ -102,3 +102,14 @@ def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbs
 	if count == "every":
 		return to_ret
 	return to_ret[0:int(count)]
+
+def search_rooms_by_id(json_data, cvass_data, ids):
+	ids = ids.split(",")
+	to_ret = []
+	cvass_data = load_cvass_data(cvass_data)
+	for i, dat in enumerate(json_data):
+		if not cvass_data[i]["a1"]:
+			if str(dat["id"]) in ids:
+				to_ret.append(dat)
+	to_ret.sort(key=lambda x: x["dorm"])
+	return to_ret

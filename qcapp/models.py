@@ -43,8 +43,8 @@ class Survey(models.Model):
         return self.script[0:50] + "..."   # return campaign title 
 
 class Userdata(models.Model):
-	vol_auth_campaign_ids = models.CharField(max_length=80)
-	netid = models.CharField(max_length=30)
-	is_director = models.IntegerField()
-	manager_auth_campaign_id = models.CharField(max_length=20)
-	
+    vol_auth_campaign_ids = models.CharField(max_length=80)
+    netid = models.CharField(max_length=30)
+    is_director = models.IntegerField()
+    manager_auth_campaign_id = models.CharField(max_length=20)
+    checkout = models.CharField(max_length=2500, default="")

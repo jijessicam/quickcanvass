@@ -11,11 +11,56 @@
 
 <script>
 $(document).ready(function() {
+  var checkout = "{{checkout}}";
+  console.log(checkout);
+
   var campaign_id = (window.location.pathname).split("/")[2];
   var netid = (window.location.pathname).split("/")[3];
   $("#year_picker").val("{{targetted_years}}");
+
+  $.ajax({
+      url: "/search_by_ids/",
+      context: document.body,
+      "data": {
+        "ids": checkout,
+        "campaign_id": (window.location.pathname).split("/")[2]
+      },
+      type: 'POST',
+      success: function(res){
+        if(res['error'] == 'room search failed'){
+          console.log('room search failed');
+          $('error-message').html("Room search failed");
+        }
+        else{ // success!
+          if (typeof table !== 'undefined'){
+            table.destroy();}
+          table = $('#search-results').DataTable( {
+            "paging":   false,
+            "ordering": false,
+            "language": {
+              "emptyTable": "No students match this description!"
+            },
+            "info":     false,
+            "searching": false,
+            data: res['results'],
+            columns: [
+                { title: "Dorm" },
+                { title: "Name" },
+                { title: "Canvass"}
+            ]
+          } );
+          $('#search-results tbody').on( 'click', 'button', function() {
+              console.log("You clicked the button");
+          });
+        }
+          // window.location = res['url'];
+      },
+      error: function(){
+          console.log("room search error");
+      }
+  });
+
   $("#find-students").click(function(){
-  console.log("test room search");
   $.ajax({
       url: "/search/",
       context: document.body,
@@ -37,7 +82,6 @@ $(document).ready(function() {
         else{ // success!
           if (typeof table !== 'undefined'){
             table.destroy();}
-          console.log(res['results']);
           table = $('#search-results').DataTable( {
             "paging":   false,
             "ordering": false,
@@ -56,9 +100,6 @@ $(document).ready(function() {
           $('#search-results tbody').on( 'click', 'button', function() {
               console.log("You clicked the button");
           });
-          for (var i in res['results']) {
-            console.log(res['results'][i]);
-          }
         }
           // window.location = res['url'];
       },
