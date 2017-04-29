@@ -48,13 +48,13 @@ def logout(request):
 	req = django_cas_ng.views.logout(request)
 	return redirect('/')
 
-#@login_required(login_url='')
+@login_required(login_url='')
 def login(request):
-	return render(request, 'login.html')
+	return render(request, 'login.html', {'only_link_to_home': 1})
 
-#@login_required(login_url='')
+@login_required(login_url='')
 def signup(request):
-	return render(request, 'signup.html')
+	return render(request, 'signup.html', {'only_link_to_home': 1})
 
 @csrf_exempt
 def join_new_campaign(request, methods=['POST']):
@@ -106,7 +106,7 @@ def makeaccount(request, methods=['POST']):
 
 
 def about(request):
-    return render(request, 'about.html', {"isd": is_user_manager(request.user.username), 'netid': request.user.username})
+    return render(request, 'about.html', {"isd": is_user_manager(request.user.username), 'netid': request.user.username, "is_about": 1})
 
 def research(request):
     return render(request, 'research.html')
@@ -306,8 +306,8 @@ def editcampaign(request, netid):
 			data = {"title": title, "contact": contact, "description": description, "deadline": deadline}
 			form = CampaignForm(initial = data)
 		else:
-			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True})
-	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username})
+			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True, 'isd': 1})
+	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'isd': 1})
 
 @csrf_exempt
 def clear_survey_data(request):
@@ -396,8 +396,8 @@ def editsurvey(request):
 		## -- like, check if manager, if not manager, return to volunteer dash
 		## also fix this so its not "if title == "No Campaign Yet"
 	#	return redirect("/volunteerdash/" + netid)
-		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username})
-	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username})
+		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username, 'isd': 1})
+	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username, 'isd': 1})
 
 
 def managerdash(request, netid):
@@ -426,7 +426,7 @@ def managerdash(request, netid):
 		survurl = "/editsurvey/" + str(netid)
 		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl,
 				'netid': netid, "isd": 1, "campaign_code" : campaign_code,
-				"title" : title, "volunteers":  names})
+				"title" : title, "volunteers":  names, "is_managerdash": 1})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
@@ -444,9 +444,9 @@ def volunteerdash(request, netid):
 									 'id': idd})
 			seen_ids.append(idd)
 	if is_user_manager(netid):
-		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1, "my_campaigns": my_campaigns})
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1, "my_campaigns": my_campaigns, "is_volunteerdash": 1})
 	else:
-		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0, "my_campaigns": my_campaigns})
+		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0, "my_campaigns": my_campaigns, "is_volunteerdash": 1})
 
 @csrf_exempt
 def login_verification(request):

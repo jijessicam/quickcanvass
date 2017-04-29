@@ -303,14 +303,30 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        {% if isd == 1 %}
-        <li><a href="/managerdash/{{netid}}">Manage Campaign</a></li>
-        <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
-        <li><a href="/about">About Us</a></li>
-        {% elif isd == 0 %}
-        <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
-        <li><a href="/promote-to-manager/{{netid}}">Initiate a New Campaign</a></li>
-        <li><a href="/about">About Us</a></li>
+        {% if only_link_to_home %}
+          <li><a href="/">Home</a></li>
+        {% else %}
+          {% if is_volunteerdash %}
+          <li><a href="/volunteerdash/{{netid}}" style='border-bottom: 1px solid white; padding-bottom: 0px'>Volunteer for Campaigns</a></li>
+          {% else %}
+          <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
+          {% endif %}
+
+          {% if isd == 1 %}
+            {% if is_managerdash %}
+              <li><a href="/managerdash/{{netid}}" style='border-bottom: 1px solid white; padding-bottom: 0px'>Manage Campaign</a></li>
+            {% else %}
+              <li><a href="/managerdash/{{netid}}">Manage Campaign</a></li>
+            {% endif %}
+          {% elif isd == 0 %}
+          <li><a href="/promote-to-manager/{{netid}}">Initiate a New Campaign</a></li>
+          {% endif %}
+
+          {% if is_about %}
+          <li><a href="/about" style='border-bottom: 1px solid white; padding-bottom: 0px'>About Us</a></li>
+          {% else %}
+          <li><a href="/about">About Us</a></li>
+          {% endif %}
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
