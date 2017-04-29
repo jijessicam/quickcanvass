@@ -45,8 +45,8 @@ def am_i_authorized_inner(request, netid_goal=None, camp_id=None, surv_id=None, 
 	legal_manager = Campaign
 
 def get_random_code(campaign_id):
-	have = len(str(campaign_id))
-	return ''.join(random.choice(string.digits) for _ in range(8 - have)) + str(campaign_id)
+	random.seed(campaign_id)
+	return str(random.random())[2:10]
 
 def is_user_manager(netid):
 	userdat = Userdata.objects.filter(netid=netid)[0]
