@@ -16,6 +16,7 @@ $(document).ready(function () {
 		width: 40%;
 	}
   .padded {
+    font-size: 16px;
     padding-left: 5%;
     padding-right: 5%;
   }
@@ -27,15 +28,15 @@ $(document).ready(function () {
 </style>
 
 <div class="col-lg-12 center">
-      <h5 class= "text-center login-title-2 edit header-top">Fill Survey: {{title}}</h5>
+      <h5 class= "text-center login-title-2 edit header-top">{{title}}</h5>
 
 <div class = "row clean-box edit clean-submit form-style">
   	<form role = "form" action = "" method = "post">
     <div class = "row">
-    <div class = "padded">{{data.name}} | {{data.dorm_number}}</div>
+    <div class = "padded">Current Voter: {{data.name}}, {{data.dorm_number}}</div>
   </div>
 <br></br>
-  	{{data.script}} <br></br>
+  {{data.script}} <br></br>
 		<div class = "form1">
     		{% csrf_token %}
 				{{data.q1}}
@@ -46,10 +47,10 @@ $(document).ready(function () {
 				{{form.q3}}
 				<br></br>
      <div class = "row">
-        	<a href = "{{url_on_cancel}}" class="btn ss-button small-width button1" >Cancel</a>
-        </div>
-  		<input type = "submit" class="btn ss-button small-width button2" value ="Submit"/>
+        	<a href = "{{url_on_cancel}}" class="btn button ss-button" style="margin-bottom: 10px;">Cancel</a>
 
+  		<input type = "submit" class = "btn button ss-button" value = "Submit"/>
+</div>
 	</form>
 </div>
 
