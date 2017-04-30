@@ -402,7 +402,7 @@ def editsurvey(request):
 			data = {"script": script, "q1": q1, "q2": q2, "q3": q3}
 			form = SurveyForm(initial = data)
 
-	username = "/managerdash/"
+	username = "/managerdash/" + str(request.user.username)
 	# not fixed here...
 	if title == "No Campaign Yet":
 		form = CampaignForm()
@@ -410,8 +410,8 @@ def editsurvey(request):
 		## -- like, check if manager, if not manager, return to volunteer dash
 		## also fix this so its not "if title == "No Campaign Yet"
 	#	return redirect("/volunteerdash/" + netid)
-		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username, 'isd': 1})
-	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username, 'isd': 1, 'netid': netid})
+		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username, 'isd': 1, 'netid' : netid})
+	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
 
 
 def managerdash(request, netid):
