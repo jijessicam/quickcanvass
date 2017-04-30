@@ -134,7 +134,7 @@ def search_by_ids(request):
 	results = search_rooms_by_id(princeton_data, cvass_data, ids)
 	listed_results = []
 	for res in results:
-		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a style='margin: 0px' href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
+		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
@@ -212,7 +212,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 			if q3 == "":
 				form.fields['q3'].widget = forms.HiddenInput()
 			url_on_cancel = "/volunteercampaigns/" + campaign_id + "/" + str(request.user.username)
-			return render(request, 'fillsurvey.html', { 'title': title, 'url_on_cancel': url_on_cancel, 'data': data, 'form': form})
+			return render(request, 'fillsurvey.html', { 'title': title, 'url_on_cancel': url_on_cancel, 'data': data, 'form': form, "isd": is_user_manager(request.user.username), "netid": request.user.username})
 	if request.method == "POST":
 		form = FillSurveyForm(data=request.POST)
 		q1, q2, q3 = "", "", ""

@@ -179,11 +179,24 @@ button {
     background-color: #df2c2c;
     color: white;
   }
-.picker{
-  display: inline;
-  width: 12.5%;
-  padding: 4px 0px;
-  margin-bottom: 4px;
+
+@media screen and (min-width: 767px) {
+  .picker{
+    display: inline;
+    width: 12.5%;
+    padding: 4px 0px;
+    margin-bottom: 4px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .picker{
+    display: inline;
+    padding: 4px 0px;
+    margin-bottom: 4px;
+  }
+  .canvassBtn.ss-button{
+    width: 100%
+  }
 }
 
 .volunteer-name-list{
