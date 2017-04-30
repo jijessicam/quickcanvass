@@ -80,17 +80,6 @@ def load_cvass_data(cvass_data_as_str):
 	cvass_data_as_json = json.loads(cvass_data_as_str)
 	return cvass_data_as_json
 
-def count_canvassed_by_res_college(json_data, cvass_data):
-	res_colleges = {}
-	for i in range(0, len(json_data)):
-		if json_data[i]['college'] in res_colleges.keys():
-			res_colleges[json_data[i]['college']] = (res_colleges[json_data[i]['college']][0], res_colleges[json_data[i]['college']][1] + 1)
-		else:
-			res_colleges[json_data[i]['college']] = (0, 1)
-		if cvass_data[i]['a1']:
-			res_colleges[json_data[i]['college']] = (res_colleges[json_data[i]['college']][0] + 1, res_colleges[json_data[i]['college']][1])
-	return res_colleges		# dictionary of counts: res college as key, counts as value
-
 def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbse, year):
 	to_ret = []
 	cvass_data = load_cvass_data(cvass_data)
@@ -124,5 +113,3 @@ def search_rooms_by_id(json_data, cvass_data, ids):
 				to_ret.append(dat)
 	to_ret.sort(key=lambda x: x["dorm"])
 	return to_ret
-
-
