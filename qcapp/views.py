@@ -190,8 +190,10 @@ def volunteercampaigns(request, netid, campaign_id):
 
 def fillsurvey(request, netid, campaign_id, voter_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		# return JsonResponse({'error': "Not Authorized"})
-		raise PermissionDenied
+		return JsonResponse({'error': "Not Authorized"})
+	json_data = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/static/princeton_json_data.txt'))
+	name = str(json_data[int(voter_id)]["first"] +" "+ json_data[int(voter_id)]["last"])
+	dorm = str(json_data[int(voter_id)]["dorm"])
 	title = "No title yet"
 	count = Campaign.objects.filter(id=campaign_id).count()
 	if request.method == "GET":
@@ -202,7 +204,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 			q1 = Survey.objects.filter(campaign_id=campaign_id)[0].q1
 			q2 = Survey.objects.filter(campaign_id=campaign_id)[0].q2
 			q3 = Survey.objects.filter(campaign_id=campaign_id)[0].q3
-			data = {"script": script, "q1": q1, "q2": q2, "q3": q3, "name": "DEFAULT_NAME", "dorm_number": "DEFAULT DORM"}
+			data = {"script": script, "q1": q1, "q2": q2, "q3": q3, "name": name, "dorm_number": dorm}
 			form = FillSurveyForm()
 			form.fields['script'].widget = forms.HiddenInput()
 			if q1 == "":
@@ -212,7 +214,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 			if q3 == "":
 				form.fields['q3'].widget = forms.HiddenInput()
 			url_on_cancel = "/volunteercampaigns/" + campaign_id + "/" + str(request.user.username)
-			return render(request, 'fillsurvey.html', { 'title': title, 'url_on_cancel': url_on_cancel, 'data': data, 'form': form, "isd": is_user_manager(request.user.username), "netid": request.user.username})
+			return render(request, 'fillsurvey.html', { 'title': title, 'url_on_cancel': url_on_cancel, 'data': data, 'form': form, 'netid': netid})
 	if request.method == "POST":
 		form = FillSurveyForm(data=request.POST)
 		q1, q2, q3 = "", "", ""
@@ -231,7 +233,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 				camp.save()
 				break
 		return redirect('/volunteercampaigns/' + campaign_id + '/' + netid)
-
+	
 def promote_to_manager(request, netid):
 	if not am_i_authorized(request, netid=netid):
 		# return JsonResponse({'error': "Not Authorized"})
@@ -319,7 +321,7 @@ def editcampaign(request, netid):
 			form = CampaignForm(initial = data)
 		else:
 			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True, 'isd': 1})
-	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'isd': 1})
+	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
 
 @csrf_exempt
 def clear_survey_data(request):
@@ -409,7 +411,7 @@ def editsurvey(request):
 		## also fix this so its not "if title == "No Campaign Yet"
 	#	return redirect("/volunteerdash/" + netid)
 		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username, 'isd': 1})
-	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username, 'isd': 1})
+	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username, 'isd': 1, 'netid': netid})
 
 
 def managerdash(request, netid):
