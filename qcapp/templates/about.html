@@ -133,8 +133,9 @@
     .descr2{
       border-left: 2.4vw;
       border-right: 2.4vw;
-      font-size: 1.8vw;
+      font-size: 1vw;
       padding-bottom: 2vw;
+      text-align: left;
     }
 
     .button1{
@@ -169,26 +170,62 @@
 </head>
 
 <body>
-  <!-- First page -->
+  <!--First part-->
   <div class="container">
-    <div class="row">
-      <div class="col-lg-12 center">
-        <h1 class="page-header">What We Do</h1>
-      </div>
-      <div class="col-lg-12 left">
-        <p class="descr2">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
-        <p class="descr2">We can help you...</p>
+      <div class="col-lg-12"> 
+        <h1 class="page-header">Frequently Asked Questions</h1>
+        {% if isd == 1 %}
+        <h2>For Camapaign Managers</h2>
         <ul class="descr2">
-          <li>Learn which constituents are near your geographical location for canvassing on the go.</li>
-          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for Freshman council.</li>
-          <li>Keep track of which students already support you, which don't, and which can be persuaded via the data your team collects.</li>
-          <li>Preserve this data across multiple campaigns in multiple years.</li>
-          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass.</li>
-          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to).</li>
-          <br><br><br>
+          <li>
+            <h3>How do I add volunteers to my campaign?</h3>
+            <p>Give them your 8 digit campaign code, and tell them to enter it on their <a href='/volunteerdash/{{netid}}'>Volunteer for Camapaigs page</a>.</p>
+          </li>
+          <li>
+            <h3>How do I make minor changes to my survey?</h3>
+            <p>On your <a href='/volunteerdash/{{netid}}'>Manage Campaign</a> page, click the blue "Edit Current Survey" button.</p>
+          </li>
+          <li>
+            <h3>How do I make major changes to my survey?</h3>
+            <p>On your <a href='/volunteerdash/{{netid}}'>Manage Campaign</a> page, click the blue "Start a New Survey" button.  This will download your data, clear survey responses, and allow you to choose new survey questions.</p>
+          </li>
+          <li>
+            <h3>How do I tell if my change is minor or major?</h3>
+            <p>If it's a typo or changing the script, it's minor.  If you're fundamentally changing a survey question, it's probably major.  A major change is one that would necesitate canvassing students again.</p>
+          </li>
+          <li>
+            <h3>How do I download my survey data?</h3>
+            <p>On your <a href='/volunteerdash/{{netid}}'>Manage Campaign</a> page, click the blue "Download Survey Data" button.</p>
+          </li>
+          <li>
+            <h3>Can I volunteer for my own campaign?</h3>
+            <p>Yep - check out the "For Volunteers" section of this page.</p>
+          </li>
+        </ul>
+        {% endif %}
+
+        <h2>For Volunteers</h2>
+        <ul class="descr2">
+          <li>
+            <h3>How do I join a campaign?</h3>
+            <p>Ask the person in charge of the campaign for your 8-digit campaign code, and then enter that where it tells you to type in your campaign key on your <a href='/volunteerdash/{{netid}}'>Volunteer for Camapaigs page</a>.</p>
+          </li>
+          <li>
+            <h3>How do I see what campaigns I'm a volunteer for?</h3>
+            <p>Look at the list under "Your Current Campaigns" on your <a href='/volunteerdash/{{netid}}'>Volunteer for Camapaigs page</a>.</p>
+          </li>
+          <li><h3>How do I canvass for my campaign?</h3>
+            <p>Click on the campaign you want to canvass for on your <a href='/volunteerdash/{{netid}}'>Volunteer for Camapaigs page</a>.  Arrange the search paramaters to your desire, and then click "Find Students!".  This will show you the students who meet the critera you've selected.  To record data on any of these students, click the "Canvass" button on the right hand side of the table.  This will show you a screen with the script made by the owner of the campaign, as well as any questions that the owner wanted you to ask the student.  Once you've talked to the student, record thier answers and then hit Submit (or Cancel if they weren't home).</p></li>
+          <li>
+            <h3>I haven't searched for anything yet but there are students listed on the Canvass It page?</h3>
+            <p>For your convienence, the table will automatically be populated according to your last search - feel free to search again though.</p>
+          </li>
+          <li>
+            <h3>Precisely what students will be shown when I click the "Find Students" button?</h3>
+            <p>Undergrad students meeting the criteria you've selected who have not been canvassed yet.</p>
+          </li>
         </ul>
       </div>
-    </div>
   </div>
 
   <!--Second part-->
@@ -252,32 +289,26 @@
       </div>
   </div>
 
-  
-
-<!--Third part-->
+  <!-- Third page -->
   <div class="container">
-      <div class="col-lg-12 center"> 
-        <h1 class="page-header">Frequently Asked Questions</h1>
+    <div class="row">
+      <div class="col-lg-12 center">
+        <h1 class="page-header">What We Do</h1>
       </div>
-      <br>
-      <ul class="descr2">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <br><br><br>
+      <div class="col-lg-12 left">
+        <p class="descr2">QuickCanvass is a tool for Princeton students who are organizing campaigns for student government or constitutional amendments. </p>
+        <p class="descr2">We can help you...</p>
+        <ul class="descr2">
+          <li>Learn which constituents are near your geographical location for canvassing on the go.</li>
+          <li>Learn which students are actually part of your election - no more knocking on Junior's doors when running for Freshman council.</li>
+          <li>Keep track of which students already support you, which don't, and which can be persuaded via the data your team collects.</li>
+          <li>Preserve this data across multiple campaigns in multiple years.</li>
+          <li>Collaborate with your volunteers by giving them scripts and questions to ask the people they canvass.</li>
+          <li>Ensures that you and your volunteers don't knock the same area twice (unless you want to).</li>
         </ul>
-    
+      </div>
+    </div>
   </div>
-
-
-
 </body>
-
 </html>
-
-
-
 {% endblock %}

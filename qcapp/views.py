@@ -124,7 +124,6 @@ def home(request):
 @csrf_exempt
 def search_by_ids(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
@@ -143,7 +142,6 @@ def search_by_ids(request):
 @csrf_exempt
 def search(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
@@ -171,7 +169,6 @@ def search(request):
 
 def volunteercampaigns(request, netid, campaign_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	camp = Campaign.objects.filter(id=campaign_id)[0]
 	title = camp.title
@@ -226,7 +223,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 		print(voter_id)
 		for i, dat in enumerate(cvass_data):
 			if str(dat["id"]) == voter_id:
-				cvass_data[i]['a1'] = q1
+				cvass_data[i]['a1'] = q1 + " "
 				cvass_data[i]['a2'] = q2
 				cvass_data[i]['a3'] = q3
 				camp.cvass_data = str(cvass_data)
@@ -236,7 +233,6 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 	
 def promote_to_manager(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	# Promote volunteer to manager in database 
 	isd_new = 1 
@@ -417,7 +413,6 @@ def editsurvey(request):
 def managerdash(request, netid):
 	print(request.user.username, netid)
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	campaignid = "No ID yet"
 	title = "No Campaign Yet"
@@ -447,7 +442,6 @@ def managerdash(request, netid):
 
 def volunteerdash(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	legal_ids = (Userdata.objects.filter(netid=netid)[0].vol_auth_campaign_ids or "").split(",")
 	my_campaigns = []
