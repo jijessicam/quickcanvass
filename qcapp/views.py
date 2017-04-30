@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
+from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -40,8 +42,13 @@ def handler404(request):
 	return response
 
 def handler500(request):
-	response = render_to_response('500.html', {}, context_intance=RequestContext(request))
+	response = render_to_response('500.html', {}, context_instance=RequestContext(request))
 	response.status_code = 500
+	return response 
+
+def handler403(request):
+	response = render_to_response('403.html', {}, context_instance=RequestContext(request))
+	response.status_code = 403
 	return response 
 
 def logout(request):
@@ -117,7 +124,8 @@ def home(request):
 @csrf_exempt
 def search_by_ids(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
 	ids = data.get('ids')
@@ -135,7 +143,8 @@ def search_by_ids(request):
 @csrf_exempt
 def search(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
 	res_college = data.get('res_college')
@@ -162,7 +171,8 @@ def search(request):
 
 def volunteercampaigns(request, netid, campaign_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	camp = Campaign.objects.filter(id=campaign_id)[0]
 	title = camp.title
 	vol_ids = camp.volunteer_ids.split(",")
@@ -180,7 +190,8 @@ def volunteercampaigns(request, netid, campaign_id):
 
 def fillsurvey(request, netid, campaign_id, voter_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	title = "No title yet"
 	count = Campaign.objects.filter(id=campaign_id).count()
 	if request.method == "GET":
@@ -223,7 +234,8 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 
 def promote_to_manager(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	# Promote volunteer to manager in database 
 	isd_new = 1 
 	userdat = Userdata.objects.filter(netid=netid)[0]
@@ -403,7 +415,8 @@ def editsurvey(request):
 def managerdash(request, netid):
 	print(request.user.username, netid)
 	if not am_i_authorized(request, netid=netid):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	campaignid = "No ID yet"
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
@@ -432,7 +445,8 @@ def managerdash(request, netid):
 
 def volunteerdash(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		return JsonResponse({'error': "Not Authorized"})
+		# return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	legal_ids = (Userdata.objects.filter(netid=netid)[0].vol_auth_campaign_ids or "").split(",")
 	my_campaigns = []
 	seen_ids = []
