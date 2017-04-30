@@ -21,6 +21,7 @@ class Campaign(models.Model):
     survey_id = models.IntegerField(null= True)
     cvass_data = models.TextField(default=cvass_data)
     targetted_years = models.CharField(default="any", max_length=4)
+    # number_canvassed = models.IntegerField(null = True)
 
     def publish(self):
         self.save()
