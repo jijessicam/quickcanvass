@@ -124,7 +124,6 @@ def home(request):
 @csrf_exempt
 def search_by_ids(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
@@ -143,7 +142,6 @@ def search_by_ids(request):
 @csrf_exempt
 def search(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	netid = request.user.username
 	data = request.POST
@@ -171,7 +169,6 @@ def search(request):
 
 def volunteercampaigns(request, netid, campaign_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	camp = Campaign.objects.filter(id=campaign_id)[0]
 	title = camp.title
@@ -226,7 +223,7 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 		print(voter_id)
 		for i, dat in enumerate(cvass_data):
 			if str(dat["id"]) == voter_id:
-				cvass_data[i]['a1'] = q1
+				cvass_data[i]['a1'] = q1 + " "
 				cvass_data[i]['a2'] = q2
 				cvass_data[i]['a3'] = q3
 				camp.cvass_data = str(cvass_data)
@@ -236,7 +233,6 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 	
 def promote_to_manager(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	# Promote volunteer to manager in database 
 	isd_new = 1 
@@ -263,7 +259,6 @@ def editcampaign(request, netid):
 			#process data
 			targetted_years = request.POST.get('targetted_years', '')
 			title = request.POST.get('title', '')
-			deadline = form.cleaned_data.get('deadline')
 			description = request.POST.get('description', '')
 			contact = request.POST.get('contact', '')
 			owner_id = get_my_id(request.user.username)
@@ -271,7 +266,6 @@ def editcampaign(request, netid):
 			if count != 0:
 				update = Campaign.objects.filter(owner_id=owner_id)[0]
 				update.targetted_years = targetted_years
-				update.deadline = deadline
 				update.description = description
 				update.contact = contact
 				update.title = title
@@ -280,7 +274,6 @@ def editcampaign(request, netid):
 			if count == 0:
 				updcampaign = Campaign(title = title,
 					description = description,
-					deadline = deadline,
 					contact = contact,
 					targetted_years = targetted_years,
 					volunteer_ids= str(get_my_id(request.user.username)) + ",",
@@ -310,18 +303,17 @@ def editcampaign(request, netid):
 	if request.method == 'GET':
 		count = Campaign.objects.filter(owner_id=owner_id).count()
 		form = CampaignForm()
-		username = "/managerdash/" + str(request.user.username)
+		next_url = "/managerdash/" + str(request.user.username)
 		if count != 0:
 			update = Campaign.objects.filter(owner_id=owner_id)[0]
-			deadline = update.deadline
 			description = update.description
 			contact = update.contact
 			title = update.title
-			data = {"title": title, "contact": contact, "description": description, "deadline": deadline}
+			data = {"title": title, "contact": contact, "description": description}
 			form = CampaignForm(initial = data)
 		else:
-			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True, 'isd': 1})
-	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
+			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'next_url': next_url, 'eliminate_cancel': True, 'isd': 1})
+	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'isd': 1, 'netid': netid})
 
 @csrf_exempt
 def clear_survey_data(request):
@@ -333,14 +325,13 @@ def clear_survey_data(request):
 	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
 	surv.save()
 	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
-	print("test")
 	cvass_data = ""
 	with open(dir_path) as data_file:    
 	    cvass_data = json.load(data_file)
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	camp.cvass_data = cvass_data
 	camp.save()
-	return redirect('editsurvey')
+	return redirect('/editsurvey/' + request.user.username)
 
 @csrf_exempt
 def download_survey_data(request):
@@ -354,7 +345,7 @@ def download_survey_data(request):
 		to_ret.append([dat["id"], json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
 	return JsonResponse(to_ret, safe=False)
 
-def editsurvey(request):
+def editsurvey(request, netid):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -388,7 +379,7 @@ def editsurvey(request):
 					q3 = q3,
 					owner_id = owner_id)
 				updcampaign.save()
-		return redirect("/volunteerdash/" + str(request.user.username))
+		return redirect("/managerdash/" + str(request.user.username))
 	if request.method == 'GET':
 		count = Survey.objects.filter(owner_id=owner_id).count()
 		form = SurveyForm()
@@ -402,7 +393,7 @@ def editsurvey(request):
 			data = {"script": script, "q1": q1, "q2": q2, "q3": q3}
 			form = SurveyForm(initial = data)
 
-	username = "/managerdash/"
+	username = "/managerdash/" + str(request.user.username)
 	# not fixed here...
 	if title == "No Campaign Yet":
 		form = CampaignForm()
@@ -410,14 +401,13 @@ def editsurvey(request):
 		## -- like, check if manager, if not manager, return to volunteer dash
 		## also fix this so its not "if title == "No Campaign Yet"
 	#	return redirect("/volunteerdash/" + netid)
-		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': request.user.username, 'isd': 1})
-	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': request.user.username, 'isd': 1, 'netid': netid})
+		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username, 'isd': 1, 'netid' : netid})
+	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
 
 
 def managerdash(request, netid):
 	print(request.user.username, netid)
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	campaignid = "No ID yet"
 	title = "No Campaign Yet"
@@ -454,7 +444,6 @@ def managerdash(request, netid):
 
 def volunteerdash(request, netid):
 	if not am_i_authorized(request, netid=netid):
-		# return JsonResponse({'error': "Not Authorized"})
 		raise PermissionDenied
 	legal_ids = (Userdata.objects.filter(netid=netid)[0].vol_auth_campaign_ids or "").split(",")
 	my_campaigns = []
