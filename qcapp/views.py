@@ -12,24 +12,25 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
 from django import forms
+
 from .forms import CampaignForm
 from .forms import SurveyForm
+from .forms import FillSurveyForm
+
 from .models import Campaign
 from .models import Survey
 from .models import Userdata
+
 import datetime
+import django_cas_ng
 import os
 import pprint as pp
-import MySQLdb
-from .forms import FillSurveyForm
-import django_cas_ng
 
-
+from utils import *
 
 import hashlib
 import random
 
-from utils import *
 
 keys = ['first', 'last', 'dorm', 'college', 'major', 'class', 'id']
 princeton_data = get_pton_json_data(keys)
@@ -97,7 +98,6 @@ def makeaccount(request, methods=['POST']):
 	isd = 0
 	if data.get('isdirector') == 'true':
 		isd = 1
-
 	#check if user already exists
 	userdat = Userdata.objects.filter(netid=netid)
 	if not userdat:
@@ -114,9 +114,6 @@ def makeaccount(request, methods=['POST']):
 
 def about(request):
     return render(request, 'about.html', {"isd": is_user_manager(request.user.username), 'netid': request.user.username, "is_about": 1})
-
-def research(request):
-    return render(request, 'research.html')
 
 def home(request):
 	return render(request, 'home.html')
@@ -136,7 +133,7 @@ def search_by_ids(request):
 		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
-	else:	# error: room search returned no results 
+	else:	# room search returned no results 
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
 @csrf_exempt
@@ -187,7 +184,7 @@ def volunteercampaigns(request, netid, campaign_id):
 
 def fillsurvey(request, netid, campaign_id, voter_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
-		return JsonResponse({'error': "Not Authorized"})
+		raise PermissionDenied
 	json_data = json.load(open(os.path.dirname(os.path.realpath(__file__)) + '/static/princeton_json_data.txt'))
 	name = str(json_data[int(voter_id)]["first"] +" "+ json_data[int(voter_id)]["last"])
 	dorm = str(json_data[int(voter_id)]["dorm"])
@@ -243,10 +240,8 @@ def promote_to_manager(request, netid):
 	return redirect(url)
 
 def editcampaign(request, netid):
-	if not is_user_manager(netid):
-		return redirect('/accounts/login')
-	if not request.user.username == netid:
-		return redirect('/accounts/login')
+	if not am_i_authorized(request, netid=netid, manager_req=True):
+		raise PermissionDenied
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -312,7 +307,7 @@ def editcampaign(request, netid):
 			data = {"title": title, "contact": contact, "description": description}
 			form = CampaignForm(initial = data)
 		else:
-			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'next_url': next_url, 'eliminate_cancel': True, 'isd': 1})
+			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'eliminate_cancel': True, 'isd': 1})
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'isd': 1, 'netid': netid})
 
 @csrf_exempt
@@ -340,21 +335,22 @@ def download_survey_data(request):
 	surv = Survey.objects.filter(owner_id=owner_id)[0]
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	cvass_data = load_cvass_data(camp.cvass_data)
-	to_ret = [["Script", surv.script, ], ["id", "Name", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
+	target_years = camp.targetted_years
+	to_ret = [["Script", surv.script, ], ["Name", "Year", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
 	for i, dat in enumerate(cvass_data):
-		to_ret.append([dat["id"], json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
+		if (target_years == "any" or target_years == str(json_data[i]["class"])):
+			to_ret.append([json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["class"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
 	return JsonResponse(to_ret, safe=False)
 
 def editsurvey(request, netid):
+	if not am_i_authorized(request, netid=netid, manager_req=True):
+		raise PermissionDenied
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		survey = Survey.objects.filter(owner_id=owner_id)[0]
-	print(title)
-	print(survey.q1)
-
 	if request.method == 'POST':
 		form = SurveyForm(data=request.POST)
 		if form.is_valid():
@@ -389,25 +385,17 @@ def editsurvey(request, netid):
 			q1 = update.q1
 			q2 = update.q2
 			q3 = update.q3
-
 			data = {"script": script, "q1": q1, "q2": q2, "q3": q3}
 			form = SurveyForm(initial = data)
-
 	username = "/managerdash/" + str(request.user.username)
-	# not fixed here...
 	if title == "No Campaign Yet":
 		form = CampaignForm()
-		## fix this so its more redirect-y/also that it updates database -- so you can't just type the URL in
-		## -- like, check if manager, if not manager, return to volunteer dash
-		## also fix this so its not "if title == "No Campaign Yet"
-	#	return redirect("/volunteerdash/" + netid)
 		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username, 'isd': 1, 'netid' : netid})
 	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
 
 
 def managerdash(request, netid):
-	print(request.user.username, netid)
-	if not am_i_authorized(request, netid=netid):
+	if not am_i_authorized(request, netid=netid, manager_req=True):
 		raise PermissionDenied
 	campaignid = "No ID yet"
 	title = "No Campaign Yet"
@@ -452,8 +440,7 @@ def volunteerdash(request, netid):
 		if idd and idd not in seen_ids:
 			camp = Campaign.objects.filter(id=idd)[0]
 			my_campaigns.append({'url': '/volunteercampaigns/' + str(idd) + '/' + netid,
-									 'title': camp.title,
-									 'id': idd})
+									 'title': camp.title, 'id': idd})
 			seen_ids.append(idd)
 	if is_user_manager(netid):
 		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 1, "my_campaigns": my_campaigns, "is_volunteerdash": 1})
@@ -465,7 +452,6 @@ def login_verification(request):
 	data = request.POST
 	netid = (data.get('email') or "").replace('@princeton.edu', '')
 	passw = data.get('passw')
-
 	user = authenticate(username=netid, password=passw)
 	if user is not None:
 		auth_login(request, user)

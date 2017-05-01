@@ -26,34 +26,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        {% if only_link_to_home %}
-          <li><a href="/">Home</a></li>
-        {% else %}
-          {% if is_volunteerdash %}
-          <li><a href="/volunteerdash/{{netid}}" style='color: white;'>Volunteer for Campaigns</a></li>
-          {% else %}
-          <li><a href="/volunteerdash/{{netid}}">Volunteer for Campaigns</a></li>
-          {% endif %}
-
-          {% if isd == 1 %}
-            {% if is_managerdash %}
-              <li><a href="/managerdash/{{netid}}" style='color: white;'>Manage Campaign</a></li>
-            {% else %}
-              <li><a href="/managerdash/{{netid}}">Manage Campaign</a></li>
-            {% endif %}
-          {% elif isd == 0 %}
-          <li><a href="/promote-to-manager/{{netid}}">Initiate a New Campaign</a></li>
-          {% endif %}
-
-          {% if is_about %}
-          <li><a href="/about" style='color: white;'>FAQ</a></li>
-          {% else %}
-          <li><a href="/about">FAQ</a></li>
-          {% endif %}
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/logout/"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        <li><a href="/">Home</a></li>
       </ul>
     </div>
   </div>

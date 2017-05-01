@@ -2,25 +2,19 @@
 {% block content %}
 {% load static %}
 
-<!-- BEGIN DATATABLES.NET IMPORT STATEMENTS -->
+<!-- Datatables imports: Datatables from https://datatables.net/-->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"/>
-
-
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.13/af-2.1.3/b-1.2.4/b-colvis-1.2.4/b-html5-1.2.4/b-print-1.2.4/cr-1.3.2/fh-3.1.2/r-2.1.1/rg-1.0.0/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
-<!-- END DATATABLES.NET IMPORT STATEMENTS -->
 
 <script>
 $(document).ready(function() {
-  var checkout = "{{checkout}}";
-  console.log("checout follows");
-  console.log(checkout);
-
   var campaign_id = (window.location.pathname).split("/")[2];
   var netid = (window.location.pathname).split("/")[3];
   $("#year_picker").val("{{targetted_years}}");
 
+  //You've got leftover students from your last search - show these
+  var checkout = "{{checkout}}";
   if (checkout != ""){
-    console.log("nonnull checkout");
     $.ajax({
         url: "/search_by_ids/",
         context: document.body,
@@ -56,10 +50,9 @@ $(document).ready(function() {
                 console.log("You clicked the button");
             });
           }
-            // window.location = res['url'];
         },
         error: function(){
-            console.log("room search error");
+          console.log("room search error");
         }
     });
   }
@@ -67,6 +60,7 @@ $(document).ready(function() {
     console.log("null checkout");
   }
 
+  //You just made a new search - show those students
   $("#find-students").click(function(){
   $.ajax({
       url: "/search/",
@@ -108,7 +102,6 @@ $(document).ready(function() {
               console.log("You clicked the button");
           });
         }
-          // window.location = res['url'];
       },
       error: function(){
           console.log("room search error");
@@ -116,6 +109,7 @@ $(document).ready(function() {
   });
 });
 
+//When you change the res college, change which hallways can be selected
 $("#res_college_picker").on('change', function() {
   if ($(this).val() == 'Butler'){
     $("#hallway_picker_div").html("<select class=\'dropdown form-control picker\' name=\'hallway_picker\' id=\'hallway_picker\'><option value=\'any\'>any</option><option value=\'bogle\'>bogle</option><option value=\'yoseloff\'>yoseloff</option><option value=\'1976\'>1976</option><option value=\'1915\'>1915</option><option value=\'1967\'>1967</option><option value=\'emma\'>emma</option><option value=\'bloomberg\'>bloomberg</option><option value=\'wilf\'>wilf</option></select>");
@@ -200,21 +194,13 @@ $("#res_college_picker").on('change', function() {
       </div>
     </div>
 
-
-<!-- begin HTML search result table -->
-<div class="col-sm-9 col-sm-offset-1 margins" >
-  <!-- Got rid of class = responsive because it was chopping off half the table in mobile mode -->
-  <table id="search-results" class='hover center-table' width='100%' border="1" text-align="center">
-  </table>
-</div>
-<div id="error-message">
-</div>
-<div class="col-sm-10 col-sm-offset-1">
-  <p style = "margin-top: 10px">Thank you for helping {{ title }}.</p>
-</div>
-
-
-<!-- end HTML search result table -->
-
+  <div class="col-sm-9 col-sm-offset-1 margins" >
+    <table id="search-results" class='hover center-table' width='100%' border="1" text-align="center">
+    </table>
+  </div>
+  <div id="error-message"></div>
+  <div class="col-sm-10 col-sm-offset-1">
+    <p style = "margin-top: 10px">Thank you for helping {{ title }}.</p>
+  </div>
 </div>
 {% endblock %}

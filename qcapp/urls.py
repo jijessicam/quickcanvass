@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^create-new-account$', views.makeaccount, name='makeaccount'),
     url(r'^about/$', views.about, name = 'about'),
-    url(r'^research/$', views.research, name = 'research'),
     #url(r'^contact/$', views.contact, name = 'contact'),
     url(r'^search_by_ids/$', views.search_by_ids, name = 'search_by_ids'),
     url(r'^search/$', views.search, name = 'search'),

@@ -7,52 +7,30 @@ $(document).ready(function () {
         $('#form1').remove();
     }
 });</script>
-<style>
-	.button1{
-    	width: 38%;
-	}
-
-	.button2{
-		width: 40%;
-	}
-  .padded {
-    font-size: 16px;
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-	.form-style {
-		font-size: 14px;
-		color: gray;
-		font-weight: bold;
-	}
-</style>
 
 <div class="col-lg-12 center">
-      <h5 class= "text-center login-title-2 edit header-top">{{title}}</h5>
-
-<div class = "row clean-box edit clean-submit form-style">
-  	<form role = "form" action = "" method = "post">
-    <div class = "row">
-    <div class = "padded">Current Voter: {{data.name}}, {{data.dorm_number}}</div>
+  <h5 class= "text-center login-title-2 edit header-top">{{title}}</h5>
+  <div class = "row clean-box edit clean-submit form-style">
+    <form role = "form" action = "" method = "post">
+      <div class = "row">
+        <div class = "padded">Current Voter: {{data.name}}, {{data.dorm_number}}</div>
+      </div>
+      <br></br>
+      {{data.script}} <br></br>
+      <div class = "form1">
+          {% csrf_token %}
+          {{data.q1}}
+          {{form.q1}}
+          {{data.q2}}
+          {{form.q2}}
+          {{data.q3}}
+          {{form.q3}}
+          <br></br>
+        <div class = "row">
+          <a href = "{{url_on_cancel}}" class="btn button ss-button" style="margin-bottom: 10px;">Cancel</a>
+          <input type = "submit" class = "btn button ss-button" value = "Submit"/>
+        </div>
+    </form>
   </div>
-<br></br>
-  {{data.script}} <br></br>
-		<div class = "form1">
-    		{% csrf_token %}
-				{{data.q1}}
-    		{{form.q1}}
-				{{data.q2}}
-				{{form.q2}}
-				{{data.q3}}
-				{{form.q3}}
-				<br></br>
-     <div class = "row">
-        	<a href = "{{url_on_cancel}}" class="btn button ss-button" style="margin-bottom: 10px;">Cancel</a>
-
-  		<input type = "submit" class = "btn button ss-button" value = "Submit"/>
-</div>
-	</form>
-</div>
-
 </div>
 {% endblock %}
