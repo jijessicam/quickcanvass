@@ -437,11 +437,18 @@ def managerdash(request, netid):
 		for each in volunteers:
 			if each:
 				names.append(Userdata.objects.filter(id=each)[0].netid)
+		print("HERE I AM AT LINE 440-------------------------")
+		user = Userdata.objects.get(id=owner_id)
+		campaign_id = getattr(user, "manager_auth_campaign_id")
+		print("campaign id: ", campaign_id)
+		cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
+		count_dict = count_canvassed_by_res_college(princeton_data, cvass_data)
+		print(count_dict)
 		campurl = "/editcampaign/" + str(netid)
 		survurl = "/editsurvey/" + str(netid)
 		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl,
 				'netid': netid, "isd": 1, "campaign_code" : campaign_code,
-				"title" : title, "volunteers":  names, "is_managerdash": 1})
+				"title" : title, "volunteers":  names, "is_managerdash": 1, "num_canvassed": count_dict})
 	else:
 		return redirect("/volunteerdash/" + netid)
 
