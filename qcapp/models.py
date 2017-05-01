@@ -13,7 +13,6 @@ class Campaign(models.Model):
     description = models.TextField()
     # members = models.TextField()
     datetime_created = models.DateTimeField(default=timezone.now)
-    deadline = models.DateTimeField(null = True)
     contact = models.CharField(max_length = 200, null = True)
     volunteer_ids = models.CharField(max_length = 2500, null = True)
     code = models.CharField(max_length = 8, null = True)

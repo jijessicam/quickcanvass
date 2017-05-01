@@ -259,7 +259,6 @@ def editcampaign(request, netid):
 			#process data
 			targetted_years = request.POST.get('targetted_years', '')
 			title = request.POST.get('title', '')
-			deadline = form.cleaned_data.get('deadline')
 			description = request.POST.get('description', '')
 			contact = request.POST.get('contact', '')
 			owner_id = get_my_id(request.user.username)
@@ -267,7 +266,6 @@ def editcampaign(request, netid):
 			if count != 0:
 				update = Campaign.objects.filter(owner_id=owner_id)[0]
 				update.targetted_years = targetted_years
-				update.deadline = deadline
 				update.description = description
 				update.contact = contact
 				update.title = title
@@ -276,7 +274,6 @@ def editcampaign(request, netid):
 			if count == 0:
 				updcampaign = Campaign(title = title,
 					description = description,
-					deadline = deadline,
 					contact = contact,
 					targetted_years = targetted_years,
 					volunteer_ids= str(get_my_id(request.user.username)) + ",",
@@ -306,18 +303,17 @@ def editcampaign(request, netid):
 	if request.method == 'GET':
 		count = Campaign.objects.filter(owner_id=owner_id).count()
 		form = CampaignForm()
-		username = "/managerdash/" + str(request.user.username)
+		next_url = "/managerdash/" + str(request.user.username)
 		if count != 0:
 			update = Campaign.objects.filter(owner_id=owner_id)[0]
-			deadline = update.deadline
 			description = update.description
 			contact = update.contact
 			title = update.title
-			data = {"title": title, "contact": contact, "description": description, "deadline": deadline}
+			data = {"title": title, "contact": contact, "description": description}
 			form = CampaignForm(initial = data)
 		else:
-			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'eliminate_cancel': True, 'isd': 1})
-	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
+			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'next_url': next_url, 'eliminate_cancel': True, 'isd': 1})
+	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'isd': 1, 'netid': netid})
 
 @csrf_exempt
 def clear_survey_data(request):
@@ -329,14 +325,13 @@ def clear_survey_data(request):
 	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
 	surv.save()
 	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
-	print("test")
 	cvass_data = ""
 	with open(dir_path) as data_file:    
 	    cvass_data = json.load(data_file)
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	camp.cvass_data = cvass_data
 	camp.save()
-	return redirect('editsurvey')
+	return redirect('/editsurvey/' + request.user.username)
 
 @csrf_exempt
 def download_survey_data(request):

@@ -22,10 +22,6 @@
 		<div class = "row">
 		{{form.title}}</div>
 		<div class = "row form-style padding">
-			{{form.deadline.label}}:</div>
-		<div class = "row">
-		{{form.deadline}}</div>
-		<div class = "row form-style padding">
 			{{form.targetted_years.label}}:</div>
 		<div class = "row">
 		{{form.targetted_years}}</div>
@@ -40,7 +36,7 @@
 
         <div class = "row">
           {% if eliminate_cancel == None %}
-        	 <a href = {{username}}  class="btn ss-button button" style ="margin-bottom: 10px;" >Cancel</a>
+        	 <a href = "{{next_url}}"  class="btn ss-button button" style ="margin-bottom: 10px;" >Cancel</a>
           {% endif %}
         </div>
   		<input type = "submit" class="btn ss-button button" value ="Submit"/>
