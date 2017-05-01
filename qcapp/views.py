@@ -350,7 +350,7 @@ def download_survey_data(request):
 		to_ret.append([dat["id"], json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
 	return JsonResponse(to_ret, safe=False)
 
-def editsurvey(request):
+def editsurvey(request, netid):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
@@ -384,7 +384,7 @@ def editsurvey(request):
 					q3 = q3,
 					owner_id = owner_id)
 				updcampaign.save()
-		return redirect("/volunteerdash/" + str(request.user.username))
+		return redirect("/managerdash/" + str(request.user.username))
 	if request.method == 'GET':
 		count = Survey.objects.filter(owner_id=owner_id).count()
 		form = SurveyForm()
