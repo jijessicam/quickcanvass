@@ -83,15 +83,44 @@ $(document).ready(function() {
 });
 </script>
 
+<style>
+  .col-centered {
+    float: none;
+    margin: 0 auto;
+  }
+  .first-thing {
+    margin-left: 8%;
+  }
+  .sec-thing {
+    margin-left: 4%;
+  }
+  .third-thing {
+    margin-left: 1%;
+  }
+  th {
+    font-weight: bold;
+    text-align: center;
+  }
+  td {
+    padding: 5px 0;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 15px 0;
+    margin: 0 auto;
+  }
+
+</style>
+
+
 <div class="col-lg-12 center">
       <h2 class="page-header top-header">{{title}}</h2>
       <h5>Campaign Code: {{campaign_code}}</h5>
-      <h5>{% for key, value in num_canvassed.items %}{{ value }}{% endfor %}</h5>
 </div>
 
 
-<div class="row">
-  <div class="col-sm-4 col-sm-offset-1">
+<div class="row col-centered">
+  <div class="col-md-3 col-md-offset-2 first-thing">
     <h3 class = "page-header small-show"> Options </h3>
     <div class = "row">
       <a href = "/editcampaign/{{netid}}" class = 'button btn ss-button top-button'>Edit Campaign</a>
@@ -105,26 +134,37 @@ $(document).ready(function() {
     </div>
   </div>
 
+  <div class="col-md-3 sec-thing">
+    <h3 class = "page-header">Campaign Progress</h3>
+    <div class = "row clean-box-centered-content manager">
+      <table>
+        <tr>
+          <th> Res College </th>
+          <th> Canvassed </th>
+          <th> Total Number of Students</th>
+        </tr>
+        {% for key, value in num_canvassed.items %} 
+          <tr>
+            <td>{{key}}</td>
+            {% for v in value %}
+              <td>{{v}}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+  </div>
+  </div>
 
 
-  <div class="col-sm-4 col-sm-offset-2">
+  <div class="col-md-3 third-thing">
     <h3 class = "page-header">Volunteers</h3>
     <div class = "row clean-box-centered-content manager">
       {%for name in volunteers%}
       <div class="volunteer-name-list">{{ name }}</div>
       {% endfor %}
+    </div>
+  </div>
+
 </div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
