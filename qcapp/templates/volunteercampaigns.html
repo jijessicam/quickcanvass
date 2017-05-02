@@ -10,9 +10,10 @@
 $(document).ready(function() {
   var campaign_id = (window.location.pathname).split("/")[2];
   var netid = (window.location.pathname).split("/")[3];
-  $("#year_picker").val("{{targetted_years}}");
+  $("#year_picker").val("{{targeted_years}}");
 
   //You've got leftover students from your last search - show these
+  console.log("{{error}}");
   var checkout = "{{checkout}}";
   if (checkout != ""){
     $.ajax({
@@ -24,32 +25,26 @@ $(document).ready(function() {
         },
         type: 'POST',
         success: function(res){
-          if(res['error'] == 'room search failed'){
-            console.log('room search failed');
-            $('error-message').html("Room search failed");
-          }
-          else{ // success!
-            if (typeof table !== 'undefined'){
-              table.destroy();}
+          if (typeof table !== 'undefined'){
+            table.destroy();}
             table = $('#search-results').DataTable( {
-              "paging":   false,
-              "ordering": false,
-              "language": {
-                "emptyTable": "No students match this description!"
-              },
-              "info":     false,
-              "searching": false,
-              data: res['results'],
-              columns: [
-                  { title: "Dorm" },
-                  { title: "Name" },
-                  { title: "Canvass"}
-              ]
-            } );
-            $('#search-results tbody').on( 'click', 'button', function() {
-                console.log("You clicked the button");
-            });
-          }
+            "paging":   false,
+            "ordering": false,
+            "language": {
+              "emptyTable": res['error']
+            },
+            "info":     false,
+            "searching": false,
+            data: res['results'],
+            columns: [
+                { title: "Dorm" },
+                { title: "Name" },
+                { title: "Canvass"}
+            ]
+          } );
+          $('#search-results tbody').on( 'click', 'button', function() {
+              console.log("You clicked the button");
+          });
         },
         error: function(){
           console.log("room search error");
@@ -76,32 +71,26 @@ $(document).ready(function() {
       },
       type: 'POST',
       success: function(res){
-        if(res['error'] == 'room search failed'){
-          console.log('room search failed');
-          $('error-message').html("Room search failed");
-        }
-        else{ // success!
-          if (typeof table !== 'undefined'){
-            table.destroy();}
+        if (typeof table !== 'undefined'){
+          table.destroy();}
           table = $('#search-results').DataTable( {
-            "paging":   false,
-            "ordering": false,
-            "language": {
-              "emptyTable": "No students match this description!"
-            },
-            "info":     false,
-            "searching": false,
-            data: res['results'],
-            columns: [
-                { title: "Dorm" },
-                { title: "Name" },
-                { title: "Canvass"}
-            ]
-          } );
-          $('#search-results tbody').on( 'click', 'button', function() {
-              console.log("You clicked the button");
-          });
-        }
+          "paging":   false,
+          "ordering": false,
+          "language": {
+            "emptyTable": res['error']
+          },
+          "info":     false,
+          "searching": false,
+          data: res['results'],
+          columns: [
+              { title: "Dorm" },
+              { title: "Name" },
+              { title: "Canvass"}
+          ]
+        } );
+        $('#search-results tbody').on( 'click', 'button', function() {
+            console.log("You clicked the button");
+        });
       },
       error: function(){
           console.log("room search error");

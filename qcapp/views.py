@@ -134,7 +134,7 @@ def search_by_ids(request):
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# room search returned no results 
-		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
+		return JsonResponse({'error': "Click \"Find Students\" to begin!" ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
 @csrf_exempt
 def search(request):
@@ -162,7 +162,7 @@ def search(request):
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# error: room search returned no results 
-		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
+		return JsonResponse({'error': "No students match this description!" ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
 def volunteercampaigns(request, netid, campaign_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
@@ -170,7 +170,7 @@ def volunteercampaigns(request, netid, campaign_id):
 	camp = Campaign.objects.filter(id=campaign_id)[0]
 	title = camp.title
 	vol_ids = camp.volunteer_ids.split(",")
-	target_years = camp.targetted_years
+	target_years = camp.targeted_years
 	if (not request.user.username == netid) or (str(get_my_id(netid)) not in vol_ids):
 		return redirect('/accounts/login')
 	fillsurveyurl = "/fillsurvey/" + str(campaign_id)+ "/" + str(netid)
@@ -179,7 +179,7 @@ def volunteercampaigns(request, netid, campaign_id):
 		'fillsurvey': fillsurveyurl,
 		'title': title,
 		'isd': is_user_manager(netid),
-		'targetted_years': target_years,
+		'targeted_years': target_years,
 		'checkout': Userdata.objects.filter(netid=request.user.username)[0].checkout})
 
 def fillsurvey(request, netid, campaign_id, voter_id):
@@ -252,7 +252,7 @@ def editcampaign(request, netid):
 		if form.is_valid():
 			#CampaignInfo.save()
 			#process data
-			targetted_years = request.POST.get('targetted_years', '')
+			targeted_years = request.POST.get('targeted_years', '')
 			title = request.POST.get('title', '')
 			description = request.POST.get('description', '')
 			contact = request.POST.get('contact', '')
@@ -260,7 +260,7 @@ def editcampaign(request, netid):
 			count = Campaign.objects.filter(owner_id=owner_id).count()
 			if count != 0:
 				update = Campaign.objects.filter(owner_id=owner_id)[0]
-				update.targetted_years = targetted_years
+				update.targeted_years = targeted_years
 				update.description = description
 				update.contact = contact
 				update.title = title
@@ -270,7 +270,7 @@ def editcampaign(request, netid):
 				updcampaign = Campaign(title = title,
 					description = description,
 					contact = contact,
-					targetted_years = targetted_years,
+					targeted_years = targeted_years,
 					volunteer_ids= str(get_my_id(request.user.username)) + ",",
 					owner_id = owner_id)
 				updcampaign.save()
@@ -304,7 +304,8 @@ def editcampaign(request, netid):
 			description = update.description
 			contact = update.contact
 			title = update.title
-			data = {"title": title, "contact": contact, "description": description}
+			targeted_years = update.targeted_years
+			data = {"title": title, "contact": contact, "description": description, "targeted_years": targeted_years}
 			form = CampaignForm(initial = data)
 		else:
 			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'eliminate_cancel': True, 'isd': 1})
@@ -335,7 +336,8 @@ def download_survey_data(request):
 	surv = Survey.objects.filter(owner_id=owner_id)[0]
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	cvass_data = load_cvass_data(camp.cvass_data)
-	target_years = camp.targetted_years
+	target_years = camp.targeted_years
+	print(target_years)
 	to_ret = [["Script", surv.script, ], ["Name", "Year", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
 	for i, dat in enumerate(cvass_data):
 		if (target_years == "any" or target_years == str(json_data[i]["class"])):

@@ -7,11 +7,11 @@ import os, json
 dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
 with open(dir_path) as data_file:    
     cvass_data = json.load(data_file)
+
 # Create your models here.
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    # members = models.TextField()
     datetime_created = models.DateTimeField(default=timezone.now)
     contact = models.CharField(max_length = 200, null = True)
     volunteer_ids = models.CharField(max_length = 2500, null = True)
@@ -19,7 +19,7 @@ class Campaign(models.Model):
     owner_id = models.IntegerField(null = True)
     survey_id = models.IntegerField(null= True)
     cvass_data = models.TextField(default=cvass_data)
-    targetted_years = models.CharField(default="any", max_length=4)
+    targeted_years = models.CharField(default="any", max_length=4)
 
     def publish(self):
         self.save()
