@@ -3,10 +3,12 @@
 
 <script>
 $(document).ready(function() {
-    //Remove final line of volunteer list
+    //Remove bottom border of last name in volunteer list
     var final_name = $(".volunteer-name-list")[$(".volunteer-name-list").length - 1];
     $(final_name).css('border-bottom', 'none');
 
+    //function to export to csv
+    //Function from user Xavier John at http://stackoverflow.com/a/24922761/3238611
     function exportToCsv(filename, rows) {
         var processRow = function (row) {
             var finalVal = '';
@@ -54,7 +56,6 @@ $(document).ready(function() {
         context: document.body,
         type: 'POST',
         success: function(res){
-            //change to dashboard later
            exportToCsv("survey_data.csv", res)
         },
         error: function(){
@@ -70,8 +71,6 @@ $(document).ready(function() {
           context: document.body,
           type: 'POST',
           success: function(res){
-              //change to dashboard later
-            console.log("success");
             exportToCsv("survey_data.csv", res);
           },
           error: function(){
@@ -114,6 +113,7 @@ $(document).ready(function() {
 
 
 <div class="col-lg-12 center">
+<<<<<<< HEAD
       <h2 class="page-header top-header">{{title}}</h2>
       <h5>Campaign Code: {{campaign_code}}</h5>
 </div>
@@ -121,6 +121,15 @@ $(document).ready(function() {
 
 <div class="row col-centered">
   <div class="col-md-3 col-md-offset-2 first-thing">
+=======
+  <h2 class="page-header top-header">{{title}}</h2>
+  <h5>Campaign Code: {{campaign_code}}</h5>
+  <h5>{% for key, value in num_canvassed.items %}{{ value }}{% endfor %}</h5>
+</div>
+
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-1">
+>>>>>>> 10db18a3897fc930673470ba4cc49aaf6e572e74
     <h3 class = "page-header small-show"> Options </h3>
     <div class = "row">
       <a href = "/editcampaign/{{netid}}" class = 'button btn ss-button top-button'>Edit Campaign</a>
@@ -130,9 +139,9 @@ $(document).ready(function() {
       <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
       <br><br>
       <a href = "/clear_survey_data" class = 'button btn ss-button' id = 'start_new_survey_btn'>Start a New Survey</a>
-      <!-- id="start_new_survey_btn" -->
     </div>
   </div>
+<<<<<<< HEAD
 
   <div class="col-md-3 sec-thing">
     <h3 class = "page-header">Campaign Progress</h3>
@@ -157,6 +166,9 @@ $(document).ready(function() {
 
 
   <div class="col-md-3 third-thing">
+=======
+  <div class="col-sm-4 col-sm-offset-2">
+>>>>>>> 10db18a3897fc930673470ba4cc49aaf6e572e74
     <h3 class = "page-header">Volunteers</h3>
     <div class = "row clean-box-centered-content manager">
       {%for name in volunteers%}
@@ -164,7 +176,11 @@ $(document).ready(function() {
       {% endfor %}
     </div>
   </div>
+<<<<<<< HEAD
 
 </div>
 
+=======
+</div>
+>>>>>>> 10db18a3897fc930673470ba4cc49aaf6e572e74
 {% endblock %}

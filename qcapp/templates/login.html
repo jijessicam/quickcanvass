@@ -3,7 +3,6 @@
 <script>
 $(document).ready(function() {
     $("#login-btn").click(function(){
-    console.log("test");
     $.ajax({
         url: "/login_verification/",
         context: document.body,
@@ -35,21 +34,15 @@ $(document).ready(function() {
         <div class="col-lg-12">
             <h1 class = "text-center login-title" href="">QuickCanvass!</h1>
             <div class="account-wall">
-                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                  alt="">
+                <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120" alt="">
                 <form class="form-signin">
                     <input type="text" class="form-control" id="email" placeholder="NetId" required autofocus>
                     <input type="password" class="form-control" id="passw" placeholder="Password" required>
                     <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badpass'
                         <strong>The username or password you entered is incorrect.</strong>
-
                     </div>
-                    <div>
-                        <a class="button-submit btn" id="login-btn">Login</a>
-                    </div>
-                    <div>
-                        <a href="/signup" class="text-left button-help btn">sign up! </a>
-                    </div>
+                    <a class="button-submit btn" id="login-btn">Login</a>
+                    <a href="/signup" class="text-left button-help btn">sign up!</a>
                 </form>
             </div>
         </div>
