@@ -37,33 +37,40 @@ princeton_data = get_pton_json_data(keys)
 
 # Create your views here.
 
+#404 errors
 def handler404(request):
 	response = render_to_response('404.html', {}, context_instance=RequestContext(request))
 	response.status_code = 404
 	return response
 
+#500 errors
 def handler500(request):
 	response = render_to_response('500.html', {}, context_instance=RequestContext(request))
 	response.status_code = 500
 	return response 
 
+#403 errors - usually when you try to access an account that you are not logged into
 def handler403(request):
 	response = render_to_response('403.html', {}, context_instance=RequestContext(request))
 	response.status_code = 403
 	return response 
 
+#log out the user and return to home
 def logout(request):
 	req = django_cas_ng.views.logout(request)
 	return redirect('/')
 
+#page to log in the user
 @login_required(login_url='')
 def login(request):
 	return render(request, 'login.html', {'only_link_to_home': 1})
 
+#page to sign up new users
 @login_required(login_url='')
 def signup(request):
 	return render(request, 'signup.html', {'only_link_to_home': 1})
 
+#Internal url to join new campaign given campaign code
 @csrf_exempt
 def join_new_campaign(request, methods=['POST']):
 	data = request.POST
@@ -88,7 +95,7 @@ def join_new_campaign(request, methods=['POST']):
 		userdat.save()
 	return JsonResponse({'error': None })
 
-
+#Internal url to create a new account from the signup page
 @csrf_exempt
 def makeaccount(request, methods=['POST']):
 	#Create a new account from signup page
@@ -111,13 +118,15 @@ def makeaccount(request, methods=['POST']):
 	else:	#user did exist
 		return JsonResponse({'error': 'netid already exists' ,'url' :'/signup'})
 
-
+#FAQs for users
 def about(request):
     return render(request, 'about.html', {"isd": is_user_manager(request.user.username), 'netid': request.user.username, "is_about": 1})
 
+#Home page
 def home(request):
 	return render(request, 'home.html')
 
+#Internal url to search for unsurveyed voters by a list of voter-ids as defined by json files
 @csrf_exempt
 def search_by_ids(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
@@ -136,6 +145,7 @@ def search_by_ids(request):
 	else:	# room search returned no results 
 		return JsonResponse({'error': "Click \"Find Students\" to begin!" ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
+#Internal url to search for unsurveyed voters by res college, other factors
 @csrf_exempt
 def search(request):
 	if not am_i_authorized(request, camp_id=request.POST.get('campaign_id')):
@@ -161,9 +171,10 @@ def search(request):
 	udata.save()
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
-	else:	# error: room search returned no results 
+	else:	# room search returned no results 
 		return JsonResponse({'error': "No students match this description!" ,'url' :'/volunteercampaigns', 'results': []}, safe=False)
 
+#Page where netid searches for people to canvass for campaign_id
 def volunteercampaigns(request, netid, campaign_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
 		raise PermissionDenied
@@ -182,6 +193,7 @@ def volunteercampaigns(request, netid, campaign_id):
 		'targeted_years': target_years,
 		'checkout': Userdata.objects.filter(netid=request.user.username)[0].checkout})
 
+#Page where netid canvasses the voter_id for campaign_id
 def fillsurvey(request, netid, campaign_id, voter_id):
 	if not am_i_authorized(request, netid=netid, camp_id=campaign_id):
 		raise PermissionDenied
@@ -227,7 +239,8 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 				camp.save()
 				break
 		return redirect('/volunteercampaigns/' + campaign_id + '/' + netid)
-	
+
+#Internal url for promoting users to managers
 def promote_to_manager(request, netid):
 	if not am_i_authorized(request, netid=netid):
 		raise PermissionDenied
@@ -239,6 +252,7 @@ def promote_to_manager(request, netid):
 	url = "/editcampaign/" + str(netid)
 	return redirect(url)
 
+#Let netid edit their campaign.
 def editcampaign(request, netid):
 	if not am_i_authorized(request, netid=netid, manager_req=True):
 		raise PermissionDenied
@@ -250,8 +264,6 @@ def editcampaign(request, netid):
 	if request.method == 'POST':
 		form = CampaignForm(data=request.POST)
 		if form.is_valid():
-			#CampaignInfo.save()
-			#process data
 			targeted_years = request.POST.get('targeted_years', '')
 			title = request.POST.get('title', '')
 			description = request.POST.get('description', '')
@@ -311,6 +323,7 @@ def editcampaign(request, netid):
 			return render(request, 'editcampaign.html', {'form': form, 'title': title, 'eliminate_cancel': True, 'isd': 1})
 	return render(request, 'editcampaign.html', {'form': form, 'title': title, 'isd': 1, 'netid': netid})
 
+#Internal url to clear all data from a survey - allows user to begin new survey
 @csrf_exempt
 def clear_survey_data(request):
 	owner_id = get_my_id(request.user.username)
@@ -329,6 +342,7 @@ def clear_survey_data(request):
 	camp.save()
 	return redirect('/editsurvey/' + request.user.username)
 
+#Internal url for downloading survey data
 @csrf_exempt
 def download_survey_data(request):
 	owner_id = get_my_id(request.user.username)
@@ -344,6 +358,7 @@ def download_survey_data(request):
 			to_ret.append([json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["class"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
 	return JsonResponse(to_ret, safe=False)
 
+#Let netid edit the survey of their current campaign
 def editsurvey(request, netid):
 	if not am_i_authorized(request, netid=netid, manager_req=True):
 		raise PermissionDenied
@@ -395,7 +410,7 @@ def editsurvey(request, netid):
 		return render(request, 'editcampaign.html', {'form': form, 'title': 'Before You Create A Survey, Please Create A Campaign.', 'username': username, 'isd': 1, 'netid' : netid})
 	return render(request, 'editsurvey.html', {'form': form, 'title': title, 'username': username, 'isd': 1, 'netid': netid})
 
-
+#Dashboard for managers - key links and stats
 def managerdash(request, netid):
 	if not am_i_authorized(request, netid=netid, manager_req=True):
 		raise PermissionDenied
@@ -432,6 +447,7 @@ def managerdash(request, netid):
 	else:
 		return redirect("/volunteerdash/" + netid)
 
+#Dashboard for volunteers - current campaigns and ability to join a new campaign
 def volunteerdash(request, netid):
 	if not am_i_authorized(request, netid=netid):
 		raise PermissionDenied
@@ -449,17 +465,16 @@ def volunteerdash(request, netid):
 	else:
 		return render(request, 'volunteerdash.html', {'netid': netid, "isd": 0, "my_campaigns": my_campaigns, "is_volunteerdash": 1})
 
+#Internal url to verify logins
 @csrf_exempt
 def login_verification(request):
 	data = request.POST
 	netid = (data.get('email') or "").replace('@princeton.edu', '')
 	passw = data.get('passw')
 	user = authenticate(username=netid, password=passw)
-	if user is not None:
+	if user is not None: #authorized
 		auth_login(request, user)
-		print("authorized")
 		return JsonResponse({'url':'/managerdash/' + user.__dict__['username']})
-	else:
-	    print("not authed")
+	else: #not authorized
 	    return JsonResponse({'url':'/login/', 'error': 'wrong password'})
 
