@@ -79,6 +79,28 @@ $(document).ready(function() {
       });
     });
 
+    if ($(window).width() < 500){
+        $("#hide-downloads-buttons-div").css("display", "initial");
+        $("#downloads-buttons-div").css("display", "none");
+      }
+      else {
+        $("#hide-downloads-buttons-div").css("display", "none");
+        $("#downloads-buttons-div").css("display", "initial");
+      }
+
+    $(window).resize(function() {
+
+      var width = $(window).width();
+      console.log(width);
+      if (width < 500){
+        $("#hide-downloads-buttons-div").css("display", "initial");
+        $("#downloads-buttons-div").css("display", "none");
+      }
+      else {
+        $("#hide-downloads-buttons-div").css("display", "none");
+        $("#downloads-buttons-div").css("display", "initial");
+      }
+    });
 });
 </script>
 
@@ -125,9 +147,14 @@ $(document).ready(function() {
       <br><br>
       <a href = "/editsurvey/{{netid}}" class = 'button btn ss-button'>Edit Current Survey</a>
       <br><br>
-      <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
-      <br><br>
-      <a href = "/clear_survey_data" class = 'button btn ss-button' id = 'start_new_survey_btn'>Start a New Survey</a>
+      <div id="downloads-buttons-div">
+        <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
+        <br><br>
+        <a href = "/clear_survey_data" class = 'button btn ss-button' id = 'start_new_survey_btn'>Start a New Survey</a>
+      </div>
+      <div id="hide-downloads-buttons-div">
+        <p>Visit our desktop site to download your results as a csv!</p>
+      </div>
     </div>
   </div>
 
@@ -137,9 +164,9 @@ $(document).ready(function() {
     <div class = "row clean-box-centered-content manager">
       <table>
         <tr>
-          <th> Res College </th>
-          <th> Canvassed </th>
-          <th> Total Number of Students</th>
+          <th> College </th>
+          <th> Total Canvassed </th>
+          <th> Number of Students</th>
         </tr>
         {% for key, value in num_canvassed.items %} 
           <tr>
@@ -155,13 +182,11 @@ $(document).ready(function() {
 
 
   <div class="col-md-3 third-thing">
-  <div class="col-sm-4 col-sm-offset-2">
     <h3 class = "page-header">Volunteers</h3>
     <div class = "row clean-box-centered-content manager">
       {%for name in volunteers%}
       <div class="volunteer-name-list">{{ name }}</div>
       {% endfor %}
-    </div>
   </div>
 
 

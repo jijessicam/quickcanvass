@@ -227,10 +227,6 @@ button {
   .font-size-tho {
     font-size: 13px;
   }
-  .manager {
-    width: 50%;
-    margin-left: 25%;
-  }
   .small-show {
     display: block;
   }
@@ -298,10 +294,7 @@ button {
   .center-table{
     text-align: center;
   }
-  .manager {
-    width: 75%;
-    margin-left: 12%;
-  }
+
   .small-show {
     display: none;
   }
@@ -452,4 +445,8 @@ button {
   font-size: 14px;
   color: gray;
   font-weight: bold;
+}
+
+.endpage {
+  margin-bottom: 20px;
 }
