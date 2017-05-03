@@ -22,23 +22,19 @@
     .firstpage{
       background: url("{% static 'images/background.png' %}") no-repeat center center;
       width:100%;
+      position: relative;
       overflow: hidden;
-
     }
-
     .grayPage{
       background-color: rgba(0, 0, 0, 0.5);
       width: 100%;
     }
-
     .title{
       font-size: 7vw;
       margin-top: 8vw;
       color:white;
       text-shadow: #000 5px 2px 6px;
-
     }
-
     .logo{
       width: 32vw;
       height: 22vw;
@@ -46,7 +42,6 @@
       margin-left: 36vw;
       margin-top: -2vw;
     }
-
     .descr{
       color:white;
       border-left: 2.4vw;
@@ -54,16 +49,12 @@
       font-size: 2.6vw;
       text-shadow: #000 -2px 2px 2px;
     }
-
-
-
     .descr2{
       margin-left: 2.2vw;
       margin-right: 2.2vw;
       font-size: 2.5vw;
       padding-bottom: 2vw;
     }
-
     .button1{
       margin-top: 8vw;
       margin-bottom: -1vw;
@@ -73,7 +64,6 @@
       color: white;
       font-weight: normal;
     }
-
     .button2{
       background-color: #5bc0de;
       width: 45%;
@@ -82,11 +72,9 @@
       font-weight: normal;
       margin-bottom: 12vw;
     }
-
     .names{
       color: #e2dcdc;
     }
-
     .email{
       color: #75dccf;
     }
@@ -100,12 +88,10 @@
       position: relative;
       overflow: hidden;
     }
-
     .grayPage{
       background-color:rgba(1,1,1,0.93);
       width: 100%;
     }
-
     .title{
       font-size: 7vw;
       margin-top: 8vw;
@@ -113,10 +99,8 @@
       margin-right: 25vw;
       color:white;
       margin-bottom: 3vw;
-      text-shadow: #000 8px 2px 9px;
-      
+      text-shadow: #000 8px 2px 9px;    
     }
-
     .logo{
       width: 26vw;
       height: 16vw;
@@ -124,24 +108,19 @@
       margin-left: 37vw;
       margin-top: -1vw;
     }
-
     .descr{
       color:white;
       margin-left: 25vw;
       margin-right: 25vw;
       font-size: 1.7vw;
-
       text-shadow: #000 -2px 1px 2px;
-
     }
-
     .descr2{
       border-left: 2.4vw;
       border-right: 2.4vw;
       font-size: 1.8vw;
       padding-bottom: 2vw;
     }
-
     .button1{
       margin-top: 5vw;
       background-color: #5bc0de;
@@ -151,7 +130,6 @@
       font-size: 1.8vw;
       margin-bottom: 2px;
     }
-
     .button2{
       background-color: #5bc0de;
       width: 40%;
@@ -160,13 +138,29 @@
       font-size: 1.8vw;
       margin-bottom: 4vw;
     }
-
     .names{
       color: #e2dcdc;
     }
-
     .email{
       color: #75dccf;
+    }
+    .box2{
+      background-color:rgba(0, 0, 0, 0.5);
+      padding-top: 2vw;
+      padding-bottom: 2vw;
+
+    }
+    .box1{
+      background-color:rgba(0, 0, 0, 0.5); 
+      margin-bottom: 0px;
+      padding-top: 2vw;
+    }
+    .general{
+      background-color: black; 
+      height: 100%; 
+      background-position: center; 
+      background-repeat: no-repeat; 
+      background-size: cover;
     }
   }
 
@@ -176,21 +170,18 @@
 <body>
    
   <!--First part-->
-  <div style='background-color: black; height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover;'>
+  <div class="general">
     <div class="container firstpage" >
       <div>
         <div class="center">
-          <h1 class="title" style='background-color:rgba(0, 0, 0, 0.5); margin-bottom: 0px'>QuickCanvass</h1>
-          <p class="descr" style='background-color:rgba(0, 0, 0, 0.5);'>Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
+          <h1 class="title box1" >QuickCanvass</h1>
+          <p class="descr box2">Easiest way for Princeton Tigers to organize campaigns for student government or constitutional amendments.</p>
         </div>
       </div>
-      <div>
-          <a href="login" class="btn btn-info button1">Login</a>
-        </div>
-        <br>
-        <div>
+      <div class= "center">
+          <a href="login" class="btn btn-info button1">Login</a><br><br>
           <a href="signup" class="btn btn-info button2">Sign Up</a>
-        </div>
+      </div>
     </div>
   </div>
 
