@@ -117,16 +117,8 @@ $(document).ready(function() {
       <h5>Campaign Code: {{campaign_code}}</h5>
 </div>
 
-
-<div class="row col-centered">
-  <div class="col-md-3 col-md-offset-2 first-thing">
-  <h2 class="page-header top-header">{{title}}</h2>
-  <h5>Campaign Code: {{campaign_code}}</h5>
-  <h5>{% for key, value in num_canvassed.items %}{{ value }}{% endfor %}</h5>
-</div>
-
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-1">
+  <div class="col-md-3 first-thing">
     <h3 class = "page-header small-show"> Options </h3>
     <div class = "row">
       <a href = "/editcampaign/{{netid}}" class = 'button btn ss-button top-button'>Edit Campaign</a>
