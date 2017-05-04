@@ -95,6 +95,32 @@ def join_new_campaign(request, methods=['POST']):
 		userdat.save()
 	return JsonResponse({'error': None })
 
+#Internal url to add a volunteer to a campaign given their username 
+@csrf_exempt
+def add_volunteer_to_campaign(request, methods=['POST']):
+	data = request.POST
+	username = data.get('username')
+	print("volunteer's username: ", username)
+
+	if Userdata.objects.filter(netid=username).count() == 0:
+		return JsonResponse({"error": "this volunteer username does not exist"})
+	userdat = Userdata.objects.filter(netid=username)[0]	# this is the volunteer to be added
+	owner_id = str(get_my_id(request.user.username))		# this is manager's netID
+	print("manager's ID: ", owner_id)
+	camp = Campaign.objects.filter(owner_id=owner_id)[0]	# this is the manager's campaign
+
+	# EDIT CAMPAIGN VOLUNTEERS COLUMN
+	id_to_add = str(userdat.id)
+	camp.volunteer_ids = camp.volunteer_ids + id_to_add + ","
+	camp.save()
+
+	# EDIT VOLUNTEER'S CAMPAIGN FIELD 
+	userdat.manager_auth_campaign_id = str(camp.id)
+	userdat.vol_auth_campaign_ids = userdat.vol_auth_campaign_ids + "," + str(camp.id)
+	userdat.save()
+
+	return JsonResponse({'error': None })
+
 #Internal url to create a new account from the signup page
 @csrf_exempt
 def makeaccount(request, methods=['POST']):
