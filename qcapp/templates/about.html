@@ -13,11 +13,6 @@
 
     }
 
-    .grayPage{
-      background-color: rgba(0, 0, 0, 0.5);
-      width: 100%;
-    }
-
     .title{
       font-size: 7vw;
       margin-top: 8vw;
@@ -74,15 +69,23 @@
       color: #75dccf;
     }
   }
-.less {
-  font-weight: normal;
-}
-.less1 {
-  font-weight: normal;
-  color: gray;
 
-}
-.myList{ list-style-type: none;}
+  .grayPage{
+    background-color:rgba(1,1,1,0.93);
+    width: 100%;
+  }
+  .less {
+    font-weight: normal;
+  }
+  .less1 {
+    font-weight: normal;
+    color: gray;
+
+  }
+  .myList{ 
+    list-style-type: none;
+  }
+
   @media screen and (min-width: 767px) {
 
     .firstpage{
@@ -90,11 +93,6 @@
       width: 100%;
       position: relative;
       overflow: hidden;
-    }
-
-    .grayPage{
-      background-color:rgba(1,1,1,0.93);
-      width: 100%;
     }
 
     .title{
@@ -235,8 +233,8 @@
 
   <!--Second part-->
   <div class="container grayPage">
-      <div class="col-lg-12 center">
-        <h1 style="color: white" class="page-header">Our Team</h1>
+      <div class="col-lg-12 center"> 
+        <h1 class="whitee page-header">Our Team</h1>
       </div>
 
       <!--Jessica-->
@@ -244,10 +242,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/JessicaProfile.jpg' %}" alt="">
-        <h3 class="names">Jessica Ji
+        <h3 class="whitee fontin">Jessica Ji
             <small>Our President</small>
         </h3>
-        <p style="color: #ada4a4">Jessica works mainly on back-end and keeping the rest of us on task.</p>
+        <p class = "names">Jessica works mainly on back-end and keeping the rest of us on task.</p>
         <p><a class="email" href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
         </center>
       </div>
@@ -257,10 +255,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
-        <h3 class="names">Grace Turner
+        <h3 class="whitee fontin">Grace Turner 
           <small>Front-End Specialist</small>
         </h3>
-        <p style="color: #ada4a4">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+        <p class= "names">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
         <p><a class="email" href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
       </center>
       </div>
@@ -270,10 +268,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
-        <h3 class="names">Samuel Russell
+        <h3 class="whitee fontin">Samuel Russell
             <small>Database Specialist</small>
         </h3>
-        <p style="color: #ada4a4">Sam enjoys troubleshooting and making the database queryable.</p>
+        <p  class = "names">Sam enjoys troubleshooting and making the database queryable.</p>
         <p><a class="email" href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
         </center>
       </div>
@@ -283,15 +281,25 @@
         <center>
         <br><br><br>
           <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
-          <h3 class="names">Luisa Goytia
+          <h3  class="whitee fontin">Luisa Goytia
               <small>Full-stack Programmer</small>
           </h3>
-          <p style="color: #ada4a4">Luisa works both front-end and back-end, depending on the problems of the week.</p>
+          <p class = "names">Luisa works both front-end and back-end, depending on the problems of the week.</p>
           <p><a class="email" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
 
         </center>
         <br><br>
       </div>
+  </div>
+
+<div class="container-fluid">
+  <br>
+    <div class="row">
+      <div class="co-xs-12">
+        <p class="text-center">Contact us at jmj5@princeton.edu</p>
+      </div>
+    </div>
+  <br>
   </div>
 
 
