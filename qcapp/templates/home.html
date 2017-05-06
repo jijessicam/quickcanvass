@@ -18,16 +18,21 @@
 <style>
 
   @media screen and (max-width: 767px) {
-
+    .whitee {
+      color: white;
+    }
+    .fontin{
+      font-size: 26px;
+    }
+    .names{
+      color: #e2dcdc;
+      font-size: 17px;
+    }
     .firstpage{
       background: url("{% static 'images/background.jpg' %}") no-repeat center center;
       width: 100%;
       position: relative;
       overflow: hidden;
-    }
-    .grayPage{
-      background-color:rgba(1,1,1,0.93);
-      width: 100%;
     }
     .title{
       font-size: 7vw;
@@ -53,7 +58,7 @@
     .descr2{
       margin-left: 2.2vw;
       margin-right: 2.2vw;
-      font-size: 2.5vw;
+      font-size: 14px;
       padding-bottom: 2vw;
     }
     .button1{
@@ -73,24 +78,27 @@
       font-weight: normal;
       margin-bottom: 17vw;
     }
-    .names{
-      color: #e2dcdc;
-    }
-    .email{
-      color: #75dccf;
-    }
+  }
+  .grayPage{
+    background-color:rgba(1,1,1,0.93);
+    width: 100%;
   }
 
+  .email{
+    color: #5bc0de;
+  }
   @media screen and (min-width: 767px) {
+    .whitee {
+      color: white;
+    }
+    .names{
+      color: #e2dcdc;
 
+    }
     .firstpage{
       background: url("{% static 'images/background.jpg' %}") no-repeat center center;
       width: 100%;
       background-size: cover;
-    }
-    .grayPage{
-      background-color:rgba(1,1,1,0.93);
-      width: 100%;
     }
     .title{
       font-size: 7vw;
@@ -136,12 +144,6 @@
       color: white;
       font-size: 1.8vw;
       margin-bottom: 8vw;
-    }
-    .names{
-      color: #e2dcdc;
-    }
-    .email{
-      color: #75dccf;
     }
    /* .box2{
       background-color:rgba(0, 0, 0, 0.5);
@@ -201,7 +203,7 @@
   <!--Third part-->
   <div class="container grayPage">
       <div class="col-lg-12 center"> 
-        <h1 style="color: white" class="page-header">Our Team</h1>
+        <h1 class="whitee page-header">Our Team</h1>
       </div>
 
       <!--Jessica-->
@@ -209,10 +211,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/JessicaProfile.jpg' %}" alt="">
-        <h3 class="names">Jessica Ji
-            <small>Our President</small>
+        <h3 class="whitee fontin">Jessica Ji
+            <small class = "names">Our President</small>
         </h3>
-        <p style="color: #ada4a4">Jessica works mainly on back-end and keeping the rest of us on task.</p>
+        <p class = "names">Jessica works mainly on back-end and keeping the rest of us on task.</p>
         <p><a class="email" href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
         </center>
       </div>
@@ -222,10 +224,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/GraceProfile.jpg' %}" alt="">
-        <h3 class="names">Grace Turner 
+        <h3 class="whitee fontin">Grace Turner 
           <small>Front-End Specialist</small>
         </h3>
-        <p style="color: #ada4a4">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+        <p class= "names">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
         <p><a class="email" href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
       </center>
       </div>
@@ -235,10 +237,10 @@
         <center>
         <br><br><br>
         <img class="img-circle img-responsive img-center" src="{% static 'images/SamProfile.jpg' %}" alt="">
-        <h3 class="names">Samuel Russell
-            <small>Database Specialist</small>
+        <h3 class="whitee fontin">Samuel Russell
+            <small class = "names">Database Specialist</small>
         </h3>
-        <p style="color: #ada4a4">Sam enjoys troubleshooting and making the database queryable.</p>
+        <p  class = "names">Sam enjoys troubleshooting and making the database queryable.</p>
         <p><a class="email" href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
         </center>
       </div>
@@ -248,10 +250,10 @@
         <center>
         <br><br><br>
           <img class="img-circle img-responsive img-center" src="{% static 'images/LuisaProfile.jpg' %}" alt="">
-          <h3 class="names">Luisa Goytia
+          <h3  class="whitee fontin">Luisa Goytia
               <small>Full-stack Programmer</small>
           </h3>
-          <p style="color: #ada4a4">Luisa works both front-end and back-end, depending on the problems of the week.</p>
+          <p class = "names">Luisa works both front-end and back-end, depending on the problems of the week.</p>
           <p><a class="email" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
 
         </center>
