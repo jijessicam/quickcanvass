@@ -271,12 +271,7 @@ button {
   .enlarge {
 
   }
-  .smoothened {
-    margin-top: 10px;
-    padding-left: 2%;
-    padding-right: 2%;
-    text-align: center;
-  }
+
   .volunteer{
     text-align: center;
     padding-left: 20%;
@@ -290,13 +285,6 @@ button {
 }
 
 @media screen and (min-width: 500px) {
-  .smoothened {
-    margin-top: 40px;
-    /*margin-left: 10%;*/
-    padding-left: 20%;
-    padding-right: 20%;
-    text-align: center;
-  }
 
   .center-table{
     text-align: center;
@@ -456,4 +444,11 @@ button {
 
 .endpage {
   margin-bottom: 20px;
+}
+
+.smoothened {
+  margin-top: 30px;
+  padding-left: 10%;
+  padding-right: 10%;
+  text-align: center;
 }
