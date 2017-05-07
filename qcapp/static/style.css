@@ -188,6 +188,10 @@ button {
     margin-bottom: 4px;
   }
 }
+
+#canvassBtn{
+  margin: 0px;
+}
 @media screen and (max-width: 767px) {
   .picker{
     display: inline;
@@ -195,16 +199,19 @@ button {
     margin-bottom: 4px;
   }
   .canvassBtn.ss-button{
-    width: 100%
+    width: 100%;
   }
 }
 
 .volunteer-name-list{
-  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
   padding-bottom: 30px;
   padding-top: 30px;
 }
 
+.volunteer-add-button{
+  padding-bottom: 30px;
+}
 @media screen and (max-width: 500px) {
   .control__indicator {
     position: absolute;

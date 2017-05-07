@@ -3,7 +3,7 @@
 {% load static %}
 
 <!-- Datatables imports: Datatables from https://datatables.net/-->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'datatables.css' %}" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.13/af-2.1.3/b-1.2.4/b-colvis-1.2.4/b-html5-1.2.4/b-print-1.2.4/cr-1.3.2/fh-3.1.2/r-2.1.1/rg-1.0.0/rr-1.2.0/sc-1.4.2/se-1.2.0/datatables.min.js"></script>
 
 <script>
@@ -13,7 +13,6 @@ $(document).ready(function() {
   $("#year_picker").val("{{targeted_years}}");
 
   //You've got leftover students from your last search - show these
-  console.log("{{error}}");
   var checkout = "{{checkout}}";
   if (checkout != ""){
     $.ajax({
@@ -37,14 +36,14 @@ $(document).ready(function() {
             "searching": false,
             data: res['results'],
             columns: [
-                { title: "Dorm" },
-                { title: "Name" },
-                { title: "Canvass"}
-            ]
+                { title: "Dorm", width: "20%"},
+                { title: "Name", width: "20%" },
+                { title: "Canvass", width: "20%"}
+            ],
+            fixedColumns:   {
+                heightMatch: 'auto'
+            }
           } );
-          $('#search-results tbody').on( 'click', 'button', function() {
-              console.log("You clicked the button");
-          });
         },
         error: function(){
           console.log("room search error");
@@ -83,14 +82,11 @@ $(document).ready(function() {
           "searching": false,
           data: res['results'],
           columns: [
-              { title: "Dorm" },
-              { title: "Name" },
-              { title: "Canvass"}
+            { title: "Dorm", width: "20%"},
+            { title: "Name", width: "20%" },
+            { title: "Canvass", width: "20%"}
           ]
         } );
-        $('#search-results tbody').on( 'click', 'button', function() {
-            console.log("You clicked the button");
-        });
       },
       error: function(){
           console.log("room search error");
@@ -134,7 +130,7 @@ $("#res_college_picker").on('change', function() {
               <option class = "font-size-tho" value="3">3</option>
               <option value="5">5</option>
               <option value="10">10</option>
-              <option value="every">every</option>
+              <option value="every">all of the</option>
             </select>
             students who live in
               <select class="dropdown form-control picker font-size-tho enlarge" name="res_college_picker" id="res_college_picker">

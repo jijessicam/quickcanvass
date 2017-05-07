@@ -65,7 +65,6 @@ $(document).ready(function() {
     });
 
     $("#start_new_survey_btn").click(function(){
-      console.log('test2');
       $.ajax({
           url: "/download_survey_data/",
           context: document.body,
@@ -80,7 +79,6 @@ $(document).ready(function() {
     });
 
     $("#add-volunteer-btn").click(function(){
-        console.log("test: add volunteer button");
         $.ajax({
             url: "/add-volunteer-to-campaign/",
             context: document.body,
@@ -89,7 +87,6 @@ $(document).ready(function() {
             },
             type: 'POST',
             success: function(res){
-                console.log(res);
                 if (res['error'] == "this volunteer username does not exist"){
                     $("#badname").css("display", "block");
                 }
@@ -175,57 +172,32 @@ $(document).ready(function() {
           </tr>
         {% endfor %}
       </table>
-  </div>
+    </div>
   </div>
 
 
   <div class="col-md-3 col-md-offset-1 ">
       <h3 class = "page-header" style= "margin-bottom: 1px;" >Volunteers</h3>
-</div>
+      
+      <div id="custom-search-input" class="input-group smoothened volunteer-add-button">
+        <input type="text" id='username-input' class = "form-control hidden-sm hidden-xs" style = "margin-left: 50px; width: 200px; height: 46px; font-size: 14px;" placeholder="Add Volunteer Username" />
+          <input type="text" id='username-input' class = "form-control input-lg hidden-md hidden-xs hidden-lg"  placeholder="Add Volunteer Username" />
+          <input type="text" id='username-input' class = "form-control input-lg hidden-sm hidden-md hidden-lg" style = "margin-left: 5%; "   placeholder="Add Volunteer Username" />
+        <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badname'
+          <strong>This volunteer's username does not exist.</strong>
+        </div><br>
+        <span class="input-group-btn ">
+          <button class="btn btn-info btn-lg" type="submit" style = "padding-top: 13px; padding-bottom: 11px; " id='add-volunteer-btn'>
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </span>
+      </div>
 
-<div class="col-md-3">
-    <div id="custom-search-input" class="input-group smoothened">
-      <input type="text" id='username-input' class = "form-control hidden-sm hidden-xs" style = "margin-left: 50px; width: 200px; height: 46px; font-size: 14px;" placeholder="Add Volunteer Username" />
-<input type="text" id='username-input' class = "form-control input-lg hidden-md hidden-xs hidden-lg"  placeholder="Add Volunteer Username" />
-<input type="text" id='username-input' class = "form-control input-lg hidden-sm hidden-md hidden-lg" style = "margin-left: 5%; "   placeholder="Add Volunteer Username" />
-      <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badname'
-        <strong>This volunteer's username does not exist.</strong>
-      </div><br>
-      <span class="input-group-btn ">
-        <button class="btn btn-info btn-lg" type="submit" style = "padding-top: 13px; padding-bottom: 11px; " id='add-volunteer-btn'>
-          <i class="glyphicon glyphicon-search"></i>
-        </button>
-      </span>
-    </div>
-</div>
-<div class = "hidden-sm hidden-xs">
-  <br><br><br><br>
-</div>
-
-      <div style = "margin-top: -10px; text-align: center; ">
+      <div style = "margin-top: 10px; text-align: center; ">
         {%for name in volunteers%}
         <div class="volunteer-name-list">{{ name }}</div>
         {% endfor %}
       </div>
-</div>
-</div>
   </div>
-<!--
-<div class="col-lg-12 center">
-    <h2 class="page-header">Add Volunteers to Campaign:</h2>
 </div>
-
- <div class = "col-sm-12">
-    <div id="custom-search-input" class="input-group smoothened">
-        <input type="text" id='username-input' class="form-control input-lg" placeholder="Type in Volunteer Username..." style='float: none'/>
-        <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badname'
-            <strong>This volunteer's username does not exist.</strong>
-        </div><br>
-        <span class="input-group-btn ">
-            <button class="btn btn-info btn-lg" type="submit" style = "padding-top: 13px; padding-bottom: 11px;" id='add-volunteer-btn'>
-                <i class="glyphicon glyphicon-search"></i>
-            </button>
-        </span>
-    </div>
-</div> -->
 {% endblock %}

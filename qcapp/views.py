@@ -24,7 +24,6 @@ from .models import Userdata
 import datetime
 import django_cas_ng
 import os
-import pprint as pp
 
 from utils import *
 
@@ -75,7 +74,6 @@ def signup(request):
 def join_new_campaign(request, methods=['POST']):
 	data = request.POST
 	code = data.get('code')
-	print(code)
 	camp = Campaign.objects.filter(code=code)[0]
 	ids_and_vol_ids = [(camp.id, camp.volunteer_ids), ]
 	my_id = str(get_my_id(request.user.username))
@@ -100,13 +98,11 @@ def join_new_campaign(request, methods=['POST']):
 def add_volunteer_to_campaign(request, methods=['POST']):
 	data = request.POST
 	username = data.get('username')
-	print("volunteer's username: ", username)
 
 	if Userdata.objects.filter(netid=username).count() == 0:
 		return JsonResponse({"error": "this volunteer username does not exist"})
 	userdat = Userdata.objects.filter(netid=username)[0]	# this is the volunteer to be added
 	owner_id = str(get_my_id(request.user.username))		# this is manager's netID
-	print("manager's ID: ", owner_id)
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]	# this is the manager's campaign
 
 	# EDIT CAMPAIGN VOLUNTEERS COLUMN
@@ -165,7 +161,7 @@ def search_by_ids(request):
 	results = search_rooms_by_id(princeton_data, cvass_data, ids)
 	listed_results = []
 	for res in results:
-		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' >Canvass</a>"])
+		listed_results.append([res["dorm"], res["first"] + " " + res['last'], "<a href = '/fillsurvey/" + campaign_id + "/" + netid + "/" + str(res["id"])  + "' class='btn ss-button button canvassBtn' id='canvassBtn'>Canvass</a>"])
 	if results:
 		return JsonResponse({'error': None ,'url' :'/volunteercampaigns', 'results': listed_results}, safe=False)
 	else:	# room search returned no results 
@@ -255,7 +251,6 @@ def fillsurvey(request, netid, campaign_id, voter_id):
 		q3 = request.POST.get('q3', '')
 		camp = Campaign.objects.filter(id=campaign_id)[0]
 		cvass_data = load_cvass_data(Campaign.objects.filter(id=campaign_id)[0].cvass_data)
-		print(voter_id)
 		for i, dat in enumerate(cvass_data):
 			if str(dat["id"]) == voter_id:
 				cvass_data[i]['a1'] = q1 + " "
@@ -377,7 +372,6 @@ def download_survey_data(request):
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]
 	cvass_data = load_cvass_data(camp.cvass_data)
 	target_years = camp.targeted_years
-	print(target_years)
 	to_ret = [["Script", surv.script, ], ["Name", "Year", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
 	for i, dat in enumerate(cvass_data):
 		if (target_years == "any" or target_years == str(json_data[i]["class"])):
@@ -444,7 +438,6 @@ def managerdash(request, netid):
 	title = "No Campaign Yet"
 	owner_id = get_my_id(request.user.username)
 	count = Campaign.objects.filter(owner_id=owner_id).count()
-	print("managerdash count was ", count)
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
@@ -458,13 +451,10 @@ def managerdash(request, netid):
 		for each in volunteers:
 			if each:
 				names.append(Userdata.objects.filter(id=each)[0].netid)
-		print("HERE I AM AT LINE 440-------------------------")
 		user = Userdata.objects.get(id=owner_id)
 		campaign_id = getattr(user, "manager_auth_campaign_id")
-		print("campaign id: ", campaign_id)
 		cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
 		count_dict = count_canvassed_by_res_college(princeton_data, cvass_data)
-		print(count_dict)
 		campurl = "/editcampaign/" + str(netid)
 		survurl = "/editsurvey/" + str(netid)
 		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl,
