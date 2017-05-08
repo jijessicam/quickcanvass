@@ -321,7 +321,7 @@ def editcampaign(request, netid):
 			userdat.vol_auth_campaign_ids = userdat.vol_auth_campaign_ids + "," + str(update_id)
 			userdat.manager_auth_campaign_id = update_id
 			userdat.save()
-			code = get_random_code(update_id)
+			code = get_random_code(update_id, 0)
 			camps = Campaign.objects.filter(code__isnull=True, id=update_id)
 			if camps.count() > 0:
 				camp = camps[0]
@@ -382,6 +382,7 @@ def delete_campaign(request):
 	camp.title = "No Campaign Yet"
 	camp.description = ""
 	camp.contact = ""
+	camp.code = get_random_code(camp.id, camp.code)
 	camp.volunteer_ids = str(get_my_id(request.user.username)) + ","
 	camp.save()
 	for userdat in Userdata.objects.filter():

@@ -44,8 +44,8 @@ def am_i_authorized_inner(request, netid_goal=None, camp_id=None, surv_id=None, 
 	
 	legal_manager = Campaign
 
-def get_random_code(campaign_id):
-	random.seed(campaign_id)
+def get_random_code(campaign_id, code):
+	random.seed(campaign_id + int(code))
 	return str(random.random())[2:10]
 
 def is_user_manager(netid):
