@@ -187,6 +187,12 @@ button {
     padding: 4px 0px;
     margin-bottom: 4px;
   }
+  #show-on-phone{
+    display: none;
+  }
+  #hide-on-phone{
+    display: inherit;
+  }
 }
 
 #canvassBtn{
@@ -200,6 +206,12 @@ button {
   }
   .canvassBtn.ss-button{
     width: 100%;
+  }
+  #hide-on-phone{
+    display: none;
+  }
+  #show-on-phone{
+    display: inherit;
   }
 }
 
@@ -458,6 +470,11 @@ button {
   margin: 0 auto;
 }
 #badname{
+  width: 80%;
+  margin-left: 10%;
+}
+#badcode{
+  margin-top: 5px;
   width: 80%;
   margin-left: 10%;
 }

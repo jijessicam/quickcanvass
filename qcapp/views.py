@@ -72,7 +72,11 @@ def signup(request):
 def join_new_campaign(request, methods=['POST']):
 	data = request.POST
 	code = data.get('code')
-	camp = Campaign.objects.filter(code=code)[0]
+	camp = Campaign.objects.filter(code=code)
+	if not camp:
+		return JsonResponse({'error': 'code does not match existing campaigns'})
+	else:
+		camp = camp[0]
 	ids_and_vol_ids = [(camp.id, camp.volunteer_ids), ]
 	my_id = str(get_my_id(request.user.username))
 	for (idd, vol_id) in ids_and_vol_ids:
@@ -347,21 +351,7 @@ def editcampaign(request, netid):
 #Internal url to clear all data from a survey - allows user to begin new survey
 @csrf_exempt
 def clear_survey_data(request):
-	owner_id = get_my_id(request.user.username)
-	surv = Survey.objects.filter(owner_id=owner_id)[0]
-	surv.q1 = "[Sample question]  Are you supporting Michelle Obama in the upcoming USG election?"
-	surv.q2 = "[Sample question]  What issues are most important to you?"
-	surv.q3 = ""
-	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
-	surv.save()
-	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
-	cvass_data = ""
-	with open(dir_path) as data_file:    
-	    cvass_data = json.load(data_file)
-	camp = Campaign.objects.filter(owner_id=owner_id)[0]
-	camp.cvass_data = cvass_data
-	camp.save()
-	return redirect('/editsurvey/' + request.user.username)
+	return redirect('/editsurvey/' + request.user.username + '/new')
 
 #Internal url for downloading survey data
 @csrf_exempt
@@ -379,7 +369,7 @@ def download_survey_data(request):
 	return JsonResponse(to_ret, safe=False)
 
 #Let netid edit the survey of their current campaign
-def editsurvey(request, netid):
+def editsurvey(request, netid, from_scratch):
 	if not am_i_authorized(request, netid=netid, manager_req=True):
 		raise PermissionDenied
 	title = "No Campaign Yet"
@@ -412,6 +402,14 @@ def editsurvey(request, netid):
 					q3 = q3,
 					owner_id = owner_id)
 				updcampaign.save()
+			if from_scratch == "new":
+				dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
+				cvass_data = ""
+				with open(dir_path) as data_file:    
+				    cvass_data = json.load(data_file)
+				camp = Campaign.objects.filter(owner_id=owner_id)[0]
+				camp.cvass_data = cvass_data
+				camp.save()
 		return redirect("/managerdash/" + str(request.user.username))
 	if request.method == 'GET':
 		count = Survey.objects.filter(owner_id=owner_id).count()
@@ -456,7 +454,7 @@ def managerdash(request, netid):
 		cvass_data = Campaign.objects.filter(id=campaign_id)[0].cvass_data
 		count_dict = count_canvassed_by_res_college(princeton_data, cvass_data)
 		campurl = "/editcampaign/" + str(netid)
-		survurl = "/editsurvey/" + str(netid)
+		survurl = "/editsurvey/" + str(netid) + "/current"
 		return render(request, 'managerdash.html', {'campurl': campurl, 'survurl': survurl,
 				'netid': netid, "isd": 1, "campaign_code" : campaign_code,
 				"title" : title, "volunteers":  names, "is_managerdash": 1, "num_canvassed": count_dict})

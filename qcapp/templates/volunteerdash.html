@@ -8,7 +8,6 @@ $(document).ready(function() {
     })
 
     $("#join-new-campaign-btn").click(function(){
-    console.log("test");
     $.ajax({
         url: "/join-new-campaign/",
         context: document.body,
@@ -17,11 +16,21 @@ $(document).ready(function() {
         },
         type: 'POST',
         success: function(res){
-            window.location.reload() 
+            if (res['error'] == 'code does not match existing campaigns'){
+                $("#badcode-text").text("Code did not match any 8-digit valid campaign codes.");
+                $("#badcode").css("display", "block");
+            }
+            else{
+                window.location.reload()
+            } 
         },
         error: function(){
             console.log("error");
         }
+    });
+
+    $("#code-input").on('change keyup paste', function(){
+      $("#badcode").css("display", "none");
     });
 })
 });
@@ -56,6 +65,9 @@ $(document).ready(function() {
                 <i class="glyphicon glyphicon-search"></i>
             </button>
         </span>
+    </div>
+    <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badcode'>
+        <strong id="badcode-text"></strong>
     </div>
 </div>
 
