@@ -1,58 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Project Update Site</title>
+  <title>QuickCanvass</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css"></script>
-  <style>
-.col-sm-3 {
-  margin-top: 20px;
-  margin-left: 20px;
   
+  <style>
+
+    .names{
+      color:black;
     }
+
+    .email{
+      color: #5bc0de;
+    }
+    .foot{
+      background-color: rgba(0,0,0,.95);
+      height: 3.5vw;
+      padding-top: 0.6vw;
+      color: white;
+    }
+
+    .timeline {
+      list-style: none;
+      padding: 20px 0 20px;
+      position: relative;
+    }
+
+    .timeline:before {
+      top: 0;
+      bottom: 0;
+      position: absolute;
+      content: " ";
+      width: 3px;
+      background-color: #eeeeee;
+      left: 50%;
+      margin-left: -1.5px;
+    }
+
+    .timeline > li {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .timeline > li:before, .timeline > li:after {
+      content: " ";
+      display: table;
+    }
+
+    .timeline > li:after {
+      clear: both;
+    }
+
+    .timeline > li:before,.timeline > li:after {
+      content: " ";
+      display: table;
+    }
+
+    .timeline > li:after {
+      clear: both;
+    }
+
+    .timeline > li > .timeline-panel {
+      width: 46%;
+      float: left;
+      border: 1px solid #d4d4d4;
+      border-radius: 2px;
+      padding: 20px;
+      position: relative;
+      -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+    }
+
+    .timeline > li > .timeline-panel:before {
+      position: absolute;
+      top: 26px;
+      right: -15px;
+      display: inline-block;
+      border-top: 15px solid transparent;
+      border-left: 15px solid #ccc;
+      border-right: 0 solid #ccc;
+      border-bottom: 15px solid transparent;
+      content: " ";
+    }
+
+    .timeline > li > .timeline-panel:after {
+      position: absolute;
+      top: 27px;
+      right: -14px;
+      display: inline-block;
+      border-top: 14px solid transparent;
+      border-left: 14px solid #fff;
+      border-right: 0 solid #fff;
+      border-bottom: 14px solid transparent;
+      content: " ";
+    }
+
+    .timeline > li > .timeline-badge {
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      font-size: 1.4em;
+      text-align: center;
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      margin-left: -25px;
+      background-color: #999999;
+      z-index: 100;
+      border-top-right-radius: 50%;
+      border-top-left-radius: 50%;
+      border-bottom-right-radius: 50%;
+      border-bottom-left-radius: 50%;
+    }
+
+    .timeline > li.timeline-inverted > .timeline-panel {
+        float: right;
+    }
+
+    .timeline > li.timeline-inverted > .timeline-panel:before {
+        border-left-width: 0;
+        border-right-width: 15px;
+        left: -15px;
+        right: auto;
+    }
+
+    .timeline > li.timeline-inverted > .timeline-panel:after {
+      border-left-width: 0;
+      border-right-width: 14px;
+      left: -14px;
+      right: auto;
+    }
+
+    .timeline-badge.primary {
+      background-color: #2e6da4 !important;
+    }
+
+    .timeline-badge.success {
+      background-color: #3f903f !important;
+    }
+
+    .timeline-badge.warning {
+      background-color: #f0ad4e !important;
+    }
+
+    .timeline-badge.danger {
+      background-color: #d9534f !important;
+    }
+
+    .timeline-badge.info {
+      background-color: #5bc0de !important;
+    }
+
+    .timeline-title {
+      margin-top: 0;
+      color: inherit;
+    }
+
+    .timeline-body > p,
+    .timeline-body > ul {
+      margin-bottom: 0;
+    }
+
+    .timeline-body > p + p {
+        margin-top: 5px;
+    }
+
+    @media (max-width: 767px) {
+      ul.timeline:before {
+        left: 40px;
+      }
+
+      ul.timeline > li > .timeline-panel {
+        width: calc(100% - 90px);
+        width: -moz-calc(100% - 90px);
+        width: -webkit-calc(100% - 90px);
+      }
+
+      ul.timeline > li > .timeline-badge {
+        left: 15px;
+        margin-left: 0;
+        top: 16px;
+      }
+
+      ul.timeline > li > .timeline-panel {
+        float: right;
+      }
+
+      ul.timeline > li > .timeline-panel:before {
+        border-left-width: 0;
+        border-right-width: 15px;
+        left: -15px;
+        right: auto;
+      }
+
+      ul.timeline > li > .timeline-panel:after {
+        border-left-width: 0;
+        border-right-width: 14px;
+        left: -14px;
+        right: auto;
+      }
+    }
+    
   </style>
 </head>
+
 <body>
-<nav class="na`vbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">QC</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a class = "active" href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="schedule.html">Schedule</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div class="row">
-    <div class="col-sm-3">
-        <div class="owl-carousel">
-            <div class="post-slide">
-                <div class="post-img">
-                    <img class="img-responsive" src="posts-march2027bkg.jpg">
-                </div>
-                <div class="post-content">
-                    <h3 class="post-title">
-                        <a href="posts-march2027.html">Week of March 20-27!</a>
-                    </h3>
-                    <p class="post-description"> Making our status website, linking front end and back end, etc. etc.</p>
-                    <a href="posts-march2027.html" class="read-more">Read More...</a>
-                </div>
-            </div>
+
+  <center>
+    <h1 class="page-header"> QuickCanvass</h1>
+  </center>
+
+  <div>  
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <center>
+            <p>We are a Princeton student-group designing a system that makes canvassing voters easier. 
+            <p> This website is to serve to keep y'all updated on new successes and failures. If you are looking for the official site, check out the "QC" button above.</p> 
+            <p>Otherwise, check out "Home" for some sweet blog posts, and check out "Schedule" for a sneak peek into the rest of the project timeline!</p>
+          </center>
+          <br>
         </div>
+      </div>
+
+      <center>
+        <hr>
+        <div class="col-lg-12 center"> 
+            <h1>Our Team</h1>
+        </div>
+      </center>
+
+      <!--Jessica-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+          <br><br><br>
+          <img class="img-circle img-responsive img-center" src="JessicaProfile.jpg" alt="">
+          <h3 class="fontin">Jessica Ji
+              <small>Our President</small>
+          </h3>
+          <p class = "names">Jessica works mainly on back-end and keeping the rest of us on task.</p>
+          <p><a class="email" href="mailto:jmj5@princeton.edu">jmj5@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Grace-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+          <br><br><br>
+          <img class="img-circle img-responsive img-center" src="GraceProfile.jpg" alt="">
+          <h3 class="fontin">Grace Turner 
+          <small>Front-End Specialist</small>
+         </h3>
+          <p class= "names">Grace works on making the UI experience as smooth and as beautiful as possible.</p>
+         <p><a class="email" href="mailto:gracekt@princeton.edu">gracekt@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Sam-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+        <br><br><br>
+        <img class="img-circle img-responsive img-center" src="SamProfile.jpg" alt="">
+        <h3 class="fontin">Samuel Russell
+            <small>Database Specialist</small>
+        </h3>
+        <p  class = "names">Sam enjoys troubleshooting and making the database queryable.</p>
+        <p><a class="email" href="mailto:samueljr@princeton.edu">samueljr@princeton.edu</a></p>
+        </center>
+      </div>
+
+      <!--Luisa-->
+      <div class="col-lg-6 col-sm-6 text-center">
+        <center>
+          <br><br><br>
+          <img class="img-circle img-responsive img-center" src="LuisaProfile.jpg">
+          <h3  class="fontin">Luisa Goytia
+              <small>Full-stack Programmer</small>
+          </h3>
+          <p class = "names">Luisa works both front-end and back-end, depending on the problems of the week.</p>
+          <p><a class="email" href="mailto:lgoytia@princeton.edu">lgoytia@princeton.edu</a></p>
+        </center>
+        <br><br>
+      </div>
     </div>
-  </div>
- </body>
+
+
+    <div class="container">
+      <div class="page-header">
+        <center><h1 id="timeline">Timeline</h1></center>
+      </div>
+      <ul class="timeline">
+
+        <!-- left panel -->
+        <li>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Consolidate Project Idea</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> MARCH 5</small></p>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-user"></i> WHO: Everyone</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Put text</p>
+            </div>
+          </div>
+        </li>
+
+        <!-- Right panel -->
+        <li class="timeline-inverted">
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Design UI framework and distribute tasks</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> MARCH 20</small></p>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-user"></i> WHO: Everyone</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Design UI.</p>
+              <p>Divide project into chunks, create schedule and divide tasks.</p>
+            </div>
+          </div>
+        </li>
+        
+        <!-- Left -->
+        <li>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Create Project Status Website</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> MARCH 27</small></p>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-user"></i> WHO: Grace</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Put text</p>
+            </div>
+          </div>
+        </li>
+
+        <!-- Left -->
+        <li>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">CAS Login/Logout</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> MARCH 27</small></p>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-user"></i> WHO: Luisa</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Put text.</p>
+            </div>
+          </div>
+        </li>
+        
+
+        <!-- Left -->
+        <li class="timeline-inverted">
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title">Create user Databases</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> MARCH 27</small></p>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-user"></i> WHO: Sam</small></p>
+            </div>
+            <div class="timeline-body">
+              <p>Design UI.</p>
+              <p>Divide project into chunks, create schedule and divide tasks.</p>
+            </div>
+          </div>
+        </li>
+
+    </ul>
+</div>
+
+ <div class="footer foot">
+      <center>
+        <p>Contact us: jmj5@princeton.edu</p>
+      </center>
+    </div>
+
+
+</body>
 </html>
