@@ -5,7 +5,6 @@
 <script>
 $(document).ready(function() {
   $("#make-account").click(function(){
-  console.log("test");
   $.ajax({
       url: "/create-new-account",
       context: document.body,
@@ -16,14 +15,20 @@ $(document).ready(function() {
       },
       type: 'POST',
       success: function(res){
-        //change to dashboard later
         if(res['error'] == 'netid already exists'){
           $("#doubleid").css("display", "block");
           $("#badidchars").css("display", "none");
+          $("#fakenetid").css("display", "none");
         }
         else if (res['error'] == 'bad chars in netid'){
           $("#badidchars").css("display", "block");
           $("#doubleid").css("display", "none");
+          $("#fakenetid").css("display", "none");
+        }
+        else if (res['error'] == 'use your netid'){
+          $("#badidchars").css("display", "none");
+          $("#doubleid").css("display", "none");
+          $("#fakenetid").css("display", "block");
         }
         else{
           window.location = res['url'];
@@ -62,6 +67,9 @@ $(document).ready(function() {
           </div>
           <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badidchars'
               <strong>Netids are composed solely of letters and numbers.</strong>
+          </div>
+          <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='fakenetid'
+              <strong>Use your netid to create an account.</strong>
           </div>
           <div>
             <a class="button-submit btn getStarted" id="make-account">Get Started!</a>

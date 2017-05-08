@@ -133,15 +133,20 @@ def makeaccount(request, methods=['POST']):
 		isd = 1
 	#check if user already exists
 	userdat = Userdata.objects.filter(netid=netid)
-	if not userdat:
+	user = User.objects.filter(username=netid)
+	if not userdat and not user:
+		#not their real netid
+		return JsonResponse({'error': 'use your netid' ,'url' :'/managerdash/' + netid})
+	elif user and not user[0].password:
+		#true netid user
+		user[0].set_password(passw)
+		user[0].save()
 		userdat = Userdata(netid=netid, is_director=isd)
 		userdat.save()
-		#create the userdata
-		user = User.objects.create_user(netid, netid + '@princeton.edu', passw)
 		user = authenticate(username=netid, password=passw)
 		auth_login(request, user)
 		return JsonResponse({'error': None ,'url' :'/managerdash/' + netid})
-	else:	#user did exist
+	else:
 		return JsonResponse({'error': 'netid already exists' ,'url' :'/signup'})
 
 #FAQs for users
