@@ -34,8 +34,6 @@ import random
 keys = ['first', 'last', 'dorm', 'college', 'major', 'class', 'id']
 princeton_data = get_pton_json_data(keys)
 
-# Create your views here.
-
 #404 errors
 def handler404(request):
 	response = render_to_response('404.html', {}, context_instance=RequestContext(request))
