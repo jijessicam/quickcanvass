@@ -363,6 +363,31 @@ def clear_survey_data(request):
 	camp.save()
 	return redirect('/editsurvey/' + request.user.username)
 
+#Internal url to delete a campaign
+@csrf_exempt
+def delete_campaign(request):
+	owner_id = get_my_id(request.user.username)
+	surv = Survey.objects.filter(owner_id=owner_id)[0]
+	surv.q1 = "[Sample question]  Are you supporting Michelle Obama in the upcoming USG election?"
+	surv.q2 = "[Sample question]  What issues are most important to you?"
+	surv.q3 = ""
+	surv.script = "[This script is read to each voter by your volunteer.]  Hello, I'm Michelle and I'm running for USG because..."
+	surv.save()
+	dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_data.txt"
+	cvass_data = ""
+	with open(dir_path) as data_file:    
+	    cvass_data = json.load(data_file)
+	camp = Campaign.objects.filter(owner_id=owner_id)[0]
+	camp.cvass_data = cvass_data
+	camp.title = "No Campaign Yet"
+	camp.description = ""
+	camp.contact = ""
+	camp.volunteer_ids = str(get_my_id(request.user.username)) + ","
+	camp.save()
+	for userdat in Userdata.objects.filter():
+		userdat.vol_auth_campaign_ids = str(userdat.manager_auth_campaign_id or "")
+		userdat.save()
+	return redirect('/editsurvey/' + request.user.username)
 #Internal url for downloading survey data
 @csrf_exempt
 def download_survey_data(request):
@@ -441,8 +466,6 @@ def managerdash(request, netid):
 	if count != 0:
 		title = Campaign.objects.filter(owner_id=owner_id)[0].title
 		campaign_code = Campaign.objects.filter(owner_id =owner_id)[0].code
-	if not request.user.username == netid:
-		return redirect('/accounts/login')
 	if is_user_manager(netid):
 		if count == 0:
 			return editcampaign(request, netid)
