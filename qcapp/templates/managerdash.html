@@ -97,18 +97,6 @@ $(document).ready(function() {
         });
     });
 
-    $("#delete_campaign_btn").click(function(){
-        $.ajax({
-            url: "/delete_campaign/",
-            context: document.body,
-            type: 'POST',
-            success: function(res){
-              window.location.reload()
-            },
-            error: function(){
-            }
-        });
-    });
 
     $("#username-input").on('change keyup paste', function(){
       $("#badname").css("display", "none");
@@ -137,8 +125,6 @@ $(document).ready(function() {
       <a class = 'button btn ss-button' id="download_survey_data_btn">Download Survey Data</a>
       <br><br>
       <a href = "/clear_survey_data" class = 'button btn ss-button' id = 'start_new_survey_btn'>Start a New Survey</a>
-      <br><br>
-      <a href = "/delete_campaign" class = 'button btn ss-button' id = 'delete_campaign_btn'>Delete Campaign</a>
     </div>
   </div>
 

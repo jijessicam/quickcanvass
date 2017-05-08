@@ -140,6 +140,9 @@ $(document).ready(function() {
         if(res['error'] == 'netid already exists'){
           $("#doubleid").css("display", "block");
         }
+        else if (res['error'] == 'bad chars in netid'){
+          $("#badidchars").css("display", "block");
+        }
         else{
           window.location = res['url'];
         }
@@ -174,6 +177,9 @@ $(document).ready(function() {
           </div>
           <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='doubleid'
               <strong>An account with this netid already exists.</strong>
+          </div>
+          <div class="alert alert-danger alert-dismissable warningBox secret-alert" id='badidchars'
+              <strong>Netids are composed solely of letters and numbers.</strong>
           </div>
           <div>
             <a class="button-submit btn getStarted" id="make-account">Get Started!</a>
