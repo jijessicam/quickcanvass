@@ -188,6 +188,10 @@ button {
     margin-bottom: 4px;
   }
 }
+
+#canvassBtn{
+  margin: 0px;
+}
 @media screen and (max-width: 767px) {
   .picker{
     display: inline;
@@ -196,16 +200,18 @@ button {
   }
   .canvassBtn.ss-button{
     width: 100%;
-    margin: 0px;
   }
 }
 
 .volunteer-name-list{
-  border-top: 1px solid #eee;
-  padding-bottom: 30px;
-  padding-top: 30px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  color: gray;
 }
 
+.volunteer-add-button{
+  margin-bottom: 30px;
+}
 @media screen and (max-width: 500px) {
   .control__indicator {
     position: absolute;
@@ -265,12 +271,7 @@ button {
   .enlarge {
 
   }
-  .smoothened {
-    margin-top: 10px;
-    padding-left: 2%;
-    padding-right: 2%;
-    text-align: center;
-  }
+
   .volunteer{
     text-align: center;
     padding-left: 20%;
@@ -284,13 +285,6 @@ button {
 }
 
 @media screen and (min-width: 500px) {
-  .smoothened {
-    margin-top: 40px;
-    /*margin-left: 10%;*/
-    padding-left: 20%;
-    padding-right: 20%;
-    text-align: center;
-  }
 
   .center-table{
     text-align: center;
@@ -382,6 +376,51 @@ button {
   font-size: large;
 }
 
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  /*outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;*/
+}
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  background-color: #51acc7;
+  text-decoration: none;
+  color: white;
+}
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+          box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
 .padding {
   padding-top: 10px;
 }
@@ -405,4 +444,35 @@ button {
 
 .endpage {
   margin-bottom: 20px;
+}
+
+.smoothened {
+  margin-top: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  text-align: center;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+#badname{
+  width: 80%;
+  margin-left: 10%;
+}
+th {
+  font-weight: bold;
+  text-align: center;
+}
+td {
+  padding: 5px 0;
+}
+table {
+  border-collapse: separate;
+  border-spacing: 15px 0;
+  margin: 0 auto;
+}
+.manager {
+  color: gray;
 }

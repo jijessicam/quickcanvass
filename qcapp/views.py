@@ -100,7 +100,7 @@ def add_volunteer_to_campaign(request, methods=['POST']):
 	username = data.get('username')
 
 	if Userdata.objects.filter(netid=username).count() == 0:
-		return JsonResponse({"error": "this volunteer username does not exist"})
+		return JsonResponse({"error": "The volunteer \"" + data.get('username') + "\" does not exist. Do you have the right netid?"})
 	userdat = Userdata.objects.filter(netid=username)[0]	# this is the volunteer to be added
 	owner_id = str(get_my_id(request.user.username))		# this is manager's netID
 	camp = Campaign.objects.filter(owner_id=owner_id)[0]	# this is the manager's campaign
