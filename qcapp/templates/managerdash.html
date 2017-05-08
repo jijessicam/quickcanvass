@@ -52,7 +52,7 @@ $(document).ready(function() {
         context: document.body,
         type: 'POST',
         success: function(res){
-           exportToCsv("survey_data.csv", res)
+           exportToCsv("survey_data.csv", res[0])
         },
         error: function(){
             console.log("error");
@@ -66,7 +66,9 @@ $(document).ready(function() {
           context: document.body,
           type: 'POST',
           success: function(res){
-            exportToCsv("survey_data.csv", res);
+            if (res[1]){
+              exportToCsv("survey_data.csv", res[0]);
+            }
           },
           error: function(){
             console.log("error");

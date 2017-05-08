@@ -363,10 +363,13 @@ def download_survey_data(request):
 	cvass_data = load_cvass_data(camp.cvass_data)
 	target_years = camp.targeted_years
 	to_ret = [["Script", surv.script, ], ["Name", "Year", "Dorm", "College", surv.q1, surv.q2, surv.q3], ]
+	had_data = False
 	for i, dat in enumerate(cvass_data):
 		if (target_years == "any" or target_years == str(json_data[i]["class"])):
 			to_ret.append([json_data[i]["first"] + " " + json_data[i]["last"], json_data[i]["class"], json_data[i]["dorm"], json_data[i]["college"], dat["a1"], dat["a2"], dat["a3"]])
-	return JsonResponse(to_ret, safe=False)
+			if dat["a1"]:
+				had_data = True
+	return JsonResponse([to_ret, had_data], safe=False)
 
 #Let netid edit the survey of their current campaign
 def editsurvey(request, netid, from_scratch):
