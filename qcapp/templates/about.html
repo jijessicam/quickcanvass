@@ -2,166 +2,6 @@
 {% block content %}
 {% load static %}
 
-<style>
-
-  @media screen and (max-width: 767px) {
-
-    .firstpage{
-      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
-      width:100%;
-      overflow: hidden;
-
-    }
-
-    .title{
-      font-size: 7vw;
-      margin-top: 8vw;
-      color:white;
-      text-shadow: #000 5px 2px 6px;
-
-    }
-
-    .logo{
-      width: 32vw;
-      height: 22vw;
-      display: block;
-      margin-left: 36vw;
-      margin-top: -2vw;
-    }
-
-    .descr{
-      color:white;
-      border-left: 2.4vw;
-      border-right: 2.4vw;
-      font-size: 2.6vw;
-      text-shadow: #000 -2px 2px 2px;
-    }
-    .descr2{
-      list-style-type: none;
-      text-align: left;
-      padding-left: 0px;
-    }
-
-    .button1{
-      margin-top: 8vw;
-      margin-bottom: -1vw;
-      background-color: #5bc0de;
-      width: 45%;
-      table-layout: fixed;
-      color: white;
-      font-weight: normal;
-    }
-
-    .button2{
-      background-color: #5bc0de;
-      width: 45%;
-      table-layout: fixed;
-      color: white;
-      font-weight: normal;
-      margin-bottom: 12vw;
-    }
-
-    .names{
-      color: #e2dcdc;
-    }
-
-    .email{
-      color: #75dccf;
-    }
-  }
-
-  .grayPage{
-    background-color:rgba(1,1,1,0.93);
-    width: 100%;
-    color: white;
-  }
-  .less {
-    font-weight: normal;
-  }
-  .less1 {
-    font-weight: normal;
-    color: gray;
-
-  }
-  .myList{ 
-    list-style-type: none;
-  }
-
-  @media screen and (min-width: 767px) {
-
-    .firstpage{
-      background: url("{% static 'images/background.jpg' %}") no-repeat center center;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .title{
-      font-size: 7vw;
-      margin-top: 3vw;
-      color:white;
-
-      text-shadow: #000 8px 2px 9px;
-    }
-
-    .logo{
-      width: 26vw;
-      height: 16vw;
-      display: block;
-      margin-left: 37vw;
-      margin-top: -1vw;
-    }
-
-    .descr{
-      color:white;
-      border-left: 8vw;
-      border-right: 8vw;
-      font-size: 1.5vw;
-
-      text-shadow: #000 -2px 1px 2px;
-
-    }
-
-    .descr2{
-      list-style-type: none;
-      border-left: 2.4vw;
-      border-right: 2.4vw;
-      font-size: 1vw;
-      padding-bottom: 2vw;
-      text-align: left;
-    }
-
-    .button1{
-      margin-top: 5vw;
-      background-color: #5bc0de;
-      width: 40%;
-      table-layout: fixed;
-      color: white;
-      font-size: 1.8vw;
-      margin-bottom: 2px;
-    }
-
-    .button2{
-      background-color: #5bc0de;
-      width: 40%;
-      table-layout: fixed;
-      color: white;
-      font-size: 1.8vw;
-      margin-bottom: 4vw;
-    }
-
-    .names{
-      color: #e2dcdc;
-    }
-
-    .email{
-      color: #75dccf;
-    }
-  }
-
-</style>
-
-
 <body>
   <!--First part-->
   <div class="container">
@@ -171,10 +11,10 @@
         <h2 class="page-header less small-hid">Frequently Asked Questions: Campaign Managers</h2>
         {% if isd == 1 %}
 
-        <ul class="descr2">
+        <ul class="descr-about">
           <li>
             <h3 class= "less">How do I add volunteers to my campaign?</h3>
-            <h5 class = "less1">Give them your 8 digit campaign code (see the number underneath the title of your campaign in your <a href='/managerdash/{{netid}}'> Manager Dashboard</a>), and tell them to enter it on their <a href='/volunteerdash/{{netid}}'>Volunteer for Campaigns page</a>.</h5>
+            <h5 class = "less1">Give them your 8 digit campaign code (see the number underneath the title-about of your campaign in your <a href='/managerdash/{{netid}}'> Manager Dashboard</a>), and tell them to enter it on their <a href='/volunteerdash/{{netid}}'>Volunteer for Campaigns page</a>.</h5>
           </li>
           <li>
             <h3 class= "less">How do I make minor changes to my survey?</h3>
@@ -200,7 +40,7 @@
         {% endif %}
         <h2 class="page-header less small-show">Campaign Volunteers</h2>
         <h2 class="page-header less small-hid">Frequently Asked Questions: Campaign Volunteers</h2>
-        <ul class="descr2">
+        <ul class="descr-about">
           <li>
             <h3 class= "less">How do I join a campaign?</h3>
             <h5 class = "less1">Ask the person in charge of the campaign for your 8-digit campaign code, and then enter that where it tells you to "type in your campaign key" on your <a href='/volunteerdash/{{netid}}'>Volunteer Dashboard</a>.</h5>
@@ -233,11 +73,11 @@
   </div>
 
 
-<div class="container-fluid grayPage">
+<div class="container-fluid grayPage-white">
   <br>
     <div class="row">
       <div class="co-xs-12">
-        <p class="text-center whitee">Contact us at jmj5@princeton.edu</p>
+        <p class="text-center">Contact us at jmj5@princeton.edu</p>
       </div>
     </div>
   <br>
