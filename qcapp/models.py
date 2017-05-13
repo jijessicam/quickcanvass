@@ -8,7 +8,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__)) + "/static/local_base_dat
 with open(dir_path) as data_file:    
     cvass_data = json.load(data_file)
 
-# Create your models here.
+#Campaign
 class Campaign(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
@@ -27,6 +27,7 @@ class Campaign(models.Model):
     def __str__(self):
         return self.title   # return campaign title 
 
+#Survey - the questions for a campaign
 class Survey(models.Model):
     q1 = models.CharField(max_length=200)
     q2 = models.CharField(max_length=200)
@@ -41,6 +42,7 @@ class Survey(models.Model):
     def __str__(self):
         return self.script[0:50] + "..."   # return campaign title 
 
+#Details about each person with a quickcanvass account
 class Userdata(models.Model):
     vol_auth_campaign_ids = models.CharField(max_length=80)
     netid = models.CharField(max_length=30)

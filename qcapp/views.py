@@ -137,7 +137,7 @@ def makeaccount(request, methods=['POST']):
 	if not userdat and not user:
 		#not their real netid
 		return JsonResponse({'error': 'use your netid' ,'url' :'/managerdash/' + netid})
-	elif user and not user[0].password:
+	elif user and not userdat:
 		#true netid user
 		user[0].set_password(passw)
 		user[0].save()
@@ -330,7 +330,7 @@ def editcampaign(request, netid):
 			userdat.vol_auth_campaign_ids = userdat.vol_auth_campaign_ids + "," + str(update_id)
 			userdat.manager_auth_campaign_id = update_id
 			userdat.save()
-			code = get_random_code(update_id)
+			code = get_code(update_id)
 			camps = Campaign.objects.filter(code__isnull=True, id=update_id)
 			if camps.count() > 0:
 				camp = camps[0]

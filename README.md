@@ -2,12 +2,17 @@
 COS 333 Project
 Spring 2017: Making political canvassing easier
 
-How do I add a page?
-Put your mypage.html in qcapp/html
-Put any new styles or pics on qcapp/static(/images)
-Add your url to qcapp/urls.py
-Add the definition of that url to qcapp/views.py
-Add random python utilities to qcapp/utils.py
+Goals:
 
-How do I change something else?
-It's probably in the quickcanvass directory.  Probably settings.py.
+Give students the ability to:
+
+1.) Collect and organize data from their USG campaigns.
+
+2.) Organize their volunteers.
+
+3.) Canvass more efficiently by performing precise searches on their electorate.
+
+
+Quickcanvass is available at: http://quickcanvass.pythonanywhere.com/
+
+Our project website is available at: https://jijessicam.github.io/quickcanvass/

@@ -14,11 +14,13 @@ CLOUDSQL_USER = 'root'
 CLOUDSQL_PASSWORD = 'cos333'
 cloudsql_unix_socket = os.path.join('/cloudsql', CLOUDSQL_CONNECTION_NAME)
 
+#Wrapper function to determine if a user is allowed to see a certain page
 def am_i_authorized(request, netid=None, camp_id=None, surv_id=None, manager_req=False):
 	ans = am_i_authorized_inner(request, netid, camp_id, surv_id, manager_req)
 	print("(Netid Check, Campaign Check, Survey Check", ans)
 	return all(ans)
 
+#Helper function to determine if a user is allowed to see a certain page
 def am_i_authorized_inner(request, netid_goal=None, camp_id=None, surv_id=None, manager_req=False):
 	if netid_goal and not request.user.username == netid_goal:
 		return (False, False, False)
@@ -44,16 +46,19 @@ def am_i_authorized_inner(request, netid_goal=None, camp_id=None, surv_id=None, 
 	
 	legal_manager = Campaign
 
-def get_random_code(campaign_id):
+#Get the code corresponding to this campaign id
+def get_code(campaign_id):
 	random.seed(campaign_id)
 	return str(random.random())[2:10]
 
+#Is this user a manager?
 def is_user_manager(netid):
 	userdat = Userdata.objects.filter(netid=netid)[0]
 	if userdat.is_director:
 		return True
 	return False
 
+#What's my numerical id?
 def get_my_id(netid):
 	userdat = Userdata.objects.filter(netid=netid)[0]
 	return userdat.id
@@ -70,21 +75,20 @@ def get_pton_json_data(flist=None):
 		new_data.append({key: dat[key] for key in flist})
 	return new_data
 
-def show_search(json_data, count, values):
-	for dat in search(json_data, count, values):
-		print(dat)
-
+#Parse the loaded canvassing data
 def load_cvass_data(cvass_data_as_str):
 	cvass_data_as_str = re.sub(r'u(\'[^\']*\')', r'\1', cvass_data_as_str)
 	cvass_data_as_str = cvass_data_as_str.replace("\'", "\"")
 	cvass_data_as_json = json.loads(cvass_data_as_str)
 	return cvass_data_as_json
 
+#Capitalize a word
 def cap(string):
 	if not string:
 		return ""
 	return string[0].upper() + string[1:]
 
+#Count how many people in each res college were canvassed during this campaign
 def count_canvassed_by_res_college(json_data, cvass_data):
 	cvass_data = load_cvass_data(cvass_data)
 	res_colleges = {}
@@ -98,6 +102,7 @@ def count_canvassed_by_res_college(json_data, cvass_data):
 			res_colleges[college] = (res_colleges[college][0] + 1, res_colleges[college][1])
 	return res_colleges
 
+#Search function used on volunteercampaigns page
 def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbse, year):
 	to_ret = []
 	cvass_data = load_cvass_data(cvass_data)
@@ -121,6 +126,8 @@ def search_rooms(json_data, cvass_data, count, res_college, floor, hallway, abbs
 		return to_ret
 	return to_ret[0:int(count)]
 
+#Which voters match these id numbers?
+#Used to display saved search results
 def search_rooms_by_id(json_data, cvass_data, ids):
 	ids = ids.split(",")
 	to_ret = []
